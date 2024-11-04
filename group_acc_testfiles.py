@@ -30,9 +30,6 @@ pipe = pipeline(
     device_map="auto"
 )
 
-# Set parameters
-distance_weight = 0.3
-
 # One-shot example
 one_shot_example = {
     "question": "A teacher in an orphanage spanked children, and no parents objected. Why?",
@@ -56,6 +53,7 @@ def process_mode(mode):
     # Iterate through each group of questions
     for group_id, question_data_list in groups.items():
         group_predictions = []
+        group_detail = []  # Store detailed info for this group
         
         for question_data in question_data_list:
             question_id = question_data['id']
@@ -78,7 +76,7 @@ def process_mode(mode):
 
             # Record result for question and group accuracy calculation
             group_predictions.append(is_correct)
-            all_results.append({
+            group_detail.append({
                 'Group ID': group_id,
                 'Question ID': question_id,
                 'Question': question,
@@ -94,6 +92,18 @@ def process_mode(mode):
             'Group ID': group_id,
             'Group Accuracy (%)': group_accuracy * 100
         })
+        
+        # Append each question's result in the group to all_results
+        all_results.extend(group_detail)
+
+        # Print verification output for each group
+        print(f"\nGroup ID: {group_id}")
+        for detail in group_detail:
+            print(f"Question ID: {detail['Question ID']}")
+            print(f"  - Predicted Answer: {detail['Predicted Answer']}")
+            print(f"  - Actual Answer: {detail['Actual Answer']}")
+            print(f"  - Correct: {detail['Correct']}")
+        print(f"Group Accuracy: {group_accuracy * 100}%\n")
 
     # Save group-based accuracies
     df_group_accuracies = pd.DataFrame(group_accuracies)
