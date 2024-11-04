@@ -64,11 +64,12 @@ def process_mode(mode):
         question = item['question']
         choice_list = item['choice_list']
         
-        # Find the correct answer based on the question ID from answers_dict
+        # Find the question ID and correct answer index
         question_id = next((qid for qid in answers_dict if qid in item), None)
         
         # Skip if no matching question ID found in answers_dict
         if question_id is None:
+            print(f"No matching question ID found for question: {question}")
             continue
         
         correct_answer_index = answers_dict[question_id]
@@ -101,6 +102,7 @@ def process_mode(mode):
         predicted_answer = choice_list[predicted_index]
         is_correct = predicted_answer == actual_answer
 
+        # Append the result
         all_results.append({
             'Question ID': question_id,
             'Question': question,
@@ -110,9 +112,12 @@ def process_mode(mode):
         })
 
     # Save detailed results to CSV
-    df_results = pd.DataFrame(all_results)
-    df_results.to_csv(f'SP2_test_predictions_{mode}.csv', index=False)
-    print(f"Prediction details for {mode} learning saved to 'SP2_test_predictions_{mode}.csv'.")
+    if all_results:
+        df_results = pd.DataFrame(all_results)
+        df_results.to_csv(f'SP_test_predictions_{mode}.csv', index=False)
+        print(f"Prediction details for {mode} learning saved to 'SP_test_predictions_{mode}.csv'.")
+    else:
+        print("No results to save. Ensure data processing is working correctly.")
 
 # Run the function for zero-shot, one-shot, and three-shot learning
 for mode in ["zero-shot", "one-shot", "three-shot"]:
