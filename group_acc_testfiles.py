@@ -35,26 +35,12 @@ pipe = pipeline(
 # Set parameters
 distance_weight = 0.3
 
-# Helper function to create prompts for different learning types
-examples = [
-    {"question": "A teacher in an orphanage spanked children, and no parents objected. Why?", "answer": "There were no parents in the orphanage."},
-    {"question": "A chef cooks every day at home but doesn't get paid. Why?", "answer": "He's cooking for his family, not as a job."},
-    {"question": "A man walks out of a store with a cart full of items, but no one stops him. Why?", "answer": "He's an employee taking out trash."}
-]
+# Function to create zero-shot prompt
+def create_prompt(question, answer_choices):
+    return f"Question: {question}\nSelect the answer that best fits the question:\n{', '.join(answer_choices)}\nAnswer:"
 
-def create_prompt(mode, target_question, answer_choices):
-    if mode == "zero-shot":
-        return f"Question: {target_question}\nSelect the answer that best fits the question:\n{', '.join(answer_choices)}\nAnswer:"
-    elif mode == "one-shot":
-        example = examples[0]
-        return (f"Example Question: {example['question']}\nExample Answer: {example['answer']}\n\n"
-                f"Question: {target_question}\nSelect the answer that best fits the question:\n{', '.join(answer_choices)}\nAnswer:")
-    elif mode == "three-shot":
-        return ''.join(f"Example Question: {ex['question']}\nExample Answer: {ex['answer']}\n\n" for ex in examples) + \
-               f"Question: {target_question}\nSelect the answer that best fits the question:\n{', '.join(answer_choices)}\nAnswer:"
-
-# Function to process each mode and save results
-def process_mode(mode):
+# Function to process zero-shot mode and save results
+def process_zero_shot():
     all_results = []
     group_accuracies = []
 
@@ -69,8 +55,8 @@ def process_mode(mode):
             actual_answer = question_data['answer']  # Retrieve the correct answer directly
 
             # Create prompt and get prediction
-            prompt = create_prompt(mode, question, choice_list)
-            result = pipe(prompt, max_new_tokens=30)
+            prompt = create_prompt(question, choice_list)
+            result = pipe(prompt, max_new_tokens=50)
             generated_text = result[0]['generated_text'].strip()
 
             # Calculate cosine similarity and Euclidean distance
@@ -115,15 +101,14 @@ def process_mode(mode):
 
     # Save group-based accuracies
     df_group_accuracies = pd.DataFrame(group_accuracies)
-    df_group_accuracies.to_csv(f'WP_test_group_accuracies_{mode}.csv', index=False)
-    print(f"Group-based accuracies for {mode} learning saved to 'WP_test_group_accuracies_{mode}.csv'.")
+    df_group_accuracies.to_csv('WP_test_group_accuracies_zero-shot.csv', index=False)
+    print("Group-based accuracies for zero-shot learning saved to 'WP_test_group_accuracies_zero-shot.csv'.")
 
     # Save detailed results to CSV
     df_results = pd.DataFrame(all_results)
-    df_results.to_csv(f'WP_test_predictions_{mode}.csv', index=False)
-    print(f"Prediction details for {mode} learning saved to 'WP_test_predictions_{mode}.csv'.")
+    df_results.to_csv('WP_test_predictions_zero-shot.csv', index=False)
+    print("Prediction details for zero-shot learning saved to 'WP_test_predictions_zero-shot.csv'.")
 
-# Run the function for zero-shot, one-shot, and three-shot learning
-for mode in ["zero-shot", "one-shot", "three-shot"]:
-    print(f"\nProcessing mode: {mode}")
-    process_mode(mode)
+# Run the function for zero-shot learning
+print("Processing zero-shot mode:")
+process_zero_shot()
