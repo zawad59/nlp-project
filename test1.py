@@ -6,12 +6,12 @@ from transformers import pipeline, AutoTokenizer
 from sklearn.metrics.pairwise import euclidean_distances
 from collections import Counter
 
-# Load the data from WP_test.npy and WP_test_answer.npy
-data = np.load('WP_test.npy', allow_pickle=True)
-answers_data = np.load('WP_test_answer.npy', allow_pickle=True)
+# Load the data from SP_test.npy and SP_test_answer.npy
+data = np.load('SP_test.npy', allow_pickle=True)
+answers_data = np.load('SP_test_answer.npy', allow_pickle=True)
 
-# Create a dictionary to map question IDs to their correct answer index
-answers_dict = {item[0]: int(item[1]) for item in answers_data}  # Map question ID to answer index
+# Create a dictionary for fast lookup of the correct answer index by question ID
+answers_dict = {item[0]: int(item[1]) for item in answers_data}
 
 # Initialize sentence embedding model for similarity checks
 embedder = SentenceTransformer('paraphrase-MiniLM-L12-v2')
@@ -32,7 +32,6 @@ pipe = pipeline(
 # Set parameters
 similarity_threshold = 0.85
 distance_weight = 0.3  # Adjust this weight to tune the influence of Euclidean distance
-batch_size = 5  # Number of groups per time interval
 
 # Predefined examples for one-shot and three-shot prompts
 examples = [
@@ -60,18 +59,20 @@ def create_prompt(mode, target_question, answer_choices):
 def process_mode(mode):
     all_results = []
     
-    for i, item in enumerate(data):
-        # Extract the question ID and correct answer index from answers_data
-        question_id = answers_data[i][0]  # Get ID from WP_test_answer.npy
-        correct_answer_index = answers_dict.get(question_id, None)  # Lookup the correct answer index
-
-        if correct_answer_index is None:
-            print(f"Warning: No answer found for question_id {question_id}")
-            continue  # Skip if no answer is available
-        
+    # Process each question and make predictions
+    for item in data:
         question = item['question']
         choice_list = item['choice_list']
-        actual_answer = choice_list[correct_answer_index]  # Get the correct answer based on the index
+        
+        # Find the correct answer based on the question ID from answers_dict
+        question_id = next((qid for qid in answers_dict if qid in item), None)
+        
+        # Skip if no matching question ID found in answers_dict
+        if question_id is None:
+            continue
+        
+        correct_answer_index = answers_dict[question_id]
+        actual_answer = choice_list[correct_answer_index]
 
         # Create prompt based on learning mode
         prompt = create_prompt(mode, question, choice_list)
@@ -98,23 +99,20 @@ def process_mode(mode):
         # Select the answer with the highest combined score
         predicted_index = int(np.argmax(combined_scores))
         predicted_answer = choice_list[predicted_index]
-        is_correct = predicted_answer == actual_answer  # Check if the prediction matches the actual answer
+        is_correct = predicted_answer == actual_answer
 
         all_results.append({
             'Question ID': question_id,
             'Question': question,
-            'Cosine Similarity': cosine_similarities[predicted_index],
-            'Euclidean Distance': euclidean_distances_normalized[predicted_index],
-            'Combined Score': combined_scores[predicted_index],
             'Predicted Answer': predicted_answer,
             'Actual Answer': actual_answer,
-            'Correct': "True" if is_correct else "False"
+            'Correct': is_correct
         })
 
     # Save detailed results to CSV
     df_results = pd.DataFrame(all_results)
-    df_results.to_csv(f'TestWP_test_predictions_{mode}.csv', index=False)
-    print(f"Prediction details for {mode} learning saved to 'TestWP_test_predictions_{mode}.csv'.")
+    df_results.to_csv(f'SP2_test_predictions_{mode}.csv', index=False)
+    print(f"Prediction details for {mode} learning saved to 'SP2_test_predictions_{mode}.csv'.")
 
 # Run the function for zero-shot, one-shot, and three-shot learning
 for mode in ["zero-shot", "one-shot", "three-shot"]:
