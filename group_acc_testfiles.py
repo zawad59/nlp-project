@@ -6,10 +6,10 @@ from transformers import pipeline, AutoTokenizer
 from sklearn.metrics.pairwise import euclidean_distances
 from collections import defaultdict
 
-# Load the data from SP_test.npy
-data = np.load('SP_test 1.npy', allow_pickle=True)
+# Load the data from WP_test.npy
+data = np.load('WP_test.npy', allow_pickle=True)
 
-# Group similar questions by their base ID (e.g., "SP-208")
+# Group questions by common base ID
 groups = defaultdict(list)
 for item in data:
     question_id = item['id']
@@ -63,9 +63,10 @@ def process_mode(mode):
         group_predictions = []
         
         for question_data in question_data_list:
+            question_id = question_data['id']
             question = question_data['question']
             choice_list = question_data['choice_list']
-            actual_answer = question_data['answer']
+            actual_answer = question_data['answer']  # Retrieve the correct answer directly
 
             # Create prompt and get prediction
             prompt = create_prompt(mode, question, choice_list)
@@ -92,7 +93,7 @@ def process_mode(mode):
             group_predictions.append(is_correct)
             all_results.append({
                 'Group ID': group_id,
-                'Question ID': question_data['id'],
+                'Question ID': question_id,
                 'Question': question,
                 'Predicted Answer': predicted_answer,
                 'Actual Answer': actual_answer,
@@ -114,13 +115,13 @@ def process_mode(mode):
 
     # Save group-based accuracies
     df_group_accuracies = pd.DataFrame(group_accuracies)
-    df_group_accuracies.to_csv(f'SP_test_group_accuracies_{mode}.csv', index=False)
-    print(f"Group-based accuracies for {mode} learning saved to 'SP_test_group_accuracies_{mode}.csv'.")
+    df_group_accuracies.to_csv(f'WP_test_group_accuracies_{mode}.csv', index=False)
+    print(f"Group-based accuracies for {mode} learning saved to 'WP_test_group_accuracies_{mode}.csv'.")
 
     # Save detailed results to CSV
     df_results = pd.DataFrame(all_results)
-    df_results.to_csv(f'SP_test_predictions_{mode}.csv', index=False)
-    print(f"Prediction details for {mode} learning saved to 'SP_test_predictions_{mode}.csv'.")
+    df_results.to_csv(f'WP_test_predictions_{mode}.csv', index=False)
+    print(f"Prediction details for {mode} learning saved to 'WP_test_predictions_{mode}.csv'.")
 
 # Run the function for zero-shot, one-shot, and three-shot learning
 for mode in ["zero-shot", "one-shot", "three-shot"]:
