@@ -5,11 +5,11 @@ from transformers import pipeline, AutoTokenizer
 from sentence_transformers import SentenceTransformer, util
 from sklearn.metrics import accuracy_score, f1_score
 
-# Load training and test data
-train_data = np.load('SP_train 1.npy', allow_pickle=True)
-test_data = np.load('SP_test 1.npy', allow_pickle=True)
+# Load training and test data for WP dataset
+train_data = np.load('WP_train.npy', allow_pickle=True)
+test_data = np.load('WP_test.npy', allow_pickle=True)
 
-# Prepare test data
+# Prepare test data for WP
 test_texts = []
 test_labels = []
 test_ids = []
@@ -113,5 +113,5 @@ for mode in modes:
         'Predicted Label': predicted_labels,
         'Explanation': explanations
     })
-    df_predictions.to_csv(f'SP_test_predictions_{mode}_with_explanations.csv', index=False)
-    print(f"Predicted labels with explanations for {mode} saved to SP_test_predictions_{mode}_with_explanations.csv.")
+    df_predictions.to_csv(f'WP_test_predictions_{mode}_with_explanations.csv', index=False)
+    print(f"Predicted labels with explanations for {mode} saved to WP_test_predictions_{mode}_with_explanations.csv.")
