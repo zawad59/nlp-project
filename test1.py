@@ -4,12 +4,14 @@ import torch
 from sentence_transformers import SentenceTransformer, util
 from transformers import pipeline, AutoTokenizer
 from sklearn.metrics.pairwise import euclidean_distances
+from collections import Counter
 
 # Load the data from SP_test.npy and SP_test_answer.npy
 data = np.load('SP_test.npy', allow_pickle=True)
 answers_data = np.load('SP_test_answer.npy', allow_pickle=True)
 
-# Extract correct answer indices
+# Create a dictionary to store the question ID and correct answer index in the order they appear
+question_ids = [item[0] for item in answers_data]
 correct_answer_indices = [int(item[1]) for item in answers_data]
 
 # Initialize sentence embedding model for similarity checks
@@ -62,7 +64,8 @@ def process_mode(mode):
         question = item['question']
         choice_list = item['choice_list']
         
-        # Retrieve the correct answer based on index from SP_test_answer.npy
+        # Use the index to get the correct question ID and answer index
+        question_id = question_ids[idx]
         correct_answer_index = correct_answer_indices[idx]
         actual_answer = choice_list[correct_answer_index]
 
@@ -93,19 +96,25 @@ def process_mode(mode):
         predicted_answer = choice_list[predicted_index]
         is_correct = predicted_answer == actual_answer
 
+        # Explanation of prediction
+        explanation = (f"The predicted answer was chosen due to the highest cosine similarity of "
+                       f"{cosine_similarities[predicted_index]:.4f} with the generated text embedding.")
+
         # Append the result
         all_results.append({
+            'Question ID': question_id,
             'Question': question,
             'Predicted Answer': predicted_answer,
             'Actual Answer': actual_answer,
-            'Correct': is_correct
+            'Correct': is_correct,
+            'Explanation of Prediction': explanation
         })
 
     # Save detailed results to CSV
     if all_results:
         df_results = pd.DataFrame(all_results)
-        df_results.to_csv(f'SP100_test_predictions_{mode}.csv', index=False)
-        print(f"Prediction details for {mode} learning saved to 'SP100_test_predictions_{mode}.csv'.")
+        df_results.to_csv(f'SPexp_test_predictions_{mode}.csv', index=False)
+        print(f"Prediction details for {mode} learning saved to 'SPexp_test_predictions_{mode}.csv'.")
     else:
         print("No results to save. Ensure data processing is working correctly.")
 
