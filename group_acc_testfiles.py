@@ -7,7 +7,7 @@ from sklearn.metrics.pairwise import euclidean_distances
 from collections import defaultdict
 
 # Load the data from SP_test.npy
-data = np.load('SP_test.npy', allow_pickle=True)
+data = np.load('SP_test 1.npy', allow_pickle=True)
 
 # Group similar questions by their base ID (e.g., "SP-208")
 groups = defaultdict(list)
