@@ -6,17 +6,15 @@ from transformers import pipeline, AutoTokenizer
 from sklearn.metrics.pairwise import euclidean_distances
 from collections import defaultdict
 
-# Load the data from SP_test.npy and SP_test_answer.npy
+# Load the data from SP_test.npy
 data = np.load('SP_test.npy', allow_pickle=True)
-answers_data = np.load('SP_test_answer.npy', allow_pickle=True)
 
-# Map question IDs to correct answer indices and group similar questions
-answers_dict = {item[0]: int(item[1]) for item in answers_data}
+# Group similar questions by their base ID (e.g., "SP-208")
 groups = defaultdict(list)
-for item in answers_data:
-    question_id = item[0]
-    prefix = question_id.split('_')[0]  # Group by common prefix (e.g., "SP-4")
-    groups[prefix].append(question_id)
+for item in data:
+    question_id = item['id']
+    base_id = question_id.split('_')[0]  # Group by base ID (e.g., "SP-208")
+    groups[base_id].append(item)
 
 # Initialize sentence embedding model for similarity checks
 embedder = SentenceTransformer('paraphrase-MiniLM-L12-v2')
@@ -61,17 +59,14 @@ def process_mode(mode):
     group_accuracies = []
 
     # Iterate through each group of questions
-    for group_id, question_ids in groups.items():
+    for group_id, question_data_list in groups.items():
         group_predictions = []
         
-        for i, qid in enumerate(question_ids):
-            # Get corresponding question and choices from SP_test.npy using the index
-            question_data = data[i]
+        for question_data in question_data_list:
             question = question_data['question']
             choice_list = question_data['choice_list']
-            correct_answer_index = answers_dict[qid]
-            actual_answer = choice_list[correct_answer_index]
-            
+            actual_answer = question_data['answer']
+
             # Create prompt and get prediction
             prompt = create_prompt(mode, question, choice_list)
             result = pipe(prompt, max_new_tokens=30)
@@ -97,7 +92,7 @@ def process_mode(mode):
             group_predictions.append(is_correct)
             all_results.append({
                 'Group ID': group_id,
-                'Question ID': qid,
+                'Question ID': question_data['id'],
                 'Question': question,
                 'Predicted Answer': predicted_answer,
                 'Actual Answer': actual_answer,
@@ -108,7 +103,10 @@ def process_mode(mode):
             })
         
         # Calculate group accuracy: 1 if all answers in the group are correct, else 0
-        group_accuracy = 1 if all(group_predictions) else 0
+        if len(group_predictions) == 3 and all(group_predictions):
+            group_accuracy = 1
+        else:
+            group_accuracy = 0
         group_accuracies.append({
             'Group ID': group_id,
             'Group Accuracy (%)': group_accuracy * 100
@@ -116,13 +114,13 @@ def process_mode(mode):
 
     # Save group-based accuracies
     df_group_accuracies = pd.DataFrame(group_accuracies)
-    df_group_accuracies.to_csv(f'SP22_test_group_accuracies_{mode}.csv', index=False)
-    print(f"Group-based accuracies for {mode} learning saved to 'SP22_test_group_accuracies_{mode}.csv'.")
+    df_group_accuracies.to_csv(f'SP_test_group_accuracies_{mode}.csv', index=False)
+    print(f"Group-based accuracies for {mode} learning saved to 'SP_test_group_accuracies_{mode}.csv'.")
 
     # Save detailed results to CSV
     df_results = pd.DataFrame(all_results)
-    df_results.to_csv(f'SP22_test_predictions_{mode}.csv', index=False)
-    print(f"Prediction details for {mode} learning saved to 'SP22_test_predictions_{mode}.csv'.")
+    df_results.to_csv(f'SP_test_predictions_{mode}.csv', index=False)
+    print(f"Prediction details for {mode} learning saved to 'SP_test_predictions_{mode}.csv'.")
 
 # Run the function for zero-shot, one-shot, and three-shot learning
 for mode in ["zero-shot", "one-shot", "three-shot"]:
