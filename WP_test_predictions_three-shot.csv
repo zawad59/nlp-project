@@ -1,0 +1,97 @@
+Group ID,Question ID,Question,Predicted Answer,Actual Answer,Correct,Cosine Similarity,Euclidean Distance,Combined Score
+WP-140,WP-140,What kind of stock doesn't have shares?,Small-cap stock.,Livestock.,False,0.3647351,0.8209524,0.11844936
+WP-140,WP-140_CR,What do you call a toothless bear?,A gummy bear.,A brown bear.,False,0.28481603,0.93032473,0.005718589
+WP-140,WP-140_SR,Where will a computer technician keep all his key?,A keyboard.,A mouse.,False,0.22909355,0.92081505,-0.04715097
+WP-87,WP-87_SR,What kind of stock doesn't have shares?,Small-cap stock.,Growth stock.,False,0.39308685,0.80510104,0.15155654
+WP-87,WP-87,What do you call a toothless bear?,A gummy bear.,A polar bear.,False,0.2744192,0.94150746,-0.008033067
+WP-87,WP-87_CR,Where will a computer technician keep all his key?,None of above.,A mouse.,False,0.09920594,0.82761973,-0.14908
+WP-62,WP-62_CR,What kind of stock doesn't have shares?,Small-cap stock.,Growth stock.,False,0.37955493,0.81081945,0.13630909
+WP-62,WP-62_SR,What do you call a toothless bear?,A gummy bear.,A polar bear.,False,0.28481603,0.93032473,0.005718589
+WP-62,WP-62,Where will a computer technician keep all his key?,A keyboard.,A keyboard.,True,0.22127938,0.92149764,-0.05516991
+WP-88,WP-88_SR,What kind of stock doesn't have shares?,Small-cap stock.,Livestock.,False,0.4179111,0.8031782,0.17695765
+WP-88,WP-88_CR,What do you call a toothless bear?,A gummy bear.,A brown bear.,False,0.28481603,0.93032473,0.005718589
+WP-88,WP-88,Where will a computer technician keep all his key?,None of above.,A mouse.,False,0.09920594,0.82761973,-0.14908
+WP-125,WP-125,What kind of stock doesn't have shares?,Small-cap stock.,Small-cap stock.,True,0.37270778,0.8145153,0.1283532
+WP-125,WP-125_CR,What do you call a toothless bear?,A gummy bear.,A polar bear.,False,0.28481603,0.93032473,0.005718589
+WP-125,WP-125_SR,Where will a computer technician keep all his key?,A keyboard.,A keyboard.,True,0.22909355,0.92081505,-0.04715097
+WP-137,WP-137_CR,What kind of stock doesn't have shares?,Small-cap stock.,Small-cap stock.,True,0.3647351,0.8209524,0.11844936
+WP-137,WP-137,What do you call a toothless bear?,A gummy bear.,A brown bear.,False,0.28481603,0.93032473,0.005718589
+WP-137,WP-137_SR,Where will a computer technician keep all his key?,A keyboard.,A monitor.,False,0.22127938,0.92149764,-0.05516991
+WP-157,WP-157,What kind of stock doesn't have shares?,Small-cap stock.,Livestock.,False,0.39488444,0.8490091,0.14018169
+WP-157,WP-157_CR,What do you call a toothless bear?,A gummy bear.,A brown bear.,False,0.28481603,0.93032473,0.005718589
+WP-157,WP-157_SR,Where will a computer technician keep all his key?,A keyboard.,A monitor.,False,0.30614,0.89631546,0.037245363
+WP-127,WP-127_CR,What kind of stock doesn't have shares?,Small-cap stock.,Growth stock.,False,0.39704022,0.8200847,0.1510148
+WP-127,WP-127_SR,What do you call a toothless bear?,A gummy bear.,A gummy bear.,True,0.28481603,0.93032473,0.005718589
+WP-127,WP-127,Where will a computer technician keep all his key?,A keyboard.,A mouse.,False,0.23271495,0.9280051,-0.045686603
+WP-134,WP-134,What kind of stock doesn't have shares?,Small-cap stock.,Livestock.,False,0.37270778,0.8145153,0.1283532
+WP-134,WP-134_CR,What do you call a toothless bear?,A gummy bear.,A brown bear.,False,0.28481603,0.93032473,0.005718589
+WP-134,WP-134_SR,Where will a computer technician keep all his key?,A keyboard.,A keyboard.,True,0.23535071,0.9259425,-0.042432055
+WP-98,WP-98_SR,What kind of stock doesn't have shares?,Small-cap stock.,Growth stock.,False,0.3647351,0.8209524,0.11844936
+WP-98,WP-98,What do you call a toothless bear?,A gummy bear.,A polar bear.,False,0.28481603,0.93032473,0.005718589
+WP-98,WP-98_CR,Where will a computer technician keep all his key?,A keyboard.,A mouse.,False,0.22909355,0.92081505,-0.04715097
+WP-30,WP-30,What kind of stock doesn't have shares?,Small-cap stock.,Small-cap stock.,True,0.3647351,0.8209524,0.11844936
+WP-30,WP-30_CR,What do you call a toothless bear?,A gummy bear.,A polar bear.,False,0.2744192,0.94150746,-0.008033067
+WP-30,WP-30_SR,Where will a computer technician keep all his key?,A keyboard.,A mouse.,False,0.2073254,0.9263443,-0.07057789
+WP-86,WP-86_SR,What kind of stock doesn't have shares?,Small-cap stock.,Growth stock.,False,0.35540277,0.8615341,0.096942514
+WP-86,WP-86,What do you call a toothless bear?,A gummy bear.,A gummy bear.,True,0.28481603,0.93032473,0.005718589
+WP-86,WP-86_CR,Where will a computer technician keep all his key?,A keyboard.,A mouse.,False,0.23413283,0.919464,-0.041706383
+WP-43,WP-43,What kind of stock doesn't have shares?,Small-cap stock.,Growth stock.,False,0.39704022,0.8200847,0.1510148
+WP-43,WP-43_CR,What do you call a toothless bear?,A gummy bear.,A brown bear.,False,0.28481603,0.93032473,0.005718589
+WP-43,WP-43_SR,Where will a computer technician keep all his key?,A keyboard.,A monitor.,False,0.29075617,0.9275576,0.012488872
+WP-15,WP-15,What kind of stock doesn't have shares?,Small-cap stock.,Livestock.,False,0.3647351,0.8209524,0.11844936
+WP-15,WP-15_SR,What do you call a toothless bear?,A gummy bear.,A brown bear.,False,0.28481603,0.93032473,0.005718589
+WP-15,WP-15_CR,Where will a computer technician keep all his key?,A keyboard.,A monitor.,False,0.15949008,0.9188751,-0.11617246
+WP-59,WP-59,What kind of stock doesn't have shares?,Small-cap stock.,Small-cap stock.,True,0.36936867,0.8172357,0.124197945
+WP-59,WP-59_SR,What do you call a toothless bear?,A gummy bear.,A polar bear.,False,0.28481603,0.93032473,0.005718589
+WP-59,WP-59_CR,Where will a computer technician keep all his key?,A keyboard.,A keyboard.,True,0.30614,0.89631546,0.037245363
+WP-96,WP-96,What kind of stock doesn't have shares?,Small-cap stock.,Small-cap stock.,True,0.4179111,0.8031782,0.17695765
+WP-96,WP-96_SR,What do you call a toothless bear?,A gummy bear.,A brown bear.,False,0.28481603,0.93032473,0.005718589
+WP-96,WP-96_CR,Where will a computer technician keep all his key?,A keyboard.,A monitor.,False,0.22909355,0.92081505,-0.04715097
+WP-26,WP-26_SR,What kind of stock doesn't have shares?,Small-cap stock.,Livestock.,False,0.38053805,0.81298935,0.13664123
+WP-26,WP-26_CR,What do you call a toothless bear?,A gummy bear.,A brown bear.,False,0.28481603,0.93032473,0.005718589
+WP-26,WP-26,Where will a computer technician keep all his key?,A keyboard.,A monitor.,False,0.22909355,0.92081505,-0.04715097
+WP-97,WP-97,What kind of stock doesn't have shares?,Small-cap stock.,Growth stock.,False,0.42038912,0.8015475,0.17992485
+WP-97,WP-97_SR,What do you call a toothless bear?,A gummy bear.,A polar bear.,False,0.28481603,0.93032473,0.005718589
+WP-97,WP-97_CR,Where will a computer technician keep all his key?,A keyboard.,A monitor.,False,0.22909355,0.92081505,-0.04715097
+WP-79,WP-79_CR,What kind of stock doesn't have shares?,Small-cap stock.,Livestock.,False,0.3758445,0.8184632,0.13030554
+WP-79,WP-79,What do you call a toothless bear?,A gummy bear.,A brown bear.,False,0.28481603,0.93032473,0.005718589
+WP-79,WP-79_SR,Where will a computer technician keep all his key?,A keyboard.,A monitor.,False,0.23413283,0.919464,-0.041706383
+WP-124,WP-124_SR,What kind of stock doesn't have shares?,Small-cap stock.,Livestock.,False,0.39488444,0.8490091,0.14018169
+WP-124,WP-124,What do you call a toothless bear?,A gummy bear.,A brown bear.,False,0.28481603,0.93032473,0.005718589
+WP-124,WP-124_CR,Where will a computer technician keep all his key?,A keyboard.,A mouse.,False,0.21597162,0.9208167,-0.06027341
+WP-122,WP-122_CR,What kind of stock doesn't have shares?,Small-cap stock.,Small-cap stock.,True,0.35540277,0.8615341,0.096942514
+WP-122,WP-122_SR,What do you call a toothless bear?,A gummy bear.,A gummy bear.,True,0.28481603,0.93032473,0.005718589
+WP-122,WP-122,Where will a computer technician keep all his key?,A keyboard.,A keyboard.,True,0.22909355,0.92081505,-0.04715097
+WP-130,WP-130,What kind of stock doesn't have shares?,Small-cap stock.,Livestock.,False,0.37274215,0.8076347,0.13045172
+WP-130,WP-130_SR,What do you call a toothless bear?,A gummy bear.,A gummy bear.,True,0.28481603,0.93032473,0.005718589
+WP-130,WP-130_CR,Where will a computer technician keep all his key?,A keyboard.,A keyboard.,True,0.22127938,0.92149764,-0.05516991
+WP-37,WP-37_CR,What kind of stock doesn't have shares?,Small-cap stock.,Livestock.,False,0.36676684,0.8224708,0.12002559
+WP-37,WP-37,What do you call a toothless bear?,A gummy bear.,A brown bear.,False,0.2744192,0.94150746,-0.008033067
+WP-37,WP-37_SR,Where will a computer technician keep all his key?,A keyboard.,A mouse.,False,0.23271495,0.9280051,-0.045686603
+WP-19,WP-19_CR,What kind of stock doesn't have shares?,Small-cap stock.,Livestock.,False,0.3647351,0.8209524,0.11844936
+WP-19,WP-19,What do you call a toothless bear?,A gummy bear.,A brown bear.,False,0.28481603,0.93032473,0.005718589
+WP-19,WP-19_SR,Where will a computer technician keep all his key?,A keyboard.,A keyboard.,True,0.22790161,0.9207046,-0.048309773
+WP-32,WP-32_CR,What kind of stock doesn't have shares?,Small-cap stock.,Small-cap stock.,True,0.42038912,0.8015475,0.17992485
+WP-32,WP-32_SR,What do you call a toothless bear?,A gummy bear.,A brown bear.,False,0.28481603,0.93032473,0.005718589
+WP-32,WP-32,Where will a computer technician keep all his key?,A keyboard.,A mouse.,False,0.22909355,0.92081505,-0.04715097
+WP-71,WP-71_CR,What kind of stock doesn't have shares?,Small-cap stock.,Livestock.,False,0.39704022,0.8200847,0.1510148
+WP-71,WP-71_SR,What do you call a toothless bear?,A gummy bear.,A gummy bear.,True,0.28481603,0.93032473,0.005718589
+WP-71,WP-71,Where will a computer technician keep all his key?,A keyboard.,A monitor.,False,0.22127938,0.92149764,-0.05516991
+WP-60,WP-60,What kind of stock doesn't have shares?,Small-cap stock.,Growth stock.,False,0.42038912,0.8015475,0.17992485
+WP-60,WP-60_CR,What do you call a toothless bear?,A gummy bear.,A polar bear.,False,0.2744192,0.94150746,-0.008033067
+WP-60,WP-60_SR,Where will a computer technician keep all his key?,A keyboard.,A monitor.,False,0.22127938,0.92149764,-0.05516991
+WP-36,WP-36_CR,What kind of stock doesn't have shares?,Small-cap stock.,Small-cap stock.,True,0.36676684,0.8224708,0.12002559
+WP-36,WP-36,What do you call a toothless bear?,A gummy bear.,A gummy bear.,True,0.28481603,0.93032473,0.005718589
+WP-36,WP-36_SR,Where will a computer technician keep all his key?,A keyboard.,A mouse.,False,0.21597162,0.9208167,-0.06027341
+WP-3,WP-3_SR,What kind of stock doesn't have shares?,Small-cap stock.,Livestock.,False,0.38119602,0.81355876,0.13712838
+WP-3,WP-3,What do you call a toothless bear?,A gummy bear.,A polar bear.,False,0.28481603,0.93032473,0.005718589
+WP-3,WP-3_CR,Where will a computer technician keep all his key?,A keyboard.,A keyboard.,True,0.29553777,0.92644274,0.017604947
+WP-101,WP-101_CR,What kind of stock doesn't have shares?,Small-cap stock.,Growth stock.,False,0.35540277,0.8615341,0.096942514
+WP-101,WP-101_SR,What do you call a toothless bear?,A gummy bear.,A polar bear.,False,0.2744192,0.94150746,-0.008033067
+WP-101,WP-101,Where will a computer technician keep all his key?,A keyboard.,A mouse.,False,0.13276073,0.94296944,-0.15013012
+WP-56,WP-56,What kind of stock doesn't have shares?,Small-cap stock.,Growth stock.,False,0.35540277,0.8615341,0.096942514
+WP-56,WP-56_SR,What do you call a toothless bear?,A gummy bear.,A brown bear.,False,0.28481603,0.93032473,0.005718589
+WP-56,WP-56_CR,Where will a computer technician keep all his key?,A keyboard.,A mouse.,False,0.22909355,0.92081505,-0.04715097
+WP-153,WP-153_SR,What kind of stock doesn't have shares?,Small-cap stock.,Livestock.,False,0.39704022,0.8200847,0.1510148
+WP-153,WP-153_CR,What do you call a toothless bear?,A gummy bear.,A brown bear.,False,0.2744192,0.94150746,-0.008033067
+WP-153,WP-153,Where will a computer technician keep all his key?,A keyboard.,A mouse.,False,0.22909355,0.92081505,-0.04715097
