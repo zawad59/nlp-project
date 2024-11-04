@@ -4,14 +4,13 @@ import torch
 from sentence_transformers import SentenceTransformer, util
 from transformers import pipeline, AutoTokenizer
 from sklearn.metrics.pairwise import euclidean_distances
-from collections import Counter
 
 # Load the data from SP_test.npy and SP_test_answer.npy
 data = np.load('SP_test.npy', allow_pickle=True)
 answers_data = np.load('SP_test_answer.npy', allow_pickle=True)
 
-# Create a dictionary for fast lookup of the correct answer index by question ID
-answers_dict = {item[0]: int(item[1]) for item in answers_data}
+# Extract correct answer indices
+correct_answer_indices = [int(item[1]) for item in answers_data]
 
 # Initialize sentence embedding model for similarity checks
 embedder = SentenceTransformer('paraphrase-MiniLM-L12-v2')
@@ -30,7 +29,6 @@ pipe = pipeline(
 )
 
 # Set parameters
-similarity_threshold = 0.85
 distance_weight = 0.3  # Adjust this weight to tune the influence of Euclidean distance
 
 # Predefined examples for one-shot and three-shot prompts
@@ -60,19 +58,12 @@ def process_mode(mode):
     all_results = []
     
     # Process each question and make predictions
-    for item in data:
+    for idx, item in enumerate(data):
         question = item['question']
         choice_list = item['choice_list']
         
-        # Find the question ID and correct answer index
-        question_id = next((qid for qid in answers_dict if qid in item), None)
-        
-        # Skip if no matching question ID found in answers_dict
-        if question_id is None:
-            print(f"No matching question ID found for question: {question}")
-            continue
-        
-        correct_answer_index = answers_dict[question_id]
+        # Retrieve the correct answer based on index from SP_test_answer.npy
+        correct_answer_index = correct_answer_indices[idx]
         actual_answer = choice_list[correct_answer_index]
 
         # Create prompt based on learning mode
@@ -104,7 +95,6 @@ def process_mode(mode):
 
         # Append the result
         all_results.append({
-            'Question ID': question_id,
             'Question': question,
             'Predicted Answer': predicted_answer,
             'Actual Answer': actual_answer,
@@ -114,8 +104,8 @@ def process_mode(mode):
     # Save detailed results to CSV
     if all_results:
         df_results = pd.DataFrame(all_results)
-        df_results.to_csv(f'SP_test_predictions_{mode}.csv', index=False)
-        print(f"Prediction details for {mode} learning saved to 'SP_test_predictions_{mode}.csv'.")
+        df_results.to_csv(f'SP100_test_predictions_{mode}.csv', index=False)
+        print(f"Prediction details for {mode} learning saved to 'SP100_test_predictions_{mode}.csv'.")
     else:
         print("No results to save. Ensure data processing is working correctly.")
 
