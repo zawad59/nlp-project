@@ -6,7 +6,7 @@ from transformers import pipeline, AutoTokenizer
 from sklearn.metrics.pairwise import euclidean_distances
 from collections import Counter
 
-# Load the data from SP_test.npy and SP_test_answer.npy
+# Load the data from WP_test.npy and WP_test_answer.npy
 data = np.load('WP_test.npy', allow_pickle=True)
 answers_data = np.load('WP_test_answer.npy', allow_pickle=True)
 
@@ -72,8 +72,13 @@ def process_mode(mode):
         for item in interval_data:
             question = item['question']
             choice_list = item['choice_list']
-            question_id = list(answers_dict.keys())[start]  # Assuming order matches
-            correct_answer_index = answers_dict[question_id]
+            question_id = item['id']  # Directly access 'id' from each item
+            
+            # Retrieve the correct answer index from answers_dict
+            correct_answer_index = answers_dict.get(question_id)
+            if correct_answer_index is None:
+                print(f"Warning: No answer found for question ID {question_id}")
+                continue
             actual_answer = choice_list[correct_answer_index]
 
             # Create prompt based on learning mode
@@ -105,6 +110,7 @@ def process_mode(mode):
 
             interval_results.append({
                 'Interval': start // batch_size + 1,
+                'Question ID': question_id,
                 'Question': question,
                 'Cosine Similarity': cosine_similarities[predicted_index],
                 'Euclidean Distance': euclidean_distances_normalized[predicted_index],
@@ -125,13 +131,13 @@ def process_mode(mode):
 
     # Save interval accuracies to CSV
     df_interval_accuracies = pd.DataFrame(interval_accuracies)
-    df_interval_accuracies.to_csv(f'WP_interval_accuracies_{mode}.csv', index=False)
-    print(f"Interval accuracies for {mode} learning saved to 'WP_interval_accuracies_{mode}.csv'.")
+    df_interval_accuracies.to_csv(f'WP1_interval_accuracies_{mode}.csv', index=False)
+    print(f"Interval accuracies for {mode} learning saved to 'WP1_interval_accuracies_{mode}.csv'.")
 
     # Save detailed results to CSV
     df_results = pd.DataFrame(all_results)
-    df_results.to_csv(f'WP_interval_predictions_{mode}.csv', index=False)
-    print(f"Prediction details with intervals for {mode} learning saved to 'WP_interval_predictions_{mode}.csv'.")
+    df_results.to_csv(f'WP1_interval_predictions_{mode}.csv', index=False)
+    print(f"Prediction details with intervals for {mode} learning saved to 'WP1_interval_predictions_{mode}.csv'.")
 
 # Run the function for zero-shot, one-shot, and three-shot learning
 for mode in ["zero-shot", "one-shot", "three-shot"]:
