@@ -6,13 +6,14 @@ from sentence_transformers import SentenceTransformer, util
 from sklearn.metrics import accuracy_score, f1_score
 
 # Load training and test data for WP dataset
-train_data = np.load('WP_train 1.npy', allow_pickle=True)
-test_data = np.load('WP_test 1.npy', allow_pickle=True)
+train_data = np.load('WP_train.npy', allow_pickle=True)
+test_data = np.load('WP_test.npy', allow_pickle=True)
 
 # Prepare test data for WP
 test_texts = []
 test_labels = []
 test_ids = []
+actual_answers = []
 for item in test_data:
     question = item['question']
     choice_list = item['choice_list']
@@ -20,6 +21,7 @@ for item in test_data:
     test_texts.append(context)
     test_labels.append(item['label'])  # Using the label directly as correct answer index
     test_ids.append(item['id'])  # ID for each question
+    actual_answers.append(choice_list[item['label']])  # Store the actual answer string
 
 # Initialize SentenceTransformer for similarity calculations
 embedder = SentenceTransformer('paraphrase-MiniLM-L12-v2')
@@ -41,14 +43,12 @@ pipe = pipeline(
     device_map="auto"
 )
 
-# Predefined examples for one-shot and three-shot prompts
+# Predefined example for one-shot prompt
 examples = [
-    {"question": "A teacher in an orphanage spanked children, and no parents objected. Why?", "answer": "There were no parents in the orphanage."},
-    {"question": "A chef cooks every day at home but doesn't get paid. Why?", "answer": "He's cooking for his family, not as a job."},
-    {"question": "A man walks out of a store with a cart full of items, but no one stops him. Why?", "answer": "He's an employee taking out trash."}
+    {"question": "A teacher in an orphanage spanked children, and no parents objected. Why?", "answer": "There were no parents in the orphanage."}
 ]
 
-# Function to create prompts for zero-shot, one-shot, and three-shot learning
+# Function to create prompts for zero-shot and one-shot learning
 def create_prompt(mode, question, choices):
     if mode == "zero-shot":
         prompt = f"Question: {question}\nSelect the answer that best fits the question:\n{', '.join(choices)}\nAnswer:"
@@ -56,17 +56,13 @@ def create_prompt(mode, question, choices):
         example = examples[0]
         prompt = (f"Example Question: {example['question']}\nExample Answer: {example['answer']}\n\n"
                   f"Question: {question}\nSelect the answer that best fits the question:\n{', '.join(choices)}\nAnswer:")
-    elif mode == "three-shot":
-        prompt = ""
-        for example in examples:
-            prompt += f"Example Question: {example['question']}\nExample Answer: {example['answer']}\n\n"
-        prompt += f"Question: {question}\nSelect the answer that best fits the question:\n{', '.join(choices)}\nAnswer:"
     return prompt
 
 # Function to generate predictions, calculate cosine similarity, and provide explanations
-def generate_predictions_and_evaluate(texts, true_indices, mode):
-    predicted_labels = []
+def generate_predictions_and_evaluate(texts, true_indices, true_answers, mode):
+    predicted_answers = []
     explanations = []
+    match_results = []
 
     for i, context in enumerate(texts):
         question_part = context.split(" Choices: ")[0]
@@ -86,31 +82,37 @@ def generate_predictions_and_evaluate(texts, true_indices, mode):
         # Calculate cosine similarities for each choice
         cosine_similarities = util.cos_sim(generated_embedding, choice_embeddings).cpu().numpy().flatten()
         predicted_index = int(np.argmax(cosine_similarities))  # Select the choice with the highest similarity
-        predicted_labels.append(predicted_index)
+        predicted_answer = choices[predicted_index]
+        predicted_answers.append(predicted_answer)
         
+        # Check if the prediction matches the actual answer
+        is_match = predicted_answer == true_answers[i]
+        match_results.append(is_match)
+
         # Explanation based on similarity
-        explanation = f"The predicted answer '{choices[predicted_index]}' was selected due to the highest cosine similarity of {cosine_similarities[predicted_index]:.4f} with the generated response."
+        explanation = f"The predicted answer '{predicted_answer}' was selected due to the highest cosine similarity of {cosine_similarities[predicted_index]:.4f} with the generated response."
         explanations.append(explanation)
 
     # Calculate accuracy and F1 score
-    accuracy = accuracy_score(true_indices, predicted_labels)
-    f1 = f1_score(true_indices, predicted_labels, average='weighted')
+    accuracy = accuracy_score([a == b for a, b in zip(predicted_answers, true_answers)], match_results)
+    f1 = f1_score([a == b for a, b in zip(predicted_answers, true_answers)], match_results, average='weighted')
     print(f"Mode: {mode} | Accuracy: {accuracy} | F1 Score: {f1}")
 
-    return predicted_labels, explanations
+    return predicted_answers, explanations, match_results
 
 # Run for each mode
-modes = ["zero-shot", "one-shot", "three-shot"]
+modes = ["zero-shot", "one-shot"]
 for mode in modes:
     print(f"\nProcessing mode: {mode}")
-    predicted_labels, explanations = generate_predictions_and_evaluate(test_texts, test_labels, mode)
+    predicted_answers, explanations, match_results = generate_predictions_and_evaluate(test_texts, test_labels, actual_answers, mode)
     
     # Save predictions to CSV with explanations
     df_predictions = pd.DataFrame({
         'Question ID': test_ids,
         'Question': test_texts,
-        'True Label': test_labels,
-        'Predicted Label': predicted_labels,
+        'True Answer': actual_answers,
+        'Predicted Answer': predicted_answers,
+        'Match': match_results,
         'Explanation': explanations
     })
     df_predictions.to_csv(f'WP_test_predictions_{mode}_with_explanations.csv', index=False)
