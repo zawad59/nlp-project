@@ -1,0 +1,97 @@
+Interval,Question,Question ID,Cosine Similarity,Euclidean Distance,Combined Score,Predicted Answer,Actual Answer,Correct
+1,What kind of stock doesn't have shares?,WP-140,0.37477368,0.81358093,0.1306994,Small-cap stock.,Livestock.,False
+1,What do you call a toothless bear?,WP-87_SR,0.28481603,0.93032473,0.005718589,A gummy bear.,A gummy bear.,True
+1,Where will a computer technician keep all his key?,WP-62_CR,0.21860006,0.9202958,-0.05748868,A keyboard.,A keyboard.,True
+1,What do you call a bear with no teeth?,WP-87,0.2743203,0.9405817,-0.007854223,A gummy bear.,A gummy bear.,True
+1,What was the result of the tiny lobster's math test?,WP-88_SR,0.14764759,0.93597287,-0.13314429,None of above.,Sea-plus.,False
+2,What tree can you carry in your hand?,WP-125,0.13405503,0.8052839,-0.10753015,None of above.,Palm.,False
+2,What chain is having trouble in connecting?,WP-137_CR,0.46332943,0.9004974,0.1931802,Blockchain.,Blockchain.,True
+2,What kind of shot didn't hurt?,WP-157,0.2680264,0.8222699,0.021345422,A fireshot.,A screenshot.,False
+2,What kind of birds always make noise?,WP-87_CR,0.23409529,1.0,-0.06590472,Owl.,Humming bird.,False
+2,What type of  table doesn't have chairs?,WP-127_CR,0.24258852,0.9394522,-0.039247155,A dining table.,A water table.,False
+3,What type of chase never involves running?,WP-134,0.385419,0.92180413,0.10887775,Risky chase.,Paperchase.,False
+3,What is the most difficult key to turn?,WP-98_SR,0.31974658,0.961234,0.03137639,A donkey.,A donkey.,True
+3,What clothing does a house wear?,WP-30,0.15785903,0.8753186,-0.10473657,None of above.,Address.,False
+3,What species of geese engages in snake-fighting?,WP-86_SR,0.25190544,0.9656722,-0.03779623,Canada goose.,Mongoose.,False
+3,What is the capital in Washington?,WP-43,0.22945416,0.94277734,-0.05337906,The letter T.,The letter W.,False
+4,"How do you make ""one"" disappear?",WP-15,0.3958091,0.87543267,0.1331793,"By saying ""zero,two,three"" to omit ""one"".","Add a ""g"" and ""one"" Gone.",False
+4,"How do you get rid of ""one""?",WP-15_SR,0.40366733,0.892659,0.13586962,"By saying ""zero,two,three"" to omit ""one"".","Add a ""g"" and ""one"" Gone.",False
+4,What kind of wave doesn't involve water?,WP-134_CR,0.20975949,0.85382396,-0.046387717,Seawave.,Microwave.,False
+4,What kind of goose fights with snakes?,WP-86,0.2169669,0.9683248,-0.073530555,Canada goose.,Mongoose.,False
+4,What kind of chain is edible?,WP-137,0.46796054,0.86723953,0.20778868,Food chain.,Food chain.,True
+5,What animal keeps the best time?,WP-59,0.33244506,0.8425564,0.07967812,A watchdog.,A watchdog.,True
+5,What animal has the best chronology?,WP-59_SR,0.33242297,0.97762865,0.039134353,A whale.,A watchdog.,False
+5,What stocks make everyone happy no matter what the situation?,WP-140_CR,0.34132522,0.9111318,0.06798568,Value stock.,Laughingstock.,False
+5,"If a stock doesn't have shares, what kind is it?",WP-140_SR,0.36554825,0.80341506,0.12452373,Small-cap stock.,Livestock.,False
+5,What kind of tree is most safe?,WP-125_CR,0.36811838,0.9554447,0.08148494,Pine.,Hemlock.,False
+6,What is the hardest key to turn?,WP-98,0.30914783,0.9545892,0.02277106,A donkey.,A donkey.,True
+6,What is the capital in London?,WP-43_CR,0.1513828,0.9353717,-0.12922871,The letter L.,The letter L.,True
+6,What is Washington's capital?,WP-43_SR,0.19767159,0.9610541,-0.09064466,The letter T.,The letter W.,False
+6,What kind of tree can you hold in your hands?,WP-125_SR,0.20777959,0.98008716,-0.08624658,Pine.,Palm.,False
+6,What kind of chase involves running at all times?,WP-134_SR,0.28519213,0.9479617,0.0008036196,Risky chase.,Paperchase.,False
+7,What kind of pet would houses like to keep even it doesn't make sound?,WP-30_CR,0.19666848,0.8533381,-0.059332967,None of above.,Carpet.,False
+7,"When the king was performing really bad with throwing arrows, to give a score to him, what did the hand of the king say?",WP-88_CR,0.3267818,0.9234219,0.049755216,Aim-highness,Aim-highness,True
+7,What is the best key for a satisfying meal?,WP-62_SR,0.26360452,0.7317548,0.04407808,A joykey.,A turkey.,False
+7,What does a rain cloud wear under their raincoat?,WP-96,0.20259503,0.77967143,-0.031306416,None of above.,Thunderware.,False
+7,"What is the cake that if you wouldn't be careful, eating it can result in losing your fingers?",WP-98_CR,0.27688918,0.96185845,-0.011668384,A birthday cake.,A crab cake.,False
+8,What sort of table doesn't have legs?,WP-127_SR,0.33288068,0.95722973,0.045711756,A multiplication table.,A multiplication table.,True
+8,What dress do houses wear?,WP-30_SR,0.16621879,0.85576427,-0.09051052,None of above.,Address.,False
+8,"How do you get rid of ""all""?",WP-15_CR,0.45325392,0.85302794,0.19734553,"By saying ""not none"" to refer ""all"".","Add a ""f"" and ""all"" fall.",False
+8,What did the little lobster get on its math test?,WP-88,0.12191425,0.9453623,-0.16169445,None of above.,Sea-plus.,False
+8,What kind of shot can aim the space?,WP-157_CR,0.19478427,0.8446149,-0.058600232,A fireshot.,A moonshot.,False
+9,What sort of injection wasn't painful?,WP-157_SR,0.292571,0.8416257,0.04008329,A fireshot.,A screenshot.,False
+9,What kind of table has no legs?,WP-127,0.18968378,0.9083346,-0.082816616,None of above.,A multiplication table.,False
+9,What kind of bird is always out of breath?,WP-59_CR,0.29260173,0.98380387,-0.002539426,Sparrow.,Puffin.,False
+9,What do rain clouds wear beneath their raincoat?,WP-96_SR,0.27870178,0.8612865,0.020315826,Thunderware.,Thunderware.,True
+9,Which chain exactly is edible?,WP-137_SR,0.38250703,0.84328973,0.12952009,Logic chain.,Food chain.,False
+10,What is the best key to a good dinner?,WP-62,0.1347549,0.7666114,-0.09522854,A joykey.,A turkey.,False
+10,What type of fish participates in space research?,WP-86_CR,0.35118568,0.9164506,0.07625049,Starfish.,Starfish.,True
+10,What does the moon use to lighten up its face?,WP-96_CR,0.15746914,0.81469643,-0.0869398,None of above.,Moonbeam.,False
+10,What lacks legs and feet but has toes?,WP-26_SR,0.21795617,0.8763436,-0.044946924,Cabbages.,Tomatoes.,False
+10,What has ears but can't hear a thing?,WP-26_CR,0.29194418,0.8479254,0.037566543,Corn ears.,Corn ears.,True
+11,What has toes but no feet or legs?,WP-26,0.22312964,0.8684391,-0.03740208,Cabbages.,Tomatoes.,False
+11,What table has not a leg to stand on?,WP-97,0.22694628,0.80110383,-0.013384879,None of above.,periodic table,False
+11,What's the beginning of an argument,WP-79_CR,0.24412836,0.8771682,-0.019022092,The letter A.,The letter A.,True
+11,What kind of market never grows in size?,WP-124_SR,0.36772692,0.9421173,0.08509174,A flea market.,A flea market.,True
+11,Which letter of the alphabet is the oldest?,WP-122_CR,0.2667166,1.0,-0.033283412," 'Z', because it's the end of alphabet."," ""A'', because it's always surrounded by 'BC.",False
+12,What type of phone is never answered?,WP-130,0.1635278,0.8203141,-0.08256644,None of above.,A xylophone.,False
+12,"How spell ""I SEE YOU"" in three letters?",WP-37_CR,0.112384275,0.8964113,-0.15653913,None of above.,I C U.,False
+12,What kind of drive ensures you remain stationary?,WP-19_CR,0.114667885,0.8539576,-0.1415194,None of above.,A hard drive in a computer.,False
+12,Which of the following pens should never be used for writing?,WP-32_CR,0.35588655,0.9403124,0.073792815,Hard pencil.,Bullpen.,False
+12,There were two sticks on the ground. A boy made five out of them without breaking them in halfs. How's that possible?,WP-71_CR,0.23763615,0.9058248,-0.03411129,"Shape the two sticks to form a 45 degree between themselves, then they become V which is 5 in Roman.","Shape the two sticks to form a 45 degree between themselves, then they become V which is 5 in Roman.",True
+13,Which three letters can fighter a thief away?,WP-37,0.21295126,0.9556831,-0.0737537,O P T,I C U.,False
+13,What table doesn't have a leg to stand on?,WP-97_SR,0.17815232,0.81259316,-0.06562564,None of above.,periodic table,False
+13,How did the farmer fix his jeans?,WP-60,0.32386813,0.94498575,0.0403724,A cabbage patch.,A cabbage patch.,True
+13,What chair only has two legs to stand on?,WP-97_CR,0.30075708,0.98623496,0.0048865676,Armchair.,Committee chair,False
+13,"Without using any R sounds, how do you say, ""Purchased A Rabbit""?",WP-36_CR,0.3702058,0.92665654,0.0922088,Purchased A Rabbit.,Bought a bunny.,False
+14,"The eight is first, tomorrow comes before yesterday, and after happens before by and where are they?",WP-3_SR,0.39083207,0.8418334,0.13828203,In a dictionary.,In a dictionary.,True
+14,Which three letters can fend off a thief?,WP-37_SR,0.17952962,0.8943971,-0.08878951,None of above.,I C U.,False
+14,How does a computer technician fix his pants?,WP-60_CR,0.097934164,0.9405236,-0.18422294,None of above.,With a software patch.,False
+14,What's in the beginning of the road to Paris?,WP-101_CR,0.2648671,0.8708968,0.0035980344,The letter P.,The letter R.,False
+14,Which letter of the alphabet is the coolest?,WP-122_SR,0.29094976,0.9434015,0.007929295," 'A', because it's the start of alphabet."," 'B', because it's always surrounded by 'AC'.",False
+15,"Where is the After before By, tomorrow before yesterday, and the eight is first?",WP-3,0.38275278,0.8580726,0.12533098,In a dictionary.,In a dictionary.,True
+15,What kind of bird writes?,WP-56,0.31762975,0.9426991,0.03482002,Sparrow.,Penguin.,False
+15,What kind of running means walking?,WP-19,0.4303825,0.8412727,0.17800066,Running with an old person.,Running out of gas.,False
+15,How were the farmer's jeans fixed?,WP-60_SR,0.30956674,0.93120897,0.030204028,A cabbage patch.,A cabbage patch.,True
+15,Which of the following pens should never be used for writing?,WP-32_SR,0.32770282,0.9380184,0.046297282,Crayon.,Pigpen.,False
+16,Which type of running equates to walking?,WP-19_SR,0.48723665,0.82168156,0.24073218,Running with an old person.,Running out of gas.,False
+16,"Where does run before it walks, the dawn before rises, and eat before grow ?",WP-3_CR,0.36591566,0.8681521,0.10547003,In a dictionary.,In a dictionary.,True
+16,What exactly is at the heart of Paris?,WP-101_SR,0.25270176,0.8874103,-0.0135213435,The letter P.,The letter R.,False
+16,What kind of phone never gets a response?,WP-130_SR,0.16228414,0.89493525,-0.10619646,A cellphone.,A xylophone.,False
+16,What kind of bird can be an author?,WP-56_SR,0.37500173,0.94224334,0.09232873,Sparrow.,Penguin.,False
+17,What pen should never be used for writing?,WP-32,0.41976592,0.86770403,0.1594547,Pigpen.,Pigpen.,True
+17,Which kind of cap doesn't go on the head?,WP-153_SR,0.4677874,0.8532081,0.21182495,A bottle cap.,A bottle cap.,True
+17,"How can you say - ""Purchased A Rotweiler"" without using any R's?",WP-36,0.41740823,0.9310024,0.13810751,Purchased A Rotweiler.,Bought a dog.,False
+17,What sort of cap shouldn't be worn on the head?,WP-153_CR,0.30498314,0.889258,0.038205713,A baseball cap.,A jar cap.,False
+17,What is at the end of a rainbow?,WP-79,0.1380219,0.98464024,-0.1573702,The letter I.,The letter W.,False
+18,What type of market is never large?,WP-124,0.35640883,0.9751453,0.063865244,A flea market.,A flea market.,True
+18,What kind of shell writes?,WP-56_CR,0.21642399,0.9381413,-0.065018415,Pen shell.,Pen shell.,True
+18,A table has three matches on it. Make three matches four without adding another. You are not permitted to disrupt any of the matches. How can this be accomplished?,WP-71_SR,0.43195942,0.82691807,0.183884,"Take three matches and form the numeral ""III"" .","Shape the 3 matches into a roman numeral four ""IV"".",False
+18,Three matches are sitting on a table. Without adding another make for three matches four. You are not allowed to break any of the matches. How can this be done?,WP-71,0.38514692,0.8625029,0.12639603,"Take three matches and form the numeral ""III"" .","Shape the 3 matches into a roman numeral four ""IV"".",False
+18,What type of cap isn't worn on the head?,WP-153,0.33933216,0.9033772,0.06831899,A baseball cap.,A bottle cap.,False
+19,What kind of market is most dangerous?,WP-124_CR,0.40837005,0.79134935,0.17096524,Bear market.,Bear market.,True
+19,What can you find at the end of a rainbow?,WP-79_SR,0.1766628,0.9480062,-0.10773906,The letter I.,The letter W.,False
+19,"Without using any R sounds, how do you say, ""Purchased A Rotweiler""?",WP-36_SR,0.43392003,0.8869953,0.1678214,Purchased A Rotweiler.,Bought a dog.,False
+19,What kind of phone is most colorful?,WP-130_CR,0.16121842,0.89160776,-0.10626392,A cellphone.,Chromophone.,False
+19,What's the coolest letter in the alphabet?,WP-122,0.32468882,0.9574586,0.037451237," 'Z', because it's the end of alphabet."," 'B', because it's always surrounded by 'AC'.",False
+20,What is in the middle of Paris?,WP-101,0.21040456,0.89724123,-0.05876781,The letter P.,The letter R.,False
