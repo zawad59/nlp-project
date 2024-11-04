@@ -1,0 +1,97 @@
+Interval,Question,Cosine Similarity,Euclidean Distance,Combined Score,Predicted Answer,Actual Answer,Correct
+1,What kind of stock doesn't have shares?,0.3698833,0.8179674,0.12449306,Small-cap stock.,Livestock.,False
+1,What do you call a toothless bear?,0.28481603,0.93032473,0.005718589,A gummy bear.,A polar bear.,False
+1,Where will a computer technician keep all his key?,0.22790161,0.9207046,-0.048309773,A keyboard.,A monitor.,False
+1,What do you call a bear with no teeth?,0.2743203,0.9405817,-0.007854223,A gummy bear.,A gummy bear.,True
+1,What was the result of the tiny lobster's math test?,0.14764759,0.93597287,-0.13314429,None of above.,Sea-plus.,False
+2,What tree can you carry in your hand?,0.12990692,0.8085981,-0.11267252,None of above.,Palm.,False
+2,What chain is having trouble in connecting?,0.458702,0.90383637,0.18755108,Blockchain.,Blockchain.,True
+2,What kind of shot didn't hurt?,0.21391411,0.83576274,-0.036814734,A fireshot.,A fireshot.,True
+2,What kind of birds always make noise?,0.17036338,0.81784123,-0.07498899,None of above.,Humming bird.,False
+2,What type of  table doesn't have chairs?,0.2805118,0.92345315,0.0034758449,A dining table.,A dining table.,True
+3,What type of chase never involves running?,0.39241612,0.9178363,0.11706522,Risky chase.,Paperchase.,False
+3,What is the most difficult key to turn?,0.31974658,0.961234,0.03137639,A donkey.,A gold key.,False
+3,What clothing does a house wear?,0.17063269,0.842808,-0.082209736,None of above.,Suit.,False
+3,What species of geese engages in snake-fighting?,0.25190544,0.9656722,-0.03779623,Canada goose.,Snow goose.,False
+3,What is the capital in Washington?,0.19260594,0.9656246,-0.09708145,The letter T.,The letter T.,True
+4,"How do you make ""one"" disappear?",0.4150391,0.90328,0.14405507,"Add a ""g"" and ""one"" Gone.","Add a ""g"" and ""one"" Gone.",True
+4,"How do you get rid of ""one""?",0.40366733,0.892659,0.13586962,"By saying ""zero,two,three"" to omit ""one"".","Use ""single"" as an alternative word.",False
+4,What kind of wave doesn't involve water?,0.22980894,0.8883649,-0.03670053,Seawave.,Seawave.,True
+4,What kind of goose fights with snakes?,0.18275025,0.83530706,-0.06784189,None of above.,Canada goose.,False
+4,What kind of chain is edible?,0.45478997,0.87744963,0.19155505,Food chain.,Logic chain.,False
+5,What animal keeps the best time?,0.29549754,0.87236726,0.03378734,An elephant.,A watchdog.,False
+5,What animal has the best chronology?,0.35523278,0.9690424,0.06452003,A whale.,An elephant.,False
+5,What stocks make everyone happy no matter what the situation?,0.38013548,0.8106003,0.13695538,Laughingstock.,Laughingstock.,True
+5,"If a stock doesn't have shares, what kind is it?",0.36262503,0.8287956,0.11398634,Small-cap stock.,Livestock.,False
+5,What kind of tree is most safe?,0.37337807,0.9528204,0.087531924,Pine.,Pine.,True
+6,What is the hardest key to turn?,0.3226611,0.9460886,0.038834512,A donkey.,A donkey.,True
+6,What is the capital in London?,0.15202159,0.9374661,-0.12921825,The letter L.,The letter N.,False
+6,What is Washington's capital?,0.19767159,0.9610541,-0.09064466,The letter T.,The letter W.,False
+6,What kind of tree can you hold in your hands?,0.1805931,0.9932014,-0.11736733,Pine.,Pine.,True
+6,What kind of chase involves running at all times?,0.28343862,0.9591978,-0.0043207407,Risky chase.,Escape chase.,False
+7,What kind of pet would houses like to keep even it doesn't make sound?,0.20270175,1.0,-0.097298265,Cat.,Carpet.,False
+7,"When the king was performing really bad with throwing arrows, to give a score to him, what did the hand of the king say?",0.3067186,0.9341646,0.0264692,Aim-highness,King-winner.,False
+7,What is the best key for a satisfying meal?,0.27527332,0.7249188,0.057797685,A joykey.,A turkey.,False
+7,What does a rain cloud wear under their raincoat?,0.18395558,0.8957905,-0.08478159,Thunderware.,Suit.,False
+7,"What is the cake that if you wouldn't be careful, eating it can result in losing your fingers?",0.33196628,1.0,0.03196627,A crab cake.,A birthday cake.,False
+8,What sort of table doesn't have legs?,0.33288068,0.95722973,0.045711756,A multiplication table.,A multiplication table.,True
+8,What dress do houses wear?,0.16716485,0.85451424,-0.089189425,None of above.,Wedding dress.,False
+8,"How do you get rid of ""all""?",0.45465124,0.8526711,0.19884989,"By saying ""not none"" to refer ""all"".","Use ""whole"" as an alternative word.",False
+8,What did the little lobster get on its math test?,0.12625323,0.93944293,-0.15557967,None of above.,Very-Good.,False
+8,What kind of shot can aim the space?,0.19721909,0.77996075,-0.03676915,A moonshot.,A fireshot.,False
+9,What sort of injection wasn't painful?,0.2861961,0.8422747,0.033513695,A fireshot.,A screenshot.,False
+9,What kind of table has no legs?,0.18968378,0.9083346,-0.082816616,None of above.,A coffee table.,False
+9,What kind of bird is always out of breath?,0.29260173,0.98380387,-0.002539426,Sparrow.,Hawk.,False
+9,What do rain clouds wear beneath their raincoat?,0.20888123,0.89434916,-0.059423536,Thunderware.,Suit.,False
+9,Which chain exactly is edible?,0.5260205,0.7909768,0.28872746,Food chain.,Food chain.,True
+10,What is the best key to a good dinner?,0.12793782,0.77110887,-0.10339485,A joykey.,A turkey.,False
+10,What type of fish participates in space research?,0.35118568,0.9164506,0.07625049,Starfish.,Yellow fish.,False
+10,What does the moon use to lighten up its face?,0.15746914,0.81469643,-0.0869398,None of above.,Nightmare.,False
+10,What lacks legs and feet but has toes?,0.23380923,0.86947435,-0.02703309,Cabbages.,Onions,False
+10,What has ears but can't hear a thing?,0.24754035,0.8213191,0.0011446178,None of above.,Young child.,False
+11,What has toes but no feet or legs?,0.22312964,0.8684391,-0.03740208,Cabbages.,Tomatoes.,False
+11,What table has not a leg to stand on?,0.21344995,0.81033987,-0.029652014,None of above.,Tennis table.,False
+11,What's the beginning of an argument,0.28399837,0.8770265,0.020890415,The letter T.,The letter A.,False
+11,What kind of market never grows in size?,0.3682991,0.9359741,0.08750686,A flea market.,A flea market.,True
+11,Which letter of the alphabet is the oldest?,0.32920432,0.99266267,0.03140551," 'Z', because it's the end of alphabet."," 'Z', because it's the end of alphabet.",True
+12,What type of phone is never answered?,0.14709285,0.8782869,-0.11639324,A cellphone.,A xylophone.,False
+12,"How spell ""I SEE YOU"" in three letters?",0.112384275,0.8964113,-0.15653913,None of above.,I C U.,False
+12,What kind of drive ensures you remain stationary?,0.114667885,0.8539576,-0.1415194,None of above.,A hard drive in a computer.,False
+12,Which of the following pens should never be used for writing?,0.34345028,0.95960397,0.055569082,Hard pencil.,Hard pencil.,True
+12,There were two sticks on the ground. A boy made five out of them without breaking them in halfs. How's that possible?,0.23763615,0.9058248,-0.03411129,"Shape the two sticks to form a 45 degree between themselves, then they become V which is 5 in Roman.","Shape the two sticks to form a 45 degree between themselves, then they become V which is 5 in Roman.",True
+13,Which three letters can fighter a thief away?,0.23554404,0.968161,-0.054904267,O P T,I C U.,False
+13,What table doesn't have a leg to stand on?,0.17815232,0.81259316,-0.06562564,None of above.,Tennis table.,False
+13,How did the farmer fix his jeans?,0.22738048,0.96699977,-0.062719464,A cabbage patch.,A peach jam.,False
+13,What chair only has two legs to stand on?,0.51727736,0.84110373,0.26494622,Committee chair,Club chair.,False
+13,"Without using any R sounds, how do you say, ""Purchased A Rabbit""?",0.36583135,0.9292196,0.08706546,Purchased A Rabbit.,Bought a bunny.,False
+14,"The eight is first, tomorrow comes before yesterday, and after happens before by and where are they?",0.4170919,0.8294899,0.16824493,In a dictionary.,In a dictionary.,True
+14,Which three letters can fend off a thief?,0.1854603,0.90487564,-0.08600241,I C U.,O P T,False
+14,How does a computer technician fix his pants?,0.097934164,0.9405236,-0.18422294,None of above.,With a software patch.,False
+14,What's in the beginning of the road to Paris?,0.2648671,0.8708968,0.0035980344,The letter P.,The letter S.,False
+14,Which letter of the alphabet is the coolest?,0.29094976,0.9434015,0.007929295," 'A', because it's the start of alphabet."," 'Z', because it's the end of alphabet.",False
+15,"Where is the After before By, tomorrow before yesterday, and the eight is first?",0.38275278,0.8580726,0.12533098,In a dictionary.,In a dictionary.,True
+15,What kind of bird writes?,0.31762975,0.9426991,0.03482002,Sparrow.,Sparrow.,True
+15,What kind of running means walking?,0.4303825,0.8412727,0.17800066,Running with an old person.,Running at a low speed.,False
+15,How were the farmer's jeans fixed?,0.24859571,0.94923985,-0.036176264,A cabbage patch.,A cabbage patch.,True
+15,Which of the following pens should never be used for writing?,0.35645452,0.9402675,0.07437426,Crayon.,Crayon.,True
+16,Which type of running equates to walking?,0.452596,0.92309266,0.17566821,Running with an old person.,Running out of gas.,False
+16,"Where does run before it walks, the dawn before rises, and eat before grow ?",0.34693968,0.88553154,0.0812802,In a dictionary.,In a dictionary.,True
+16,What exactly is at the heart of Paris?,0.1840012,0.9008613,-0.08625719,The letter P.,The letter S.,False
+16,What kind of phone never gets a response?,0.16228414,0.89493525,-0.10619646,A cellphone.,A xylophone.,False
+16,What kind of bird can be an author?,0.40006858,0.9293857,0.121252865,Sparrow.,Sparrow.,True
+17,What pen should never be used for writing?,0.32110566,0.92793363,0.042725563,Pigpen.,Pigpen.,True
+17,Which kind of cap doesn't go on the head?,0.4677874,0.8532081,0.21182495,A bottle cap.,A baseball cap.,False
+17,"How can you say - ""Purchased A Rotweiler"" without using any R's?",0.42803657,0.9159468,0.15325251,Purchased A Rotweiler.,Uchased a otweile.,False
+17,What sort of cap shouldn't be worn on the head?,0.3058296,0.8906503,0.03863451,A baseball cap.,A jar cap.,False
+17,What is at the end of a rainbow?,0.1380219,0.98464024,-0.1573702,The letter I.,The letter W.,False
+18,What type of market is never large?,0.34648532,0.9688731,0.055823386,A flea market.,A flea market.,True
+18,What kind of shell writes?,0.21642399,0.9381413,-0.065018415,Pen shell.,Pen shell.,True
+18,A table has three matches on it. Make three matches four without adding another. You are not permitted to disrupt any of the matches. How can this be accomplished?,0.4184918,0.8330745,0.16856945,"Take three matches and form the numeral ""III"" .","Take three matches and form the numeral ""III"" .",True
+18,Three matches are sitting on a table. Without adding another make for three matches four. You are not allowed to break any of the matches. How can this be done?,0.38514692,0.8625029,0.12639603,"Take three matches and form the numeral ""III"" .","Take two matches and form the numeral ""X"" .",False
+18,What type of cap isn't worn on the head?,0.33933216,0.9033772,0.06831899,A baseball cap.,A bottle cap.,False
+19,What kind of market is most dangerous?,0.42566288,0.7802569,0.1915858,Bear market.,Bear market.,True
+19,What can you find at the end of a rainbow?,0.22247118,0.98332536,-0.072526455,The letter R.,The letter R.,True
+19,"Without using any R sounds, how do you say, ""Purchased A Rotweiler""?",0.46875578,0.88496655,0.20326582,Purchased A Rotweiler.,Bought a dog.,False
+19,What kind of phone is most colorful?,0.16121842,0.89160776,-0.10626392,A cellphone.,A cellphone.,True
+19,What's the coolest letter in the alphabet?,0.32468882,0.9574586,0.037451237," 'Z', because it's the end of alphabet."," 'Z', because it's the end of alphabet.",True
+20,What is in the middle of Paris?,0.21040456,0.89724123,-0.05876781,The letter P.,The letter R.,False
