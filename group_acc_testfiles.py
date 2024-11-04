@@ -7,8 +7,8 @@ from sklearn.metrics.pairwise import euclidean_distances
 from collections import Counter
 
 # Load the data from SP_test.npy and SP_test_answer.npy
-data = np.load('SP_test.npy', allow_pickle=True)
-answers_data = np.load('SP_test_answer.npy', allow_pickle=True)
+data = np.load('WP_test.npy', allow_pickle=True)
+answers_data = np.load('WP_test_answer.npy', allow_pickle=True)
 
 # Create a dictionary for fast lookup of the correct answer index by question ID
 answers_dict = {item[0]: int(item[1]) for item in answers_data}
