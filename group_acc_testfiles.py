@@ -126,11 +126,11 @@ def process_mode(mode):
     # Save interval accuracies to CSV
     df_interval_accuracies = pd.DataFrame(interval_accuracies)
     df_interval_accuracies.to_csv(f'WP_interval_accuracies_{mode}.csv', index=False)
-    print(f"Interval accuracies for {mode} learning saved to 'interval_accuracies_{mode}.csv'.")
+    print(f"Interval accuracies for {mode} learning saved to 'WP_interval_accuracies_{mode}.csv'.")
 
     # Save detailed results to CSV
     df_results = pd.DataFrame(all_results)
-    df_results.to_csv(f'interval_predictions_{mode}.csv', index=False)
+    df_results.to_csv(f'WP_interval_predictions_{mode}.csv', index=False)
     print(f"Prediction details with intervals for {mode} learning saved to 'WP_interval_predictions_{mode}.csv'.")
 
 # Run the function for zero-shot, one-shot, and three-shot learning
