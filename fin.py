@@ -6,8 +6,8 @@ from sentence_transformers import SentenceTransformer, util
 from sklearn.metrics import accuracy_score, f1_score
 
 # Load training and test data for SP dataset
-train_data = np.load('SP_train.npy', allow_pickle=True)
-test_data = np.load('SP_test.npy', allow_pickle=True)
+train_data = np.load('SP_train 1.npy', allow_pickle=True)
+test_data = np.load('SP_test 1.npy', allow_pickle=True)
 
 # Prepare test data for SP
 test_texts = []
