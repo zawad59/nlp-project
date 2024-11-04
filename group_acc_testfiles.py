@@ -6,8 +6,8 @@ from sentence_transformers import SentenceTransformer, util
 from collections import defaultdict
 
 # Load training and test data
-train_data = np.load('SP_train 1.npy', allow_pickle=True)
-test_data = np.load('SP_test 1.npy', allow_pickle=True)
+train_data = np.load('WP_train 1.npy', allow_pickle=True)
+test_data = np.load('WP_test 1.npy', allow_pickle=True)
 
 # Group questions by common base ID
 groups = defaultdict(list)
