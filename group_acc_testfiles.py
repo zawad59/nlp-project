@@ -101,13 +101,13 @@ def process_zero_shot():
 
     # Save group-based accuracies
     df_group_accuracies = pd.DataFrame(group_accuracies)
-    df_group_accuracies.to_csv('WP_test_group_accuracies_zero-shot.csv', index=False)
-    print("Group-based accuracies for zero-shot learning saved to 'WP_test_group_accuracies_zero-shot.csv'.")
+    df_group_accuracies.to_csv('WP22_test_group_accuracies_zero-shot.csv', index=False)
+    print("Group-based accuracies for zero-shot learning saved to 'WP22_test_group_accuracies_zero-shot.csv'.")
 
     # Save detailed results to CSV
     df_results = pd.DataFrame(all_results)
-    df_results.to_csv('WP_test_predictions_zero-shot.csv', index=False)
-    print("Prediction details for zero-shot learning saved to 'WP_test_predictions_zero-shot.csv'.")
+    df_results.to_csv('WP22_test_predictions_zero-shot.csv', index=False)
+    print("Prediction details for zero-shot learning saved to 'WP22_test_predictions_zero-shot.csv'.")
 
 # Run the function for zero-shot learning
 print("Processing zero-shot mode:")
