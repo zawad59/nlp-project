@@ -10,14 +10,12 @@ from collections import defaultdict
 data = np.load('SP_test.npy', allow_pickle=True)
 answers_data = np.load('SP_test_answer.npy', allow_pickle=True)
 
-# Map question IDs to correct answer indices
+# Map question IDs to correct answer indices and group similar questions
 answers_dict = {item[0]: int(item[1]) for item in answers_data}
-
-# Group similar questions by prefix
 groups = defaultdict(list)
 for item in answers_data:
     question_id = item[0]
-    prefix = question_id.split('_')[0]
+    prefix = question_id.split('_')[0]  # Group by common prefix (e.g., "SP-4")
     groups[prefix].append(question_id)
 
 # Initialize sentence embedding model for similarity checks
@@ -30,7 +28,7 @@ pipe = pipeline(
     "text-generation",
     model=model_id,
     tokenizer=tokenizer,
-    temperature=0.1,  # Lower temperature for more deterministic responses
+    temperature=0.1,
     max_new_tokens=50,
     torch_dtype=torch.bfloat16,
     device_map="auto"
@@ -65,17 +63,12 @@ def process_mode(mode):
     # Iterate through each group of questions
     for group_id, question_ids in groups.items():
         group_predictions = []
-        group_correct_answers = []
         
-        for qid in question_ids:
-            # Find corresponding question and choices in SP_test
-            item = next((x for x in data if qid == x['id']), None)
-            if item is None:
-                print(f"Warning: Question ID {qid} not found in SP_test")
-                continue
-
-            question = item['question']
-            choice_list = item['choice_list']
+        for i, qid in enumerate(question_ids):
+            # Get corresponding question and choices from SP_test.npy using the index
+            question_data = data[i]
+            question = question_data['question']
+            choice_list = question_data['choice_list']
             correct_answer_index = answers_dict[qid]
             actual_answer = choice_list[correct_answer_index]
             
@@ -102,8 +95,6 @@ def process_mode(mode):
 
             # Record result for question and group accuracy calculation
             group_predictions.append(is_correct)
-            group_correct_answers.append(is_correct)
-
             all_results.append({
                 'Group ID': group_id,
                 'Question ID': qid,
