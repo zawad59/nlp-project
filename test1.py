@@ -6,8 +6,8 @@ from transformers import pipeline, AutoTokenizer
 from sklearn.metrics.pairwise import euclidean_distances
 
 # Load the data from word_test.npy and word_test_answers.npy
-data = np.load('word_test.npy', allow_pickle=True)
-answers_data = np.load('word_test_answers.npy', allow_pickle=True)
+data = np.load('WP_test.npy', allow_pickle=True)
+answers_data = np.load('WP_test_answers.npy', allow_pickle=True)
 
 # Extract question IDs and correct answer indices
 question_ids = [item[0] for item in answers_data]
