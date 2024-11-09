@@ -23,6 +23,15 @@ import os
 nltk.download('stopwords')
 nltk.download('punkt')
 
+# Initialize the tokenizer and model
+model_name = "gpt2"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForCausalLM.from_pretrained(model_name).to(device)
+
+# Ensure the pad token is set (GPT-2 doesn't have one by default)
+tokenizer.pad_token = tokenizer.eos_token
+
+
 # Set device
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
