@@ -1,0 +1,41 @@
+Question_ID,Question_Text,Correct_Answer,Predicted_Answer,Is_Correct
+WP-132,What do you call a bear with no ear?,"""B"" .",None,No
+WP-132_SR,What is a bear known as when it has no ears?,"""B"" .",None,No
+WP-132_CR,What do you call a fish without an eye?,Fsh.,None,No
+WP-133,What kind of beans won't grow in a garden?,Jelly beans.,None,No
+WP-133_SR,Which beans cannot be grown in a garden?,Jelly beans.,None,No
+WP-133_CR,What kind of beans is good at marathon？,Runner beans.,None,No
+WP-135,What's a computer's favorite snack?,Chips.,None,No
+WP-135_SR,What is a computer's preferred treat?,Chips.,None,No
+WP-135_CR,What's a light bulb's favorite kind of news?,Current news.,None of above.,No
+WP-136,What type of butter can actually fly?,Butterfly.,None,No
+WP-136_SR,What kind of butter is really able to fly?,Butterfly.,None,No
+WP-136_CR,What kind of fish is capable of performing operations?,Surgeonfish.,None,No
+WP-138,What kind of ring is square?,A boxing ring.,None,No
+WP-138_SR,"Square is a type of what kind of ""ring""?",A boxing ring.,None,No
+WP-138_CR,what rings are common in bars but no one wears them on their fingers.,A smoke ring.,None,No
+WP-139,What type of bar doesn't serve alcohol?,Sandbar.,None,No
+WP-139_SR,What kind of bar doesn't offer alcoholic beverages?,Sandbar.,None,No
+WP-139_CR,What kind of bar doesn't offer alcoholic beverages?,Soundbar.,None,No
+WP-141,What type of ham can you not eat?,Birmingham.,None,No
+WP-141_SR,What kind of ham are you not allowed to eat?,Birmingham.,None,No
+WP-141_CR,Which ham has the best springiness?,Slingsham.,None,No
+WP-142,What type of lamp doesn't provide light?,Clamp.,None of above.,No
+WP-142_SR,What kind of lamp emits no light?,Clamp.,None,No
+WP-142_CR,What kind of lamp emits no light?,Enclamp.,None,No
+WP-143,What kind of pot can't you cook anything in?,Jackpot.,None,No
+WP-143_SR,What kind of pot can't you use to prepare food?,Jackpot.,None,No
+WP-143_CR,What type of pot never boils?,Flowerpot.,None,No
+WP-144,What kind of case can't hold anything?,Lowercase.,None,No
+WP-144_SR,What kind of case is incapable of holding anything?,Lowercase.,None,No
+WP-144_CR,What kind of case contains many levels?,Staircase.,None,No
+WP-145,What type of pool can you never swim in?,Carpool.,None,No
+WP-145_SR,What kind of pool are you unable to swim?,Carpool.,None,No
+WP-145_CR,What kind of pool never needs cleaning?,Carpool.,Carpool.,Yes
+WP-146,What kind of fast doesn't involve running?,Breakfast.,None,No
+WP-146_SR,Which fast does not involve running?,Breakfast.,None,No
+WP-146_CR,"
+which break is the shortest?",Breakfast.,None,No
+WP-147,What type of board can't you play games on?,Keyboard.,Keyboard.,Yes
+WP-147_SR,What kind of board cannot be used for game play?,Keyboard.,None,No
+WP-147_CR,What kind of board will your father like best?,Motherboard.,None,No
