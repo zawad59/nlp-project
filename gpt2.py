@@ -12,7 +12,7 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.stem import PorterStemmer
 import os
 
-# Download NLTK data
+# Download required NLTK data
 nltk.download('stopwords')
 nltk.download('punkt')
 
@@ -76,26 +76,28 @@ def tokenize_function(examples):
 tokenized_train_dataset = train_dataset.map(tokenize_function, batched=True, remove_columns=["text"])
 data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 
-# LoRA fine-tuning configuration
+# QLoRA fine-tuning configuration
 lora_config = LoraConfig(
-    r=8,
-    lora_alpha=16,
-    lora_dropout=0.1,
-    task_type="CAUSAL_LM"
+    r=16,  # Increased rank for better representation
+    lora_alpha=32,  # Higher scaling factor
+    lora_dropout=0.05,  # Reduced dropout for stability
+    task_type="CAUSAL_LM",
+    use_qlora=True,  # Enable QLoRA
+    quantization_bits=4  # 4-bit quantization
 )
 
-# Prepare the model for LoRA fine-tuning using k-bit training
+# Prepare the model for QLoRA fine-tuning using k-bit training
 model = prepare_model_for_kbit_training(model)
 model = get_peft_model(model, lora_config)
 
 training_args = TrainingArguments(
-    output_dir="./gpt2_lora_finetuned",
+    output_dir="./gpt2_qlora_finetuned",
     overwrite_output_dir=True,
-    num_train_epochs=3,
-    per_device_train_batch_size=4,
-    save_steps=1000,
-    logging_steps=500,
-    learning_rate=5e-5,
+    num_train_epochs=5,  # Increased epochs for better convergence
+    per_device_train_batch_size=8,  # Larger batch size for better training
+    save_steps=500,
+    logging_steps=200,
+    learning_rate=3e-5,  # Lower learning rate for stability
     weight_decay=0.01,
     fp16=torch.cuda.is_available(),
     report_to="none"
@@ -108,9 +110,9 @@ trainer = Trainer(
     data_collator=data_collator
 )
 
-print("Starting LoRA fine-tuning...")
+print("Starting QLoRA fine-tuning...")
 trainer.train()
-trainer.save_model("./gpt2_lora_finetuned_model")
+trainer.save_model("./gpt2_qlora_finetuned_model")
 
 # Evaluation functions (unchanged)
 def generate_answer(question, choices):
@@ -127,7 +129,7 @@ def refine_prediction_with_embeddings(question, choices, generated_answer):
     euclidean_distances = [euclidean(generated_embedding.cpu().numpy(), choice.cpu().numpy()) for choice in choice_embeddings]
     combined_scores = [(cos_sim.item(), -eucl_dist) for cos_sim, eucl_dist in zip(cosine_similarities, euclidean_distances)]
     best_index = max(range(len(combined_scores)), key=lambda i: combined_scores[i])
-    return choices[best_index], cosine_similarities, euclidean_distances
+    return choices[best_index]
 
 def evaluate_model(dev_data):
     correct_predictions = 0
@@ -137,7 +139,7 @@ def evaluate_model(dev_data):
         choices = item['choice_list']
         true_answer = item['answer']
         generated_answer = generate_answer(question, choices)
-        refined_answer, _, _ = refine_prediction_with_embeddings(question, choices, generated_answer)
+        refined_answer = refine_prediction_with_embeddings(question, choices, generated_answer)
         if refined_answer == true_answer:
             correct_predictions += 1
     accuracy = correct_predictions / total_predictions
