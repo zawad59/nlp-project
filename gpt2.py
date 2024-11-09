@@ -1,31 +1,25 @@
 import numpy as np
 import pandas as pd
 import torch
-from transformers import (
-    AutoTokenizer,
-    AutoModelForCausalLM,
-    Trainer,
-    TrainingArguments,
-    DataCollatorForLanguageModeling
-)
+from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, TrainingArguments, DataCollatorForLanguageModeling
 from sentence_transformers import SentenceTransformer, util
 from sklearn.metrics import accuracy_score, f1_score
+from scipy.spatial.distance import euclidean
 import nltk
 from nltk.corpus import stopwords
-from nltk.tokenize import sent_tokenize, word_tokenize 
-#import porterStemmer
+from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.stem import PorterStemmer
 import os
 
-# Download required NLTK data
+# Download NLTK data
 nltk.download('stopwords')
 nltk.download('punkt')
 
-# Set device (use GPU if available)
+# Set device
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
 
-# Load GPT-2 model and tokenizer
+# Initialize models
 model_name = "gpt2"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForCausalLM.from_pretrained(model_name).to(device)
@@ -34,9 +28,9 @@ tokenizer.pad_token = tokenizer.eos_token
 # Load SentenceTransformer for embeddings
 embedder = SentenceTransformer('all-MiniLM-L6-v2').to(device)
 
-# Load training and dev data
+# Load training and development datasets
 train_file_path = 'WP_train 1.npy'
-dev_file_path = 'WP_test 1.npy'
+dev_file_path = 'WP_dev 1.npy'
 train_data = np.load(train_file_path, allow_pickle=True)
 dev_data = np.load(dev_file_path, allow_pickle=True)
 
@@ -52,7 +46,7 @@ def preprocess_gpt2_data(data):
         choices = item['choice_list']
         correct_answer = choices[item['label']]
         
-        # Sentence tokenization, stopword removal, and stemming
+        # Preprocess the question
         sentences = sent_tokenize(question)
         cleaned_sentences = []
         for sentence in sentences:
@@ -92,7 +86,6 @@ training_args = TrainingArguments(
     save_steps=1000,
     logging_steps=500,
     learning_rate=5e-5,
-    evaluation_strategy="no",
     weight_decay=0.01,
     fp16=torch.cuda.is_available(),
     report_to="none"
@@ -113,34 +106,44 @@ trainer.save_model("./gpt2_qa_finetuned_model")
 def generate_answer(question, choices):
     prompt = f"Question: {question}\nChoices: {', '.join(choices)}\nAnswer:"
     inputs = tokenizer(prompt, return_tensors="pt").to(device)
-    outputs = model.generate(inputs['input_ids'], max_length=200, temperature=0.7, pad_token_id=tokenizer.pad_token_id)
+    outputs = model.generate(
+        inputs['input_ids'], max_length=200, temperature=0.7, pad_token_id=tokenizer.pad_token_id
+    )
     generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
     return generated_text.split("Answer:")[-1].strip()
 
 def refine_prediction_with_embeddings(question, choices, generated_answer):
+    # Generate embeddings for the choices and the generated answer
     choice_embeddings = embedder.encode(choices, convert_to_tensor=True)
     generated_embedding = embedder.encode(generated_answer, convert_to_tensor=True)
-    similarities = util.cos_sim(generated_embedding, choice_embeddings)[0]
-    best_index = torch.argmax(similarities).item()
-    best_answer = choices[best_index]
-    return best_answer, similarities
+    
+    # Calculate cosine similarities
+    cosine_similarities = util.cos_sim(generated_embedding, choice_embeddings)[0]
+    
+    # Calculate Euclidean distances
+    euclidean_distances = [euclidean(generated_embedding.cpu().numpy(), choice.cpu().numpy()) for choice in choice_embeddings]
+    
+    # Select the best answer based on combined metrics
+    combined_scores = [(cos_sim.item(), -eucl_dist) for cos_sim, eucl_dist in zip(cosine_similarities, euclidean_distances)]
+    best_index = max(range(len(combined_scores)), key=lambda i: combined_scores[i])
+    
+    return choices[best_index], cosine_similarities, euclidean_distances
 
-# Step 4: Evaluate on Dev Data
+# Step 4: Evaluate the Model
 def evaluate_model(dev_data):
     correct_predictions = 0
     total_predictions = len(dev_data)
     refined_results = []
-    
+
     for item in dev_data:
         question = item['question']
         choices = item['choice_list']
         true_answer = item['answer']
         
-        # Generate answer using GPT-2
         generated_answer = generate_answer(question, choices)
-        
-        # Refine using sentence embeddings
-        refined_answer, similarities = refine_prediction_with_embeddings(question, choices, generated_answer)
+        refined_answer, cosine_similarities, euclidean_distances = refine_prediction_with_embeddings(
+            question, choices, generated_answer
+        )
         is_correct = (refined_answer == true_answer)
         correct_predictions += is_correct
         
@@ -151,16 +154,18 @@ def evaluate_model(dev_data):
             'Refined_Answer': refined_answer,
             'Correct_Answer': true_answer,
             'Is_Correct': "Yes" if is_correct else "No",
-            'Cosine_Similarities': similarities.tolist()
+            'Cosine_Similarities': cosine_similarities.tolist(),
+            'Euclidean_Distances': euclidean_distances
         })
     
     accuracy = correct_predictions / total_predictions
     print(f"Refined Accuracy: {accuracy:.4f}")
     
-    # Save results for Test CSV
-    refined_results_df = pd.DataFrame(refined_results)
+    # Save results to CSV
+    results_df = pd.DataFrame(refined_results)
     timestamp = pd.Timestamp.now().strftime('%Y%m%d_%H%M%S')
-    refined_results_df.to_csv(f'results/refined_evaluation_{timestamp}_onTest.csv', index=False)
+    results_df.to_csv(f'results/evaluation_{timestamp}_On_Dev.csv', index=False)
 
+# Run the full evaluation
 os.makedirs('results', exist_ok=True)
 evaluate_model(dev_data)
