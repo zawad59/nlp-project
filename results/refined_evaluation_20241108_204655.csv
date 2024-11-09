@@ -1,0 +1,81 @@
+Question_ID,Question_Text,Generated_Answer,Refined_Answer,Correct_Answer,Is_Correct,Cosine_Similarities
+WP-132,What do you call a bear with no ear?,"""B.""
+
+
+Question: What do you call a bear with no ear","""B"" .","""B"" .",Yes,"[0.26889684796333313, 0.24862655997276306, 0.49229761958122253, 0.19643917679786682]"
+WP-132_SR,What is a bear known as when it has no ears?,"""E.""
+
+
+Answer","""E"" .","""B"" .",No,"[0.8678510785102844, 0.5022968649864197, 0.4911111295223236, 0.24224816262722015]"
+WP-132_CR,What do you call a fish without an eye?,,Fis.,Fsh.,No,"[0.32384708523750305, 0.30315348505973816, 0.2933504581451416, 0.2109222561120987]"
+WP-133,What kind of beans won't grow in a garden?,"Jelly beans.
+
+
+Question: What kind of beans won't grow in a garden",Jelly beans.,Jelly beans.,Yes,"[0.5109718441963196, 0.5197243690490723, 0.6215400695800781, 0.09306976199150085]"
+WP-133_SR,Which beans cannot be grown in a garden?,"Jelly beans.
+
+
+Question: Which beans cannot",Jelly beans.,Jelly beans.,Yes,"[0.6890478134155273, 0.516930341720581, 0.5234262943267822, 0.12748220562934875]"
+WP-133_CR,What kind of beans is good at marathon？,"Runner beans.
+
+
+Answer",Runner beans.,Runner beans.,Yes,"[0.626819908618927, 0.6687215566635132, 0.9418401122093201, 0.14749547839164734]"
+WP-135,What's a computer's favorite snack?,None of above,None of above.,Chips.,No,"[0.2536480128765106, 0.19647076725959778, 0.20615968108177185, 0.9500035047531128]"
+WP-135_SR,What is a computer's preferred treat?,"Chips.
+
+
+Answer",Chips.,Chips.,Yes,"[0.47579312324523926, 0.9048771858215332, 0.44190317392349243, 0.21012023091316223]"
+WP-135_CR,What's a light bulb's favorite kind of news?,None of above.,None of above.,Current news.,No,"[0.16706258058547974, 0.16185563802719116, 0.14966373145580292, 1.0]"
+WP-136,What type of butter can actually fly?,None of above,None of above.,Butterfly.,No,"[0.254746675491333, 0.180153951048851, 0.14678235352039337, 0.9500035047531128]"
+WP-136_SR,What kind of butter is really able to fly?,"Almond butter.
+
+
+Source: Wikipedia.",Almond butter.,Butterfly.,No,"[0.8810410499572754, 0.6677901148796082, 0.15763497352600098, 0.026069581508636475]"
+WP-136_CR,What kind of fish is capable of performing operations?,"Catfish.
+
+
+Question: What kind of fish is capable of performing operations?
+Choices: Catfish., Tuna., None",Catfish.,Surgeonfish.,No,"[0.6967216730117798, 0.6058524250984192, 0.5233408212661743, 0.20999562740325928]"
+WP-138,What kind of ring is square?,,None of above.,A boxing ring.,No,"[0.060150641947984695, 0.13293690979480743, 0.13386967778205872, 0.2109222561120987]"
+WP-138_SR,"Square is a type of what kind of ""ring""?",A ring.,A boxing ring.,A boxing ring.,Yes,"[0.7772579193115234, 0.7460281252861023, 0.7734535336494446, 0.18456844985485077]"
+WP-138_CR,what rings are common in bars but no one wears them on their fingers.,A ring.,A ear ring.,A smoke ring.,No,"[0.7460281252861023, 0.7734535336494446, 0.7282074093818665, 0.18456844985485077]"
+WP-139,What type of bar doesn't serve alcohol?,Cock,None of above.,Sandbar.,No,"[0.26258188486099243, 0.2508181929588318, 0.23019817471504211, 0.27475234866142273]"
+WP-139_SR,What kind of bar doesn't offer alcoholic beverages?,"None of above.
+
+
+Source: The New York Times.
+
+
+Question: What",None of above.,Sandbar.,No,"[0.2119317352771759, 0.15018728375434875, 0.19826509058475494, 0.45023059844970703]"
+WP-139_CR,What kind of bar doesn't offer alcoholic beverages?,Cocktail.,Cocktail bar.,Soundbar.,No,"[0.46653980016708374, 0.2733346223831177, 0.7615526914596558, 0.2414824664592743]"
+WP-141,What type of ham can you not eat?,,Birmingham.,Birmingham.,Yes,"[0.23678094148635864, 0.20207595825195312, 0.1983509361743927, 0.2109222561120987]"
+WP-141_SR,What kind of ham are you not allowed to eat?,"Cured ham.
+
+
+Question: What kind of ham are you allowed to eat?",Cured ham.,Birmingham.,No,"[0.6590686440467834, 0.023594241589307785, 0.7922287583351135, 0.08759621530771255]"
+WP-141_CR,Which ham has the best springiness?,"None of above.
+
+
+Answer",None of above.,Slingsham.,No,"[0.16141565144062042, 0.16262127459049225, 0.17302942276000977, 0.785321831703186]"
+WP-142,What type of lamp doesn't provide light?,None of above.,None of above.,Clamp.,No,"[0.16982078552246094, 0.14847300946712494, 0.1668124496936798, 1.0]"
+WP-142_SR,What kind of lamp emits no light?,Oil lamp,Oil lamp.,Clamp.,No,"[0.9173020124435425, 0.6157541275024414, 0.19450898468494415, 0.056170471012592316]"
+WP-142_CR,What kind of lamp emits no light?,"Streetlamp.
+
+
+Answer",Streetlamp.,Enclamp.,No,"[0.9225935935974121, 0.17089159786701202, 0.7330811619758606, 0.23513853549957275]"
+WP-143,What kind of pot can't you cook anything in?,Jackpot,Jackpot.,Jackpot.,Yes,"[0.4272612929344177, 0.3843030333518982, 0.9678342342376709, 0.17719590663909912]"
+WP-143_SR,What kind of pot can't you use to prepare food?,Jackpot,Jackpot.,Jackpot.,Yes,"[0.3843030333518982, 0.4272612929344177, 0.9678342342376709, 0.17719590663909912]"
+WP-143_CR,What type of pot never boils?,Coffee,Coffee pot.,Flowerpot.,No,"[0.2715871334075928, 0.4755993187427521, 0.8159035444259644, 0.18573154509067535]"
+WP-144,What kind of case can't hold anything?,,Lowercase.,Lowercase.,Yes,"[0.2989535331726074, 0.2991443872451782, 0.1602720022201538, 0.2109222561120987]"
+WP-144_SR,What kind of case is incapable of holding anything?,,Lowercase.,Lowercase.,Yes,"[0.1602720022201538, 0.2991443872451782, 0.2989535331726074, 0.2109222561120987]"
+WP-144_CR,What kind of case contains many levels?,Book,Bookcase.,Staircase.,No,"[0.5309007167816162, 0.2766677141189575, 0.3326413333415985, 0.12426825612783432]"
+WP-145,What type of pool can you never swim in?,W,None of above.,Carpool.,No,"[0.19344764947891235, 0.16568179428577423, 0.19384431838989258, 0.28053760528564453]"
+WP-145_SR,What kind of pool are you unable to swim?,W,None of above.,Carpool.,No,"[0.19344764947891235, 0.19384431838989258, 0.16568179428577423, 0.28053760528564453]"
+WP-145_CR,What kind of pool never needs cleaning?,Carpool.,Carpool.,Carpool.,Yes,"[0.29427409172058105, 1.0000001192092896, 0.2617243230342865, 0.17789551615715027]"
+WP-146,What kind of fast doesn't involve running?,,Chasing fast.,Breakfast.,No,"[0.27899619936943054, 0.29834842681884766, 0.23101407289505005, 0.2109222561120987]"
+WP-146_SR,Which fast does not involve running?,fast.,Runing fast.,Breakfast.,No,"[0.5929558277130127, 0.6312496066093445, 0.38204818964004517, 0.25381436944007874]"
+WP-146_CR,"
+which break is the shortest?",The longest.,Spring break.,Breakfast.,No,"[0.19890691339969635, 0.2990235686302185, 0.22763407230377197, 0.18698014318943024]"
+WP-147,What type of board can't you play games on?,Keyboard.,Keyboard.,Keyboard.,Yes,"[0.5253041982650757, 0.5508009791374207, 1.0, 0.24886900186538696]"
+WP-147_SR,What kind of board cannot be used for game play?,None of above,None of above.,Keyboard.,No,"[0.23679473996162415, 0.19749636948108673, 0.2459644079208374, 0.9500035047531128]"
+WP-147_CR,What kind of board will your father like best?,Chess,Chessboard.,Motherboard.,No,"[0.310334712266922, 0.45980873703956604, 0.7790437936782837, 0.17643067240715027]"
