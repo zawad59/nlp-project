@@ -12,7 +12,7 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.stem import PorterStemmer
 import os
 
-# Download required NLTK data
+# Download NLTK data
 nltk.download('stopwords')
 nltk.download('punkt')
 
@@ -76,28 +76,26 @@ def tokenize_function(examples):
 tokenized_train_dataset = train_dataset.map(tokenize_function, batched=True, remove_columns=["text"])
 data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 
-# QLoRA fine-tuning configuration
+# LoRA fine-tuning configuration with QLoRA
 lora_config = LoraConfig(
-    r=16,  # Increased rank for better representation
-    lora_alpha=32,  # Higher scaling factor
-    lora_dropout=0.05,  # Reduced dropout for stability
-    task_type="CAUSAL_LM",
-    use_qlora=True,  # Enable QLoRA
-    quantization_bits=4  # 4-bit quantization
+    r=16,
+    lora_alpha=32,
+    lora_dropout=0.1,
+    task_type="CAUSAL_LM"
 )
 
-# Prepare the model for QLoRA fine-tuning using k-bit training
-model = prepare_model_for_kbit_training(model)
+# Prepare the model for QLoRA fine-tuning using k-bit quantization
+model = prepare_model_for_kbit_training(model, quantization_bits=4)
 model = get_peft_model(model, lora_config)
 
 training_args = TrainingArguments(
     output_dir="./gpt2_qlora_finetuned",
     overwrite_output_dir=True,
-    num_train_epochs=5,  # Increased epochs for better convergence
-    per_device_train_batch_size=8,  # Larger batch size for better training
+    num_train_epochs=5,
+    per_device_train_batch_size=8,
     save_steps=500,
     logging_steps=200,
-    learning_rate=3e-5,  # Lower learning rate for stability
+    learning_rate=3e-5,
     weight_decay=0.01,
     fp16=torch.cuda.is_available(),
     report_to="none"
@@ -114,7 +112,7 @@ print("Starting QLoRA fine-tuning...")
 trainer.train()
 trainer.save_model("./gpt2_qlora_finetuned_model")
 
-# Evaluation functions (unchanged)
+# Evaluation functions
 def generate_answer(question, choices):
     prompt = f"Question: {question}\nChoices: {', '.join(choices)}\nAnswer:"
     inputs = tokenizer(prompt, return_tensors="pt").to(device)
