@@ -12,7 +12,8 @@ from sentence_transformers import SentenceTransformer, util
 from sklearn.metrics import accuracy_score, f1_score
 import nltk
 from nltk.corpus import stopwords
-from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.tokenize import sent_tokenize, word_tokenize 
+#import porterStemmer
 from nltk.stem import PorterStemmer
 import os
 
