@@ -1,16 +1,15 @@
 import numpy as np
 import pandas as pd
 import torch
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import Dataset
 from transformers import (
-    pipeline, 
-    AutoTokenizer, 
-    AutoModelForCausalLM, 
-    TrainingArguments, 
+    pipeline,
+    AutoTokenizer,
+    AutoModelForCausalLM,
+    TrainingArguments,
     Trainer,
     DataCollatorForLanguageModeling
 )
-from sentence_transformers import SentenceTransformer, util
 from sklearn.metrics import accuracy_score, f1_score
 import nltk
 from nltk.corpus import stopwords
@@ -34,7 +33,7 @@ model = AutoModelForCausalLM.from_pretrained(model_name).to(device)
 # Ensure the pad token is set (GPT-2 doesn't have one by default)
 tokenizer.pad_token = tokenizer.eos_token
 
-# Function to preprocess training data
+# Function to prepare training data
 def preprocess_data(data):
     stemmer = PorterStemmer()
     stop_words = set(stopwords.words('english'))
@@ -51,110 +50,94 @@ def preprocess_data(data):
         })
     return processed_data
 
-# Custom Dataset for training
-class QADataset(Dataset):
-    def __init__(self, processed_data, tokenizer, max_length=512):
-        self.tokenizer = tokenizer
-        self.max_length = max_length
-        self.examples = []
-        for item in processed_data:
-            question = item['question']
-            choices = item['choices']
-            correct_answer = choices[item['label']]
-            training_text = (
-                f"Question: {question}\n"
-                f"Choices: {', '.join(choices)}\n"
-                f"Answer: {correct_answer}\n\n"
-            )
-            encoded = tokenizer(
-                training_text,
-                truncation=True,
-                max_length=max_length,
-                padding='max_length',
-                return_tensors='pt'
-            )
-            self.examples.append({
-                'input_ids': encoded['input_ids'].squeeze(),
-                'attention_mask': encoded['attention_mask'].squeeze(),
-                'labels': encoded['input_ids'].squeeze()
-            })
-
-    def __len__(self):
-        return len(self.examples)
-
-    def __getitem__(self, idx):
-        return self.examples[idx]
-
-# Function to prepare data
-def prepare_training_data(train_data):
-    processed_data = []
-    for item in train_data:
-        text = item['text']
-        label = item['label']
-        question = text.split('?')[0] + '?'
-        processed_item = {
-            'question': question,
-            'choices': ['choice1', 'choice2', 'choice3', 'choice4'],
-            'label': label
+# Function to generate predictions and evaluate results
+def generate_predictions_and_evaluate(texts, true_indices, true_answers, test_ids):
+    results_data = []
+    
+    for i, context in enumerate(texts):
+        question_part = context.split(" Choices: ")[0]
+        choices = context.split("Choices: ")[1].split(", ")
+        
+        # Generate prediction
+        prompt = f"Question: {question_part}\nChoices: {', '.join(choices)}\nAnswer:"
+        inputs = tokenizer(prompt, return_tensors="pt")
+        outputs = model.generate(
+            inputs['input_ids'].to(device),
+            max_length=200,
+            num_return_sequences=1,
+            temperature=0.7,
+            pad_token_id=tokenizer.pad_token_id
+        )
+        
+        generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
+        model_answer = generated_text.split("Answer:")[-1].strip()
+        
+        predicted_index = choices.index(model_answer) if model_answer in choices else -1
+        predicted_answer = choices[predicted_index] if predicted_index != -1 else "None"
+        
+        is_correct = predicted_index == true_indices[i]
+        
+        result = {
+            'Question_ID': test_ids[i],
+            'Question_Text': question_part,
+            'Correct_Answer': true_answers[i],
+            'Predicted_Answer': predicted_answer,
+            'Is_Correct': "Yes" if is_correct else "No"
         }
-        processed_data.append(processed_item)
-    return processed_data
+        results_data.append(result)
+    
+    predictions = [item['Predicted_Answer'] for item in results_data]
+    accuracy = accuracy_score(true_indices, [choices.index(ans) if ans in choices else -1 for ans in predictions])
+    f1 = f1_score(true_indices, [choices.index(ans) if ans in choices else -1 for ans in predictions], average='weighted')
+    
+    return {
+        'results_data': results_data,
+        'accuracy': accuracy,
+        'f1_score': f1
+    }
 
-# Training arguments
-training_args = TrainingArguments(
-    output_dir="./gpt2_qa_model",
-    num_train_epochs=3,
-    per_device_train_batch_size=4,
-    save_steps=1000,
-    logging_dir='./logs',
-    learning_rate=5e-5,
-    fp16=True
-)
+# Function to evaluate and save results
+def evaluate_and_save_results(test_texts, test_labels, actual_answers, test_ids):
+    os.makedirs('results', exist_ok=True)
+    
+    print("Running evaluation...")
+    results = generate_predictions_and_evaluate(test_texts, test_labels, actual_answers, test_ids)
+    
+    # Create DataFrame and save to CSV
+    results_df = pd.DataFrame(results['results_data'])
+    timestamp = pd.Timestamp.now().strftime('%Y%m%d_%H%M%S')
+    results_df.to_csv(f'results/evaluation_results_{timestamp}.csv', index=False)
+    
+    print(f"\nResults Summary:")
+    print(f"Accuracy: {results['accuracy']:.4f}")
+    print(f"F1 Score: {results['f1_score']:.4f}")
+    
+    return results
 
-data_collator = DataCollatorForLanguageModeling(
-    tokenizer=tokenizer,
-    mlm=False
-)
+# Function to analyze saved CSV results
+def analyze_csv_results(csv_path):
+    df = pd.read_csv(csv_path)
+    print(f"\nAnalysis of {csv_path}")
+    print("-" * 50)
+    print(f"Total questions: {len(df)}")
+    print(f"Correct predictions: {sum(df['Is_Correct'] == 'Yes')}")
+    print(f"Incorrect predictions: {sum(df['Is_Correct'] == 'No')}")
+    print(f"Accuracy: {(sum(df['Is_Correct'] == 'Yes') / len(df)):.4f}")
+    
+    print("\nSample of incorrect predictions:")
+    incorrect_samples = df[df['Is_Correct'] == 'No'].head(3)
+    for _, row in incorrect_samples.iterrows():
+        print("\nQuestion:", row['Question_Text'])
+        print("Correct Answer:", row['Correct_Answer'])
+        print("Predicted Answer:", row['Predicted_Answer'])
 
-# Training function
-def train_model(train_data, model, tokenizer):
-    processed_data = prepare_training_data(train_data)
-    train_dataset = QADataset(processed_data, tokenizer)
-    trainer = Trainer(
-        model=model,
-        args=training_args,
-        train_dataset=train_dataset,
-        data_collator=data_collator
-    )
-    trainer.train()
-    trainer.save_model("./gpt2_qa_model_final")
-    return trainer.model
-
-# Evaluation function
-def validate_training(model, tokenizer, test_question):
-    prompt = f"Question: {test_question['question']}\nChoices: {', '.join(test_question['choices'])}\nAnswer:"
-    inputs = tokenizer(prompt, return_tensors="pt")
-    outputs = model.generate(
-        inputs['input_ids'].to(device),
-        max_length=200,
-        num_return_sequences=1,
-        temperature=0.7,
-        pad_token_id=tokenizer.pad_token_id
-    )
-    response = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    return response
-
-# Load and prepare test data
+# Load test data
 def load_test_data():
-    """
-    Load or define test data here.
-    Replace the below list with actual data loading logic.
-    """
     test_texts = [
         "What is the capital of France? Choices: Paris, London, Berlin, Madrid",
         "Who wrote '1984'? Choices: Orwell, Huxley, Dickens, Tolkien"
     ]
-    test_labels = [0, 0]  # Indices of correct answers
+    test_labels = [0, 0]
     actual_answers = ["Paris", "Orwell"]
     test_ids = [1, 2]
     return test_texts, test_labels, actual_answers, test_ids
@@ -162,12 +145,13 @@ def load_test_data():
 if __name__ == "__main__":
     # Load test data
     test_texts, test_labels, actual_answers, test_ids = load_test_data()
-
-    # Run evaluation and save results
+    
+    # Evaluate and save results
     results = evaluate_and_save_results(test_texts, test_labels, actual_answers, test_ids)
-
-    # Analyze results
+    
+    # Analyze the most recent results
     results_dir = 'results'
-    latest_file = max([f for f in os.listdir(results_dir) if f.startswith('zero_shot_results')], 
-                     key=lambda f: os.path.getmtime(os.path.join(results_dir, f)))
+    latest_file = max([f for f in os.listdir(results_dir) if f.startswith('evaluation_results')],
+                      key=lambda f: os.path.getmtime(os.path.join(results_dir, f)))
+    
     analyze_csv_results(os.path.join(results_dir, latest_file))
