@@ -157,7 +157,7 @@ def evaluate_model(dev_data):
     accuracy = correct_predictions / total_predictions
     print(f"Refined Accuracy: {accuracy:.4f}")
     
-    # Save results to CSV
+    # Save results for Test CSV
     refined_results_df = pd.DataFrame(refined_results)
     timestamp = pd.Timestamp.now().strftime('%Y%m%d_%H%M%S')
     refined_results_df.to_csv(f'results/refined_evaluation_{timestamp}_onTest.csv', index=False)
