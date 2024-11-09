@@ -12,7 +12,7 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.stem import PorterStemmer
 import os
 
-# Download NLTK data
+# Download required NLTK data
 nltk.download('stopwords')
 nltk.download('punkt')
 
@@ -76,7 +76,7 @@ def tokenize_function(examples):
 tokenized_train_dataset = train_dataset.map(tokenize_function, batched=True, remove_columns=["text"])
 data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 
-# LoRA fine-tuning configuration with QLoRA
+# LoRA fine-tuning configuration
 lora_config = LoraConfig(
     r=16,
     lora_alpha=32,
@@ -84,8 +84,8 @@ lora_config = LoraConfig(
     task_type="CAUSAL_LM"
 )
 
-# Prepare the model for QLoRA fine-tuning using k-bit quantization
-model = prepare_model_for_kbit_training(model, quantization_bits=4)
+# Prepare the model for LoRA fine-tuning using k-bit quantization
+model = prepare_model_for_kbit_training(model)  # Removed unsupported parameter
 model = get_peft_model(model, lora_config)
 
 training_args = TrainingArguments(
