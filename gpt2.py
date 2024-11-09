@@ -22,7 +22,9 @@ import os
 # Download required NLTK data
 nltk.download('stopwords')
 nltk.download('punkt')
-
+# Set device
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print(f"Using device: {device}")
 # Initialize the tokenizer and model
 model_name = "gpt2"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
@@ -32,9 +34,7 @@ model = AutoModelForCausalLM.from_pretrained(model_name).to(device)
 tokenizer.pad_token = tokenizer.eos_token
 
 
-# Set device
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print(f"Using device: {device}")
+
 
 # Load and preprocess training data
 def preprocess_data(data):
