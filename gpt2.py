@@ -4,8 +4,6 @@ import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, TrainingArguments, DataCollatorForLanguageModeling
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
 from sentence_transformers import SentenceTransformer, util
-from sklearn.metrics import accuracy_score, f1_score
-from scipy.spatial.distance import euclidean
 import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import sent_tokenize, word_tokenize
@@ -85,11 +83,11 @@ lora_config = LoraConfig(
 )
 
 # Prepare the model for LoRA fine-tuning using k-bit quantization
-model = prepare_model_for_kbit_training(model)  # Removed unsupported parameter
+model = prepare_model_for_kbit_training(model)
 model = get_peft_model(model, lora_config)
 
 training_args = TrainingArguments(
-    output_dir="./gpt2_qlora_finetuned",
+    output_dir="./gpt2_lora_finetuned",
     overwrite_output_dir=True,
     num_train_epochs=5,
     per_device_train_batch_size=8,
@@ -108,11 +106,11 @@ trainer = Trainer(
     data_collator=data_collator
 )
 
-print("Starting QLoRA fine-tuning...")
+print("Starting LoRA fine-tuning...")
 trainer.train()
-trainer.save_model("./gpt2_qlora_finetuned_model")
+trainer.save_model("./gpt2_lora_finetuned_model")
 
-# Evaluation functions
+# Function to generate answer
 def generate_answer(question, choices):
     prompt = f"Question: {question}\nChoices: {', '.join(choices)}\nAnswer:"
     inputs = tokenizer(prompt, return_tensors="pt").to(device)
@@ -120,26 +118,30 @@ def generate_answer(question, choices):
     generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
     return generated_text.split("Answer:")[-1].strip()
 
+# Function to refine prediction using only cosine similarity
 def refine_prediction_with_embeddings(question, choices, generated_answer):
     choice_embeddings = embedder.encode(choices, convert_to_tensor=True)
     generated_embedding = embedder.encode(generated_answer, convert_to_tensor=True)
     cosine_similarities = util.cos_sim(generated_embedding, choice_embeddings)[0]
-    euclidean_distances = [euclidean(generated_embedding.cpu().numpy(), choice.cpu().numpy()) for choice in choice_embeddings]
-    combined_scores = [(cos_sim.item(), -eucl_dist) for cos_sim, eucl_dist in zip(cosine_similarities, euclidean_distances)]
-    best_index = max(range(len(combined_scores)), key=lambda i: combined_scores[i])
+    best_index = torch.argmax(cosine_similarities).item()
     return choices[best_index]
 
+# Evaluation function
 def evaluate_model(dev_data):
     correct_predictions = 0
     total_predictions = len(dev_data)
+    
     for item in dev_data:
         question = item['question']
         choices = item['choice_list']
         true_answer = item['answer']
+        
         generated_answer = generate_answer(question, choices)
         refined_answer = refine_prediction_with_embeddings(question, choices, generated_answer)
+        
         if refined_answer == true_answer:
             correct_predictions += 1
+    
     accuracy = correct_predictions / total_predictions
     print(f"Refined Accuracy: {accuracy:.4f}")
 
