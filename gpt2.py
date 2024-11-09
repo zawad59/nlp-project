@@ -30,7 +30,7 @@ embedder = SentenceTransformer('all-MiniLM-L6-v2').to(device)
 
 # Load training and development datasets
 train_file_path = 'WP_train 1.npy'
-dev_file_path = 'WP_dev 1.npy'
+dev_file_path = 'WP_test 1.npy'
 train_data = np.load(train_file_path, allow_pickle=True)
 dev_data = np.load(dev_file_path, allow_pickle=True)
 
@@ -164,7 +164,7 @@ def evaluate_model(dev_data):
     # Save results to CSV
     results_df = pd.DataFrame(refined_results)
     timestamp = pd.Timestamp.now().strftime('%Y%m%d_%H%M%S')
-    results_df.to_csv(f'results/evaluation_{timestamp}_On_Dev.csv', index=False)
+    results_df.to_csv(f'results/evaluation_{timestamp}_On_Test.csv', index=False)
 
 # Run the full evaluation
 os.makedirs('results', exist_ok=True)
