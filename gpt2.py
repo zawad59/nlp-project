@@ -31,8 +31,8 @@ model = AutoModelForCausalLM.from_pretrained(model_name).to(device)
 tokenizer.pad_token = tokenizer.eos_token
 
 # Load the training and test data
-train_file_path = '/mnt/data/WP_train 1.npy'
-dev_file_path = '/mnt/data/WP_dev 1.npy'
+train_file_path = 'WP_train 1.npy'
+dev_file_path = 'WP_dev 1.npy'
 
 train_data = np.load(train_file_path, allow_pickle=True)
 dev_data = np.load(dev_file_path, allow_pickle=True)
