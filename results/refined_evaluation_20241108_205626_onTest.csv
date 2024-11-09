@@ -1,0 +1,79 @@
+Question_ID,Question_Text,Generated_Answer,Refined_Answer,Correct_Answer,Is_Correct,Cosine_Similarities
+WP-148,What type of bank doesn't hold money?,None of above,None of above.,Snowbank.,No,"[0.19727112352848053, 0.21272915601730347, 0.23161564767360687, 0.9500035047531128]"
+WP-148_SR,What kind of bank doesn't keep cash on hand?,"The Federal Reserve Bank of St. Louis.
+
+
+Source: The Federal Reserve Bank of",Central bank.,Snowbank.,No,"[0.3686215281486511, 0.5397241711616516, 0.6657804250717163, 0.08952319622039795]"
+WP-148_CR,What kind of bank doesn't have money on hand?,Riverbank,Riverbank.,Riverbank.,Yes,"[0.976028561592102, 0.46767157316207886, 0.5011701583862305, 0.15284639596939087]"
+WP-149,What type of root can't be eaten?,Cabbage,Cabbage root.,Square root.,No,"[0.5584489703178406, 0.8434484004974365, 0.22783300280570984, 0.13322857022285461]"
+WP-149_SR,What kind of root cannot be consumed?,,Square root.,Square root.,Yes,"[0.22180719673633575, 0.188497394323349, 0.1613447368144989, 0.2109222561120987]"
+WP-149_CR,What sort of root should one not eat?,"Carrot root.
+
+
+Answer",Carrot root.,Cube root.,No,"[0.5805155038833618, 0.7306576371192932, 0.9382888078689575, 0.15837785601615906]"
+WP-150,What kind of mouse can't you feed cheese to?,A,A computer mouse.,A computer mouse.,Yes,"[0.3060648739337921, 0.26638680696487427, 0.2513124346733093, 0.24929435551166534]"
+WP-150_SR,What type of mouse are ineligible for cheese feeding?,An old mouse.,An old mouse.,A computer mouse.,No,"[0.8172747492790222, 0.776218056678772, 1.0, 0.07325926423072815]"
+WP-150_CR,The kind of mouse engineers like most？,A computer mouse.,A computer mouse.,A computer mouse.,Yes,"[0.7444057464599609, 0.7902886271476746, 1.0, 0.09331689774990082]"
+WP-151,What kind of plant can't photosynthesize?,"A house.
+
+
+Answer",A house plant,A power plant.,No,"[0.4283376932144165, 0.6645128726959229, 0.4134071469306946, 0.2273886650800705]"
+WP-151_SR,Which plants are incapable of photosynthesizing?,A house plant.,A house plant,A power plant.,No,"[0.9854207038879395, 0.5983127355575562, 0.7911859750747681, 0.05173394829034805]"
+WP-151_CR,What plants can not photosyntheszie but can produce energy.,,None of above.,A nuclear plant.,No,"[-0.009186789393424988, 0.028815653175115585, -0.0032331347465515137, 0.2109222561120987]"
+WP-152,What kind of wood never gets chopped?,"Hollywood.
+
+
+Answer",Hollywood.,Hollywood.,Yes,"[0.2066337615251541, 0.881267786026001, 0.27444174885749817, 0.3263583779335022]"
+WP-152_SR,What sort of wood is never cut?,None of above.,None of above.,Hollywood.,No,"[0.3085879683494568, 0.2613409161567688, 0.220287024974823, 1.0]"
+WP-152_CR,What sort of wood is never cut?,None of above.,None of above.,Sherwood.,No,"[0.2613409161567688, 0.2908441722393036, 0.220287024974823, 1.0]"
+WP-154,What type of dish doesn't hold food?,A side dish.,A side dish.,A satellite dish.,No,"[0.7397314310073853, 0.7039861679077148, 1.0000001192092896, 0.1124357283115387]"
+WP-154_SR,What kind of dish cannot accommodate food?,A fish dish.,A fish dish.,A satellite dish.,No,"[0.6441052556037903, 1.0, 0.7039860486984253, 0.11294527351856232]"
+WP-154_CR,What sort of dish is incapable of holding food?,Petri dish,Petri dish.,Petri dish.,Yes,"[0.6235955953598022, 0.9778186082839966, 0.6424413323402405, 0.13469496369361877]"
+WP-155,What kind of bottle can't hold a liquid?,A water bottle,A water bottle.,A bottle neck.,No,"[0.7192531228065491, 0.8201717138290405, 0.9807471632957458, 0.05222957208752632]"
+WP-155_SR,What sort of bottle is incapable of holding a liquid?,,None of above.,A bottle neck.,No,"[0.17097815871238708, 0.1153731569647789, 0.1826077103614807, 0.2109222561120987]"
+WP-155_CR,What kind of bottle is smallest.,None,None of above.,Baby bottle.,No,"[0.16037338972091675, 0.17797085642814636, 0.156697079539299, 0.5166749358177185]"
+WP-156,What kind of note can't be played?,"A music note.
+
+
+Answer",A music note.,A footnote.,No,"[0.9250260591506958, 0.5410776734352112, 0.6462444067001343, 0.1475897878408432]"
+WP-156_SR,What sort of note is impossible to play?,"A music note.
+
+
+Answer",A music note.,A footnote.,No,"[0.6462444067001343, 0.9250260591506958, 0.5410776734352112, 0.1475897878408432]"
+WP-156_CR,What sort of note is valuable?,,A high note.,A banknote.,No,"[0.1702776849269867, 0.1746746450662613, 0.2961042523384094, 0.2109222561120987]"
+WP-158,What kind of watch can't tell time?,"A watch.
+
+
+Answer",A wristwatch.,A watchdog.,No,"[0.7097965478897095, 0.7228497862815857, 0.6907292008399963, 0.1750490963459015]"
+WP-158_SR,What sort of watch is unable to tell the time?,A watch.,A wristwatch.,A watchdog.,No,"[0.8055614233016968, 0.809372067451477, 0.7106590867042542, 0.09120042622089386]"
+WP-158_CR,What kind of watch only works at night?,Wristwatch.,Wristwatch.,Nightwatch.,No,"[0.623551070690155, 0.576936662197113, 1.0000001192092896, 0.12629151344299316]"
+WP-159,What type of pump doesn't inflate anything?,"Air pump.
+
+
+Answer",Air pump.,Pumpkin.,No,"[0.7106294631958008, 0.14236173033714294, 0.9126095175743103, 0.14675398170948029]"
+WP-159_SR,What kind of pump is incapable of inflating anything?,,Pumpkin.,Pumpkin.,Yes,"[0.19487683475017548, 0.17664380371570587, 0.27559179067611694, 0.2109222561120987]"
+WP-159_CR,What type of pan doesn't help with cooking?,,Company.,Company.,Yes,"[0.2387404441833496, 0.19728490710258484, 0.37741929292678833, 0.2109222561120987]"
+WP-160,What type of ink never leaves a stain?,None of,None of above.,Link.,No,"[0.26325154304504395, 0.22252964973449707, 0.2153744399547577, 0.6542240977287292]"
+WP-160_SR,What kind of ink doesn't leave stains behind?,Blue,Blue ink.,Link.,No,"[0.18876242637634277, 0.47938090562820435, 0.6857516765594482, 0.20152142643928528]"
+WP-160_CR,What type of ball can't be thrown or kicked?,,Eyeball.,Eyeball.,Yes,"[0.29275161027908325, 0.26393967866897583, 0.29175251722335815, 0.2109222561120987]"
+WP-161,What type of art doesn't hang in a gallery?,Tart.,Tart.,Tart.,Yes,"[0.19667306542396545, 0.2167055904865265, 1.0000001192092896, 0.18875423073768616]"
+WP-161_SR,What kind of artwork isn't displayed in galleries?,Tart.,Tart.,Tart.,Yes,"[0.2167055904865265, 0.19667306542396545, 1.0000001192092896, 0.18875423073768616]"
+WP-161_CR,What kind of man can't walk or talk?,"A business man.
+
+
+Question",A business man.,A snowman.,No,"[0.9190956354141235, 0.23531554639339447, 0.3400088846683502, 0.11558797955513]"
+WP-162,What kind of bell doesn't make a sound?,A cowbell,A cowbell.,A dumbbell.,No,"[0.2640308141708374, 0.9883476495742798, 0.7317320704460144, 0.09133056551218033]"
+WP-162_SR,Which sort of bell doesn't ring?,"A cowbell.
+
+
+Answer",A cowbell.,A dumbbell.,No,"[0.7690213322639465, 0.3060348629951477, 0.9620556235313416, 0.1412545144557953]"
+WP-162_CR," What kind of ""stone"" can't be found in a quarry?","Sandstone.
+
+
+Source:",Sandstone.,Milestone.,No,"[0.45401689410209656, 0.9013886451721191, 0.12490858882665634, 0.12958566844463348]"
+WP-163,What type of ice never melts?,Ice.,Glacier ice.,Dice.,No,"[0.3875296711921692, 0.7365463972091675, 0.8044998049736023, 0.2993610203266144]"
+WP-163_SR,What kind of ice doesn't melt?,Ice,Glacier ice.,Dice.,No,"[0.8143085241317749, 0.34879812598228455, 0.7528471946716309, 0.23229064047336578]"
+WP-163_CR,What kind of ice doesn't contain water?,"Dry ice.
+
+
+Answer",Dry ice.,Dry ice.,Yes,"[0.6942461729049683, 0.9149434566497803, 0.6528760194778442, 0.1648412048816681]"
