@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, TrainingArguments, DataCollatorForLanguageModeling
+from peft import LoraConfig, get_peft_model, prepare_model_for_int8_training
 from sentence_transformers import SentenceTransformer, util
 from sklearn.metrics import accuracy_score, f1_score
 from scipy.spatial.distance import euclidean
@@ -11,7 +12,7 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.stem import PorterStemmer
 import os
 
-# Download NLTK data
+# Download required NLTK data
 nltk.download('stopwords')
 nltk.download('punkt')
 
@@ -77,9 +78,20 @@ def tokenize_function(examples):
 tokenized_train_dataset = train_dataset.map(tokenize_function, batched=True, remove_columns=["text"])
 data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 
-# Step 2: Fine-tune GPT-2
+# Step 2: Fine-tune GPT-2 using LoRA with PEFT
+lora_config = LoraConfig(
+    r=8,
+    lora_alpha=16,
+    lora_dropout=0.1,
+    task_type="CAUSAL_LM"
+)
+
+# Prepare the model for LoRA fine-tuning
+model = prepare_model_for_int8_training(model)
+model = get_peft_model(model, lora_config)
+
 training_args = TrainingArguments(
-    output_dir="./gpt2_qa_finetuned",
+    output_dir="./gpt2_lora_finetuned",
     overwrite_output_dir=True,
     num_train_epochs=3,
     per_device_train_batch_size=4,
@@ -98,9 +110,9 @@ trainer = Trainer(
     data_collator=data_collator
 )
 
-print("Starting fine-tuning...")
+print("Starting LoRA fine-tuning...")
 trainer.train()
-trainer.save_model("./gpt2_qa_finetuned_model")
+trainer.save_model("./gpt2_lora_finetuned_model")
 
 # Step 3: Generate and Refine Answers
 def generate_answer(question, choices):
@@ -113,7 +125,6 @@ def generate_answer(question, choices):
     return generated_text.split("Answer:")[-1].strip()
 
 def refine_prediction_with_embeddings(question, choices, generated_answer):
-    # Generate embeddings for the choices and the generated answer
     choice_embeddings = embedder.encode(choices, convert_to_tensor=True)
     generated_embedding = embedder.encode(generated_answer, convert_to_tensor=True)
     
@@ -123,7 +134,7 @@ def refine_prediction_with_embeddings(question, choices, generated_answer):
     # Calculate Euclidean distances
     euclidean_distances = [euclidean(generated_embedding.cpu().numpy(), choice.cpu().numpy()) for choice in choice_embeddings]
     
-    # Select the best answer based on combined metrics
+    # Select the best answer
     combined_scores = [(cos_sim.item(), -eucl_dist) for cos_sim, eucl_dist in zip(cosine_similarities, euclidean_distances)]
     best_index = max(range(len(combined_scores)), key=lambda i: combined_scores[i])
     
@@ -160,12 +171,9 @@ def evaluate_model(dev_data):
     
     accuracy = correct_predictions / total_predictions
     print(f"Refined Accuracy: {accuracy:.4f}")
-    
-    # Save results to CSV
-    results_df = pd.DataFrame(refined_results)
     timestamp = pd.Timestamp.now().strftime('%Y%m%d_%H%M%S')
-    results_df.to_csv(f'results/evaluation_{timestamp}_On_Test.csv', index=False)
+    pd.DataFrame(refined_results).to_csv(f'results/evaluation_{timestamp}.csv', index=False)
 
-# Run the full evaluation
+# Run the evaluation
 os.makedirs('results', exist_ok=True)
 evaluate_model(dev_data)
