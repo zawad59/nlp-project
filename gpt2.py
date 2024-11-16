@@ -8,8 +8,9 @@ from nltk.corpus import stopwords
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.stem import PorterStemmer
 from datasets import Dataset as HFDataset
+import csv
 
-# Download NLTK data
+# Download required NLTK data
 nltk.download('stopwords')
 nltk.download('punkt')
 
@@ -80,9 +81,6 @@ def tokenize_function(examples):
 tokenized_train_dataset = train_dataset.map(tokenize_function, batched=True, remove_columns=["text", "choices", "label"])
 tokenized_dev_dataset = dev_dataset.map(tokenize_function, batched=True, remove_columns=["text", "choices", "label"])
 
-# Debug: Check a sample to ensure correct structure
-print("Sample tokenized data:", tokenized_train_dataset[0])
-
 # Data collator for language modeling
 data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 
@@ -100,15 +98,10 @@ model = get_peft_model(model, lora_config)
 # Custom Trainer class to handle the compute_loss method
 class CustomTrainer(Trainer):
     def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
-        """
-        Override the compute_loss method to ensure labels are passed correctly.
-        """
         labels = inputs.pop("labels")
         outputs = model(**inputs)
         logits = outputs.logits.view(-1, outputs.logits.size(-1))
         labels = labels.view(-1)
-
-        # Calculate the cross-entropy loss
         loss = torch.nn.CrossEntropyLoss()(logits, labels)
         return (loss, outputs) if return_outputs else loss
 
@@ -162,25 +155,45 @@ def generate_answer(question, choices):
     generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
     return generated_text.split("Answer:")[-1].strip()
 
-# Evaluate on the test set
+# Function to evaluate on test set
 def evaluate_on_test(test_data):
+    predictions = []
     correct_predictions = 0
-    for item in test_data:
+    for idx, item in enumerate(test_data):
         question = item['text']
         choices = item['choices']
         true_label = item['label']
-        generated_answer = generate_answer(question, choices)
+        correct_answer = choices[true_label]
 
-        choice_embeddings = embedder.encode(choices, convert_to_tensor=True)
-        generated_embedding = embedder.encode(generated_answer, convert_to_tensor=True)
-        cosine_similarities = util.cos_sim(generated_embedding, choice_embeddings)[0]
-        best_index = torch.argmax(cosine_similarities).item()
+        # Generate answer
+        predicted_answer = generate_answer(question, choices)
 
-        if best_index == true_label:
+        # Check if predicted answer is correct
+        is_correct = "yes" if predicted_answer == correct_answer else "no"
+        predictions.append({
+            "Question ID": idx + 1,
+            "Actual Question Text": question,
+            "Choices": ', '.join(choices),
+            "Predicted Answer": predicted_answer,
+            "Correct Answer": correct_answer,
+            "Predicted == Correct": is_correct
+        })
+        if is_correct == "yes":
             correct_predictions += 1
 
     accuracy = correct_predictions / len(test_data)
     print(f"Test Accuracy: {accuracy:.4f}")
+    return predictions
 
-# Run evaluation on test set
-evaluate_on_test(processed_test_data)
+# Function to save predictions to CSV
+def save_predictions_to_csv(predictions, filename="prediction_results_WP_gpt2.csv"):
+    with open(filename, mode='w', newline='', encoding='utf-8') as file:
+        writer = csv.DictWriter(file, fieldnames=["Question ID", "Actual Question Text", "Choices",
+                                                  "Predicted Answer", "Correct Answer", "Predicted == Correct"])
+        writer.writeheader()
+        writer.writerows(predictions)
+    print(f"Predictions saved to {filename}")
+
+# Run evaluation and save results to CSV
+predictions = evaluate_on_test(processed_test_data)
+save_predictions_to_csv(predictions)
