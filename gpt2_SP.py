@@ -37,25 +37,31 @@ test_data = np.load('SP_test 1.npy', allow_pickle=True)
 stemmer = PorterStemmer()
 stop_words = set(stopwords.words('english'))
 
-# Preprocess the SP dataset
-# Updated Preprocess Function to Preserve Original Question
-def preprocess_sp_data(data):
+# Preprocess the data
+def preprocess_gpt2_data(data):
     processed_data = []
     for item in data:
         question = item['question']
         choices = item['choice_list']
         correct_answer = choices[item['label']]
 
-        # Keep the original question structure, only lowercase and tokenize
-        cleaned_question = question.lower()
+        sentences = sent_tokenize(question)
+        cleaned_sentences = []
+        for sentence in sentences:
+            words = word_tokenize(sentence.lower())
+            filtered_words = [stemmer.stem(word) for word in words if word.isalpha() and word not in stop_words]
+            cleaned_sentence = ' '.join(filtered_words)
+            cleaned_sentences.append(cleaned_sentence)
 
-        # Create the training text for GPT-2
+        cleaned_question = ' '.join(cleaned_sentences)
         training_text = (
             f"Question: {cleaned_question}\n"
-            f"Choices:\n" + "\n".join([f"{i + 1}. {choice}" for i, choice in enumerate(choices)]) + "\nAnswer:"
+            f"Choices: {', '.join(choices)}\n"
+            f"Answer: {correct_answer}\n\n"
         )
         processed_data.append({'text': training_text, 'choices': choices, 'label': item['label']})
     return processed_data
+
 
 # Re-run the preprocessing step
 processed_train_data = preprocess_sp_data(train_data)
@@ -104,7 +110,7 @@ class CustomTrainer(Trainer):
 # Training arguments
 training_args = TrainingArguments(
     output_dir="./gpt2_lora_finetuned_SP",
-    num_train_epochs=10,
+    num_train_epochs=4,
     per_device_train_batch_size=8,
     evaluation_strategy="epoch",
     save_strategy="epoch",
