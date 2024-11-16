@@ -37,7 +37,7 @@ test_data = np.load('SP_test 1.npy', allow_pickle=True)
 stemmer = PorterStemmer()
 stop_words = set(stopwords.words('english'))
 
-# Preprocess SP dataset
+# Preprocess the SP dataset
 def preprocess_sp_data(data):
     processed_data = []
     for item in data:
@@ -108,13 +108,13 @@ class CustomTrainer(Trainer):
 training_args = TrainingArguments(
     output_dir="./gpt2_lora_finetuned_SP",
     overwrite_output_dir=True,
-    num_train_epochs=10,
+    num_train_epochs=20,
     per_device_train_batch_size=8,
     evaluation_strategy="epoch",
     save_strategy="epoch",
     logging_steps=100,
-    learning_rate=3e-5,
-    weight_decay=0.001,
+    learning_rate=2e-5,
+    weight_decay=0.01,
     fp16=torch.cuda.is_available(),
     save_total_limit=1,
     load_best_model_at_end=True,
@@ -135,7 +135,6 @@ print("Starting training...")
 trainer.train()
 trainer.save_model("./gpt2_lora_best_model_SP")
 
-# Load the best model for evaluation
 model = AutoModelForCausalLM.from_pretrained("./gpt2_lora_best_model_SP").to(device)
 
 # Function to generate answers
@@ -154,7 +153,7 @@ def refine_prediction_with_similarity(generated_answer, choices):
     best_index = torch.argmax(cosine_similarities).item()
     return choices[best_index]
 
-# Evaluate on the test set
+# Evaluate on the test set and save to CSV
 def evaluate_on_test(test_data):
     predictions = []
     correct_predictions = 0
@@ -189,6 +188,8 @@ def save_predictions_to_csv(predictions, filename="prediction_results_SP_gpt2.cs
                                                   "Predicted Answer", "Correct Answer", "Predicted == Correct"])
         writer.writeheader()
         writer.writerows(predictions)
+    print(f"Predictions saved to {filename}")
 
+# Run evaluation and save results
 predictions = evaluate_on_test(processed_test_data)
 save_predictions_to_csv(predictions)
