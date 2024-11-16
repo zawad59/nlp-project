@@ -94,24 +94,15 @@ lora_config = LoraConfig(
 model = prepare_model_for_kbit_training(model)
 model = get_peft_model(model, lora_config)
 
-
-# Custom Trainer class to handle the compute_loss method
+# Custom Trainer class
 class CustomTrainer(Trainer):
     def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
-        """
-        Custom loss computation method that handles additional keyword arguments.
-        """
         labels = inputs.pop("labels")
         outputs = model(**inputs)
-
-        # Compute logits
         logits = outputs.logits.view(-1, outputs.logits.size(-1))
         labels = labels.view(-1)
-
-        # Compute loss using CrossEntropyLoss
         loss = torch.nn.CrossEntropyLoss()(logits, labels)
         return (loss, outputs) if return_outputs else loss
-
 
 # Training arguments
 training_args = TrainingArguments(
@@ -158,8 +149,10 @@ def refine_prediction_with_similarity(generated_answer, choices):
     best_index = torch.argmax(cosine_similarities).item()
     return choices[best_index]
 
+# Evaluate on the test set and calculate accuracy
 def evaluate_on_test(test_data):
     predictions = []
+    correct_predictions = 0
     for idx, item in enumerate(test_data):
         question = item['text']
         choices = item['choices']
@@ -178,8 +171,12 @@ def evaluate_on_test(test_data):
             "Correct Answer": correct_answer,
             "Predicted == Correct": is_correct
         })
+        if is_correct == "yes":
+            correct_predictions += 1
 
-    return predictions
+    accuracy = correct_predictions / len(test_data)
+    print(f"Test Accuracy: {accuracy:.4f}")
+    return predictions, accuracy
 
 def save_predictions_to_csv(predictions, filename="prediction_results_SP_gpt2.csv"):
     with open(filename, mode='w', newline='', encoding='utf-8') as file:
@@ -187,7 +184,9 @@ def save_predictions_to_csv(predictions, filename="prediction_results_SP_gpt2.cs
                                                   "Predicted Answer", "Correct Answer", "Predicted == Correct"])
         writer.writeheader()
         writer.writerows(predictions)
+    print(f"Predictions saved to {filename}")
 
 # Evaluate and save results
-predictions = evaluate_on_test(processed_test_data)
-save_predictions_to_csv(predictions)
+predictions, accuracy = evaluate_on_test(processed_test_data)
+print(f"Final Test Accuracy: {accuracy:.4f}")
+save_predictions_to_csv(predictions, filename="prediction_results_SP_gpt2.csv")
