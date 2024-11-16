@@ -21,7 +21,8 @@ print(f"Using device: {device}")
 model_name = "gpt2"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 tokenizer.pad_token = tokenizer.eos_token
-model = AutoModelForCausalLM.from_pretrained(model_name).to(device)
+model.config.pad_token_id = tokenizer.pad_token_id
+
 
 # Load SentenceTransformer for embeddings
 embedder = SentenceTransformer('all-MiniLM-L6-v2').to(device)
@@ -149,15 +150,17 @@ def generate_answer(question):
     outputs = model.generate(
         inputs['input_ids'],
         attention_mask=inputs['attention_mask'],
-        max_new_tokens=50,
-        temperature=0.3,  # Lower temperature for more deterministic outputs
-        do_sample=False,  # Disable sampling to get more focused predictions
+        max_new_tokens=20,  # Restrict the length of the generated answer
+        temperature=0.3,
+        do_sample=False,  # Use deterministic generation for more focused output
         pad_token_id=tokenizer.pad_token_id
     )
 
     generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
     predicted_answer = generated_text.split("Answer:")[-1].strip()
+    print(f"Debug - Raw Generated Answer: {predicted_answer}")  # Debugging statement
     return predicted_answer
+
 
 def refine_prediction_with_embeddings(generated_answer, choices):
     """
@@ -198,8 +201,14 @@ def evaluate_on_test(test_data):
         # Generate initial answer
         generated_answer = generate_answer(question)
         
+        # Debugging: Check what the model is generating
+        print(f"\nQuestion: {question}")
+        print(f"Generated Answer: {generated_answer}")
+        
         # Refine prediction using cosine similarity
         refined_answer = refine_prediction_with_embeddings(generated_answer, choices)
+        print(f"Refined Answer: {refined_answer}")
+        
         is_correct = "yes" if refined_answer == correct_answer else "no"
 
         results.append({
@@ -217,6 +226,7 @@ def evaluate_on_test(test_data):
     accuracy = correct_predictions / len(test_data)
     print(f"Test Accuracy: {accuracy:.4f}")
     return results
+
 
 def save_predictions_to_csv(results, filename="prediction_results_SP_gpt2_fixed.csv"):
     """
