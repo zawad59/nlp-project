@@ -118,12 +118,12 @@ class CustomTrainer(Trainer):
 
 training_args = TrainingArguments(
     output_dir="./gpt2_lora_finetuned_SP",
-    num_train_epochs=5,
+    num_train_epochs=3,
     per_device_train_batch_size=8,
     evaluation_strategy="epoch",
     save_strategy="epoch",
-    learning_rate=2e-5,
-    weight_decay=0.01,
+    learning_rate=3e-5,
+    weight_decay=0.001,
     logging_steps=100,
     fp16=torch.cuda.is_available(),
     save_total_limit=1,
