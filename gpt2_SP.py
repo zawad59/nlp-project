@@ -10,7 +10,7 @@ from nltk.stem import PorterStemmer
 from datasets import Dataset as HFDataset
 import csv
 
-# Download NLTK data
+# Download required NLTK data
 nltk.download('stopwords')
 nltk.download('punkt')
 
@@ -28,9 +28,9 @@ tokenizer.pad_token = tokenizer.eos_token
 embedder = SentenceTransformer('all-MiniLM-L6-v2').to(device)
 
 # Load the SP dataset
-train_data = np.load('SP_train 1.npy', allow_pickle=True)
-dev_data = np.load('SP_dev 1.npy', allow_pickle=True)
-test_data = np.load('SP_test 1.npy', allow_pickle=True)
+train_data = np.load('/mnt/data/SP_train 1.npy', allow_pickle=True)
+dev_data = np.load('/mnt/data/SP_dev 1.npy', allow_pickle=True)
+test_data = np.load('/mnt/data/SP_test 1.npy', allow_pickle=True)
 
 # Initialize NLTK tools
 stemmer = PorterStemmer()
@@ -41,11 +41,10 @@ def preprocess_sp_data(data):
     processed_data = []
     for item in data:
         question = item['question']
-        # Choices are embedded within the question itself in SP data
         correct_answer = item['choice_list'][item['label']]
+        cleaned_sentences = []
 
         sentences = sent_tokenize(question)
-        cleaned_sentences = []
         for sentence in sentences:
             words = word_tokenize(sentence.lower())
             filtered_words = [stemmer.stem(word) for word in words if word.isalpha() and word not in stop_words]
@@ -90,22 +89,18 @@ lora_config = LoraConfig(
 model = prepare_model_for_kbit_training(model)
 model = get_peft_model(model, lora_config)
 
-# Custom Trainer class
+# Custom Trainer class to handle the compute_loss method
 class CustomTrainer(Trainer):
     def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
         """
-        Override the compute_loss method to handle the custom logic.
-        The **kwargs ensures compatibility with any unexpected arguments.
+        Override the compute_loss method to handle unexpected arguments.
         """
         labels = inputs.pop("labels")
         outputs = model(**inputs)
         logits = outputs.logits.view(-1, outputs.logits.size(-1))
         labels = labels.view(-1)
-        
-        # Calculate the cross-entropy loss
         loss = torch.nn.CrossEntropyLoss()(logits, labels)
         return (loss, outputs) if return_outputs else loss
-
 
 # Training arguments
 training_args = TrainingArguments(
@@ -117,7 +112,8 @@ training_args = TrainingArguments(
     learning_rate=3e-5,
     weight_decay=0.001,
     fp16=torch.cuda.is_available(),
-    load_best_model_at_end=True
+    load_best_model_at_end=True,
+    report_to="none"
 )
 
 # Initialize the custom trainer
@@ -130,15 +126,15 @@ trainer = CustomTrainer(
     tokenizer=tokenizer
 )
 
-# Start training
+# Fine-tune the model
 print("Starting training...")
 trainer.train()
 trainer.save_model("./gpt2_lora_best_model_SP")
 
-
 # Load the fine-tuned model
 model = AutoModelForCausalLM.from_pretrained("./gpt2_lora_best_model_SP").to(device)
 
+# Function to generate answers using the fine-tuned model
 def generate_answer(question):
     prompt = f"Question: {question}\nAnswer:"
     inputs = tokenizer(prompt, return_tensors="pt", padding=True, truncation=True).to(device)
@@ -152,16 +148,17 @@ def generate_answer(question):
     predicted_answer = generated_text.split("Answer:")[-1].strip()
     return predicted_answer
 
+# Evaluate on the test set and save predictions to CSV
 def evaluate_on_test(test_data):
+    predictions = []
     correct_predictions = 0
-    results = []
     for idx, item in enumerate(test_data):
         question = item['text']
         correct_answer = item['correct_answer']
 
         predicted_answer = generate_answer(question)
         is_correct = "yes" if predicted_answer == correct_answer else "no"
-        results.append({
+        predictions.append({
             "Question ID": idx + 1,
             "Question Text": question,
             "Predicted Answer": predicted_answer,
@@ -173,13 +170,15 @@ def evaluate_on_test(test_data):
 
     accuracy = correct_predictions / len(test_data)
     print(f"Test Accuracy: {accuracy:.4f}")
-    return results
+    return predictions
 
-def save_predictions_to_csv(results):
-    with open("prediction_results_SP_gpt2.csv", mode='w', newline='') as file:
+def save_predictions_to_csv(results, filename="prediction_results_SP_gpt2.csv"):
+    with open(filename, mode='w', newline='', encoding='utf-8') as file:
         writer = csv.DictWriter(file, fieldnames=["Question ID", "Question Text", "Predicted Answer", "Correct Answer", "Correct?"])
         writer.writeheader()
         writer.writerows(results)
+    print(f"Predictions saved to {filename}")
 
+# Run evaluation and save results to CSV
 results = evaluate_on_test(processed_test_data)
 save_predictions_to_csv(results)
