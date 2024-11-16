@@ -92,13 +92,20 @@ model = get_peft_model(model, lora_config)
 
 # Custom Trainer class
 class CustomTrainer(Trainer):
-    def compute_loss(self, model, inputs, return_outputs=False):
+    def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
+        """
+        Override the compute_loss method to handle the custom logic.
+        The **kwargs ensures compatibility with any unexpected arguments.
+        """
         labels = inputs.pop("labels")
         outputs = model(**inputs)
         logits = outputs.logits.view(-1, outputs.logits.size(-1))
         labels = labels.view(-1)
+        
+        # Calculate the cross-entropy loss
         loss = torch.nn.CrossEntropyLoss()(logits, labels)
-        return loss
+        return (loss, outputs) if return_outputs else loss
+
 
 # Training arguments
 training_args = TrainingArguments(
@@ -113,6 +120,7 @@ training_args = TrainingArguments(
     load_best_model_at_end=True
 )
 
+# Initialize the custom trainer
 trainer = CustomTrainer(
     model=model,
     args=training_args,
@@ -122,8 +130,11 @@ trainer = CustomTrainer(
     tokenizer=tokenizer
 )
 
+# Start training
+print("Starting training...")
 trainer.train()
 trainer.save_model("./gpt2_lora_best_model_SP")
+
 
 # Load the fine-tuned model
 model = AutoModelForCausalLM.from_pretrained("./gpt2_lora_best_model_SP").to(device)
