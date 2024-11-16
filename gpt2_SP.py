@@ -28,9 +28,9 @@ tokenizer.pad_token = tokenizer.eos_token
 embedder = SentenceTransformer('all-MiniLM-L6-v2').to(device)
 
 # Load the SP dataset
-train_data = np.load('SP_train 1.npy', allow_pickle=True)
-dev_data = np.load('SP_dev 1.npy', allow_pickle=True)
-test_data = np.load('SP_test 1.npy', allow_pickle=True)
+train_data = np.load('/mnt/data/SP_train 1.npy', allow_pickle=True)
+dev_data = np.load('/mnt/data/SP_dev 1.npy', allow_pickle=True)
+test_data = np.load('/mnt/data/SP_test 1.npy', allow_pickle=True)
 
 # Preprocess the SP data
 def preprocess_sp_data(data):
@@ -41,7 +41,6 @@ def preprocess_sp_data(data):
         choices = item['choice_list']
         label = item['label']
         
-        # Format the question text to include the choices
         choices_text = "\n".join([f"{i + 1}. {choice}" for i, choice in enumerate(choices)])
         training_text = f"Question: {question}\nChoices:\n{choices_text}\nAnswer:"
         
@@ -65,17 +64,24 @@ test_dataset = HFDataset.from_list(processed_test_data)
 
 # Tokenize datasets
 def tokenize_function(examples):
-    tokens = tokenizer(examples["text"], padding='max_length', truncation=True, max_length=512)
+    tokens = tokenizer(
+        examples["text"],
+        padding='max_length',
+        truncation=True,
+        max_length=512
+    )
     tokens["labels"] = tokens["input_ids"].copy()
+    tokens["attention_mask"] = tokens["attention_mask"]
     return tokens
+
 
 tokenized_train_dataset = train_dataset.map(tokenize_function, batched=True, remove_columns=["text", "choices", "correct_answer", "label"])
 tokenized_dev_dataset = dev_dataset.map(tokenize_function, batched=True, remove_columns=["text", "choices", "correct_answer", "label"])
 
-# Data collator for language modeling
+# Data collator
 data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 
-# LoRA fine-tuning configuration
+# LoRA configuration
 lora_config = LoraConfig(
     r=16,
     lora_alpha=32,
@@ -86,26 +92,33 @@ lora_config = LoraConfig(
 model = prepare_model_for_kbit_training(model)
 model = get_peft_model(model, lora_config)
 
-# Custom Trainer class
+# Custom Trainer class to track validation loss
 class CustomTrainer(Trainer):
-    def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
+    def compute_loss(self, model, inputs, return_outputs=False):
         labels = inputs.pop("labels")
-        outputs = model(**inputs)
+        attention_mask = inputs.pop("attention_mask")
+        outputs = model(**inputs, attention_mask=attention_mask)
         logits = outputs.logits.view(-1, outputs.logits.size(-1))
         labels = labels.view(-1)
         loss = torch.nn.CrossEntropyLoss()(logits, labels)
         return (loss, outputs) if return_outputs else loss
 
+
+# Training arguments with evaluation strategy
 training_args = TrainingArguments(
     output_dir="./gpt2_lora_finetuned_SP",
-    num_train_epochs=5,
+    num_train_epochs=10,
     per_device_train_batch_size=8,
     evaluation_strategy="epoch",
     save_strategy="epoch",
     learning_rate=3e-5,
     weight_decay=0.001,
+    logging_steps=100,
     fp16=torch.cuda.is_available(),
-    load_best_model_at_end=True
+    save_total_limit=1,
+    load_best_model_at_end=True,
+    pad_token_id=tokenizer.pad_token_id,
+    report_to="none"
 )
 
 trainer = CustomTrainer(
@@ -117,21 +130,43 @@ trainer = CustomTrainer(
     tokenizer=tokenizer
 )
 
+# Train and save the best model based on validation loss
+print("Starting training...")
 trainer.train()
 trainer.save_model("./gpt2_lora_best_model_SP")
+
+# Load the best model
 model = AutoModelForCausalLM.from_pretrained("./gpt2_lora_best_model_SP").to(device)
 
 def generate_answer(question):
-    inputs = tokenizer(question, return_tensors="pt", padding=True, truncation=True).to(device)
-    outputs = model.generate(inputs['input_ids'], max_new_tokens=50, temperature=0.7, do_sample=True)
+    """
+    Generate an answer using the fine-tuned model.
+    This function takes care of padding and attention masks.
+    """
+    inputs = tokenizer(
+        question,
+        return_tensors="pt",
+        padding=True,
+        truncation=True,
+        max_length=512
+    ).to(device)
+
+    # Explicitly set pad_token_id and attention_mask
+    outputs = model.generate(
+        inputs['input_ids'],
+        attention_mask=inputs['attention_mask'],
+        max_new_tokens=50,
+        temperature=0.7,
+        do_sample=True,
+        pad_token_id=tokenizer.pad_token_id
+    )
+
     generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
     predicted_answer = generated_text.split("Answer:")[-1].strip()
     return predicted_answer
 
+
 def refine_prediction_with_embeddings(generated_answer, choices):
-    """
-    Use cosine similarity to refine the generated answer.
-    """
     choice_embeddings = embedder.encode(choices, convert_to_tensor=True)
     generated_embedding = embedder.encode(generated_answer, convert_to_tensor=True)
     cosine_similarities = util.cos_sim(generated_embedding, choice_embeddings)[0]
@@ -146,10 +181,7 @@ def evaluate_on_test(test_data):
         choices = item['choices']
         correct_answer = item['correct_answer']
 
-        # Generate initial answer
         generated_answer = generate_answer(question)
-
-        # Refine prediction using cosine similarity
         refined_answer = refine_prediction_with_embeddings(generated_answer, choices)
 
         is_correct = "yes" if refined_answer == correct_answer else "no"
@@ -176,5 +208,6 @@ def save_predictions_to_csv(results, filename="prediction_results_SP_gpt2.csv"):
         writer.writerows(results)
     print(f"Predictions saved to {filename}")
 
+# Evaluate using the best model
 results = evaluate_on_test(processed_test_data)
 save_predictions_to_csv(results)
