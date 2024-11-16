@@ -9,7 +9,7 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.stem import PorterStemmer
 from datasets import Dataset as HFDataset
 
-# Download required NLTK data
+# Download NLTK data
 nltk.download('stopwords')
 nltk.download('punkt')
 
@@ -27,9 +27,9 @@ tokenizer.pad_token = tokenizer.eos_token
 embedder = SentenceTransformer('all-MiniLM-L6-v2').to(device)
 
 # Load datasets
-train_data = np.load('WP_train 1.npy', allow_pickle=True)
-dev_data = np.load('WP_dev 1.npy', allow_pickle=True)
-test_data = np.load('WP_test 1.npy', allow_pickle=True)
+train_data = np.load('/mnt/data/WP_train 1.npy', allow_pickle=True)
+dev_data = np.load('/mnt/data/WP_dev 1.npy', allow_pickle=True)
+test_data = np.load('/mnt/data/WP_test 1.npy', allow_pickle=True)
 
 # Initialize NLTK tools
 stemmer = PorterStemmer()
@@ -73,13 +73,14 @@ test_dataset = HFDataset.from_list(processed_test_data)
 # Tokenize and ensure correct labels field
 def tokenize_function(examples):
     tokens = tokenizer(examples["text"], padding='max_length', truncation=True, max_length=512)
-    tokens["labels"] = tokens["input_ids"].copy()
+    tokens["labels"] = tokens["input_ids"].copy()  # Set the correct 'labels' key
     return tokens
 
-tokenized_train_dataset = train_dataset.map(tokenize_function, batched=True, remove_columns=["text"])
-tokenized_dev_dataset = dev_dataset.map(tokenize_function, batched=True, remove_columns=["text"])
+# Tokenize datasets
+tokenized_train_dataset = train_dataset.map(tokenize_function, batched=True, remove_columns=["text", "choices", "label"])
+tokenized_dev_dataset = dev_dataset.map(tokenize_function, batched=True, remove_columns=["text", "choices", "label"])
 
-# Debug: Print a sample to verify fields
+# Debug: Check a sample to ensure correct structure
 print("Sample tokenized data:", tokenized_train_dataset[0])
 
 # Data collator for language modeling
@@ -95,6 +96,21 @@ lora_config = LoraConfig(
 
 model = prepare_model_for_kbit_training(model)
 model = get_peft_model(model, lora_config)
+
+# Custom Trainer class to handle the compute_loss method
+class CustomTrainer(Trainer):
+    def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
+        """
+        Override the compute_loss method to ensure labels are passed correctly.
+        """
+        labels = inputs.pop("labels")
+        outputs = model(**inputs)
+        logits = outputs.logits.view(-1, outputs.logits.size(-1))
+        labels = labels.view(-1)
+
+        # Calculate the cross-entropy loss
+        loss = torch.nn.CrossEntropyLoss()(logits, labels)
+        return (loss, outputs) if return_outputs else loss
 
 # Training arguments
 training_args = TrainingArguments(
@@ -113,25 +129,7 @@ training_args = TrainingArguments(
     report_to="none"
 )
 
-class CustomTrainer(Trainer):
-    def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
-        """
-        Custom compute_loss method that handles additional keyword arguments.
-        """
-        # Ensure labels are correctly passed
-        labels = inputs.pop("labels")
-        outputs = model(**inputs)
-
-        # Flatten the logits and labels for computing cross-entropy loss
-        logits = outputs.logits.view(-1, outputs.logits.size(-1))
-        labels = labels.view(-1)
-
-        # Compute the loss using cross-entropy
-        loss = torch.nn.functional.cross_entropy(logits, labels)
-
-        return (loss, outputs) if return_outputs else loss
-
-
+# Initialize the custom trainer
 trainer = CustomTrainer(
     model=model,
     args=training_args,
@@ -146,8 +144,23 @@ print("Starting training...")
 trainer.train()
 trainer.save_model("./gpt2_lora_best_model")
 
-# Load the best model for testing
+# Load best model for testing
 model = AutoModelForCausalLM.from_pretrained("./gpt2_lora_best_model").to(device)
+
+# Function to generate answers using the fine-tuned model
+def generate_answer(question, choices):
+    prompt = f"Question: {question}\nChoices: {', '.join(choices)}\nAnswer:"
+    inputs = tokenizer(prompt, return_tensors="pt", padding=True, truncation=True).to(device)
+    outputs = model.generate(
+        inputs['input_ids'],
+        attention_mask=inputs['attention_mask'],
+        max_length=200,
+        temperature=0.7,
+        do_sample=True,
+        pad_token_id=tokenizer.pad_token_id
+    )
+    generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    return generated_text.split("Answer:")[-1].strip()
 
 # Evaluate on the test set
 def evaluate_on_test(test_data):
