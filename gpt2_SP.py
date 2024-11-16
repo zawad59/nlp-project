@@ -27,9 +27,9 @@ model = AutoModelForCausalLM.from_pretrained(model_name).to(device)
 embedder = SentenceTransformer('all-MiniLM-L6-v2').to(device)
 
 # Load the SP dataset
-train_data = np.load('/mnt/data/SP_train 1.npy', allow_pickle=True)
-dev_data = np.load('/mnt/data/SP_dev 1.npy', allow_pickle=True)
-test_data = np.load('/mnt/data/SP_test 1.npy', allow_pickle=True)
+train_data = np.load('SP_train 1.npy', allow_pickle=True)
+dev_data = np.load('SP_dev 1.npy', allow_pickle=True)
+test_data = np.load('SP_test 1.npy', allow_pickle=True)
 
 # Preprocess the SP data
 def preprocess_sp_data(data):
