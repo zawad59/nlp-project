@@ -113,14 +113,24 @@ training_args = TrainingArguments(
     report_to="none"
 )
 
-# Custom Trainer to handle labels correctly
 class CustomTrainer(Trainer):
-    def compute_loss(self, model, inputs, return_outputs=False):
-        # Ensure labels are passed correctly
+    def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
+        """
+        Custom compute_loss method that handles additional keyword arguments.
+        """
+        # Ensure labels are correctly passed
         labels = inputs.pop("labels")
         outputs = model(**inputs)
-        loss = torch.nn.functional.cross_entropy(outputs.logits.view(-1, outputs.logits.size(-1)), labels.view(-1))
+
+        # Flatten the logits and labels for computing cross-entropy loss
+        logits = outputs.logits.view(-1, outputs.logits.size(-1))
+        labels = labels.view(-1)
+
+        # Compute the loss using cross-entropy
+        loss = torch.nn.functional.cross_entropy(logits, labels)
+
         return (loss, outputs) if return_outputs else loss
+
 
 trainer = CustomTrainer(
     model=model,
