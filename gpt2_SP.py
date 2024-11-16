@@ -10,7 +10,7 @@ from nltk.stem import PorterStemmer
 from datasets import Dataset as HFDataset
 import csv
 
-# Download NLTK data
+# Download required NLTK data
 nltk.download('stopwords')
 nltk.download('punkt')
 
@@ -94,9 +94,9 @@ lora_config = LoraConfig(
 model = prepare_model_for_kbit_training(model)
 model = get_peft_model(model, lora_config)
 
-# Custom Trainer class to handle the compute_loss method
+# Custom Trainer class
 class CustomTrainer(Trainer):
-    def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
+    def compute_loss(self, model, inputs, return_outputs=False):
         labels = inputs.pop("labels")
         outputs = model(**inputs)
         logits = outputs.logits.view(-1, outputs.logits.size(-1))
@@ -107,14 +107,12 @@ class CustomTrainer(Trainer):
 # Training arguments
 training_args = TrainingArguments(
     output_dir="./gpt2_lora_finetuned_SP",
-    overwrite_output_dir=True,
-    num_train_epochs=20,
+    num_train_epochs=10,
     per_device_train_batch_size=8,
     evaluation_strategy="epoch",
     save_strategy="epoch",
-    logging_steps=100,
-    learning_rate=2e-5,
-    weight_decay=0.01,
+    learning_rate=3e-5,
+    weight_decay=0.001,
     fp16=torch.cuda.is_available(),
     save_total_limit=1,
     load_best_model_at_end=True,
@@ -130,14 +128,12 @@ trainer = CustomTrainer(
     tokenizer=tokenizer
 )
 
-# Fine-tune and save the best model
-print("Starting training...")
+# Train and save the best model
 trainer.train()
 trainer.save_model("./gpt2_lora_best_model_SP")
-
 model = AutoModelForCausalLM.from_pretrained("./gpt2_lora_best_model_SP").to(device)
 
-# Function to generate answers
+# Generate answers
 def generate_answer(question, choices):
     choices_text = "\n".join([f"{i + 1}. {choice}" for i, choice in enumerate(choices)])
     prompt = f"Question: {question}\nChoices:\n{choices_text}\nAnswer:"
@@ -153,10 +149,8 @@ def refine_prediction_with_similarity(generated_answer, choices):
     best_index = torch.argmax(cosine_similarities).item()
     return choices[best_index]
 
-# Evaluate on the test set and save to CSV
 def evaluate_on_test(test_data):
     predictions = []
-    correct_predictions = 0
     for idx, item in enumerate(test_data):
         question = item['text']
         choices = item['choices']
@@ -175,11 +169,7 @@ def evaluate_on_test(test_data):
             "Correct Answer": correct_answer,
             "Predicted == Correct": is_correct
         })
-        if is_correct == "yes":
-            correct_predictions += 1
 
-    accuracy = correct_predictions / len(test_data)
-    print(f"Test Accuracy: {accuracy:.4f}")
     return predictions
 
 def save_predictions_to_csv(predictions, filename="prediction_results_SP_gpt2.csv"):
@@ -188,8 +178,7 @@ def save_predictions_to_csv(predictions, filename="prediction_results_SP_gpt2.cs
                                                   "Predicted Answer", "Correct Answer", "Predicted == Correct"])
         writer.writeheader()
         writer.writerows(predictions)
-    print(f"Predictions saved to {filename}")
 
-# Run evaluation and save results
+# Evaluate and save results
 predictions = evaluate_on_test(processed_test_data)
 save_predictions_to_csv(predictions)
