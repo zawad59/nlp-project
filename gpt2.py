@@ -62,7 +62,7 @@ def preprocess_gpt2_data(data):
             f"Choices: {', '.join(choices)}\n"
             f"Answer: {correct_answer}\n\n"
         )
-        processed_data.append({'text': training_text, 'label': item['label'], 'choices': choices})
+        processed_data.append({'text': training_text, 'choices': choices, 'label': item['label']})
     return processed_data
 
 # Preprocess datasets
@@ -78,13 +78,15 @@ test_dataset = HFDataset.from_list(processed_test_data)
 # Correct tokenization function to use 'labels'
 def tokenize_function(examples):
     tokens = tokenizer(examples["text"], padding='max_length', truncation=True, max_length=512)
-    tokens["labels"] = tokens["input_ids"].copy()  # Set 'labels' instead of 'label'
+    tokens["labels"] = tokens["input_ids"].copy()  # Explicitly set 'labels'
     return tokens
 
 # Apply tokenization
 tokenized_train_dataset = train_dataset.map(tokenize_function, batched=True, remove_columns=["text"])
 tokenized_dev_dataset = dev_dataset.map(tokenize_function, batched=True, remove_columns=["text"])
-tokenized_test_dataset = test_dataset.map(tokenize_function, batched=True, remove_columns=["text"])
+
+# Debug print to confirm data structure
+print("Sample tokenized input:", tokenized_train_dataset[0])
 
 # Data collator for language modeling
 data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
@@ -104,7 +106,7 @@ model = get_peft_model(model, lora_config)
 training_args = TrainingArguments(
     output_dir="./gpt2_lora_finetuned",
     overwrite_output_dir=True,
-    num_train_epochs=10,
+    num_train_epochs=5,
     per_device_train_batch_size=8,
     evaluation_strategy="epoch",
     save_strategy="epoch",
@@ -117,7 +119,7 @@ training_args = TrainingArguments(
     report_to="none"
 )
 
-# Initialize Trainer
+# Initialize Trainer with explicit data format check
 trainer = Trainer(
     model=model,
     args=training_args,
@@ -128,28 +130,14 @@ trainer = Trainer(
 )
 
 # Fine-tune the model
+print("Starting training...")
 trainer.train()
 trainer.save_model("./gpt2_lora_best_model")
 
-# Load best model for testing
+# Load the best model for evaluation
 model = AutoModelForCausalLM.from_pretrained("./gpt2_lora_best_model").to(device)
 
-# Function to generate answers using the fine-tuned model
-def generate_answer(question, choices):
-    prompt = f"Question: {question}\nChoices: {', '.join(choices)}\nAnswer:"
-    inputs = tokenizer(prompt, return_tensors="pt", padding=True, truncation=True).to(device)
-    outputs = model.generate(
-        inputs['input_ids'],
-        attention_mask=inputs['attention_mask'],
-        max_length=200,
-        temperature=0.7,
-        do_sample=True,
-        pad_token_id=tokenizer.pad_token_id
-    )
-    generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    return generated_text.split("Answer:")[-1].strip()
-
-# Evaluate on test set
+# Evaluate on the test set
 def evaluate_on_test(test_data):
     correct_predictions = 0
     for item in test_data:
@@ -169,5 +157,5 @@ def evaluate_on_test(test_data):
     accuracy = correct_predictions / len(test_data)
     print(f"Test Accuracy: {accuracy:.4f}")
 
-# Run test evaluation
+# Run evaluation
 evaluate_on_test(processed_test_data)
