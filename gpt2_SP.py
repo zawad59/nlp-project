@@ -136,17 +136,41 @@ model = AutoModelForCausalLM.from_pretrained("./gpt2_lora_best_model_SP").to(dev
 
 # Function to generate answers using the fine-tuned model
 def generate_answer(question):
+    """
+    Generate an answer using the fine-tuned model.
+    The question already contains the choices embedded in SP data.
+    """
+    # Format the prompt with the question only
     prompt = f"Question: {question}\nAnswer:"
+    
+    # Tokenize and generate response
     inputs = tokenizer(prompt, return_tensors="pt", padding=True, truncation=True).to(device)
     outputs = model.generate(
         inputs['input_ids'],
         max_new_tokens=50,
         temperature=0.7,
-        do_sample=True
+        do_sample=True,
+        pad_token_id=tokenizer.pad_token_id
     )
+
+    # Decode the generated text
     generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    predicted_answer = generated_text.split("Answer:")[-1].strip()
+    
+    # Extract the predicted answer
+    if "Answer:" in generated_text:
+        predicted_answer = generated_text.split("Answer:")[-1].strip()
+    else:
+        predicted_answer = generated_text.strip()
+
+    # Clean up the predicted answer by removing any choices or extra text
+    predicted_answer = predicted_answer.split('\n')[0].strip()
+
+    # Handle edge cases where the model generates extra text
+    if len(predicted_answer.split()) > 5:  # Assuming answers are typically short
+        predicted_answer = predicted_answer.split('.')[0].strip()  # Keep the first sentence
+
     return predicted_answer
+
 
 # Evaluate on the test set and save predictions to CSV
 def evaluate_on_test(test_data):
