@@ -64,9 +64,9 @@ def preprocess_gpt2_data(data):
 
 
 # Re-run the preprocessing step
-processed_train_data = preprocess_sp_data(train_data)
-processed_dev_data = preprocess_sp_data(dev_data)
-processed_test_data = preprocess_sp_data(test_data)
+processed_train_data = preprocess_gpt2_data(train_data)
+processed_dev_data = preprocess_gpt2_data(dev_data)
+processed_test_data = preprocess_gpt2_data(test_data)
 
 
 # Convert to Hugging Face Dataset
