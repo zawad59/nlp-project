@@ -141,21 +141,63 @@ trainer.save_model("./gpt2_lora_best_model")
 model = AutoModelForCausalLM.from_pretrained("./gpt2_lora_best_model").to(device)
 
 # Function to generate answers using the fine-tuned model
+# Function to generate answers using the fine-tuned model
 def generate_answer(question, choices):
+    """
+    Generate an answer using the fine-tuned model.
+    The prompt is structured to be clear for the model to generate the correct answer.
+    """
+    # Format the prompt to clearly separate the question and the choices
     prompt = f"Question: {question}\nChoices: {', '.join(choices)}\nAnswer:"
+    
+    # Generate response from the model
     inputs = tokenizer(prompt, return_tensors="pt", padding=True, truncation=True).to(device)
     outputs = model.generate(
         inputs['input_ids'],
         attention_mask=inputs['attention_mask'],
-        max_length=200,
+        max_length=100,  # Limit the response length
         temperature=0.7,
         do_sample=True,
+        num_return_sequences=1,
         pad_token_id=tokenizer.pad_token_id
     )
-    generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    return generated_text.split("Answer:")[-1].strip()
 
-# Function to evaluate on test set
+    # Decode the generated text
+    generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
+
+    # Extract the predicted answer by splitting at "Answer:"
+    if "Answer:" in generated_text:
+        predicted_answer = generated_text.split("Answer:")[-1].strip()
+    else:
+        predicted_answer = generated_text.strip()
+
+    # Ensure the predicted answer is one of the given choices
+    predicted_answer = predicted_answer.split('\n')[0]  # Only take the first line of the answer
+    predicted_answer = predicted_answer.strip()
+
+    # If the predicted answer is not exactly one of the choices, refine it
+    if predicted_answer not in choices:
+        predicted_answer = refine_prediction_with_similarity(predicted_answer, choices)
+    
+    return predicted_answer
+
+def refine_prediction_with_similarity(generated_answer, choices):
+    """
+    Refine the predicted answer using cosine similarity with the choices.
+    This ensures that even if the model output is slightly different, we select the closest match.
+    """
+    # Generate embeddings for the choices and the generated answer
+    choice_embeddings = embedder.encode(choices, convert_to_tensor=True)
+    generated_embedding = embedder.encode(generated_answer, convert_to_tensor=True)
+    
+    # Calculate cosine similarities
+    cosine_similarities = util.cos_sim(generated_embedding, choice_embeddings)[0]
+    
+    # Select the choice with the highest similarity score
+    best_index = torch.argmax(cosine_similarities).item()
+    return choices[best_index]
+
+# Function to evaluate on the test set
 def evaluate_on_test(test_data):
     predictions = []
     correct_predictions = 0
@@ -165,7 +207,7 @@ def evaluate_on_test(test_data):
         true_label = item['label']
         correct_answer = choices[true_label]
 
-        # Generate answer
+        # Generate the predicted answer
         predicted_answer = generate_answer(question, choices)
 
         # Check if predicted answer is correct
@@ -185,8 +227,10 @@ def evaluate_on_test(test_data):
     print(f"Test Accuracy: {accuracy:.4f}")
     return predictions
 
-# Function to save predictions to CSV
 def save_predictions_to_csv(predictions, filename="prediction_results_WP_gpt2.csv"):
+    """
+    Save the predictions to a CSV file.
+    """
     with open(filename, mode='w', newline='', encoding='utf-8') as file:
         writer = csv.DictWriter(file, fieldnames=["Question ID", "Actual Question Text", "Choices",
                                                   "Predicted Answer", "Correct Answer", "Predicted == Correct"])
