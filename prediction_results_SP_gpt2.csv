@@ -32,7 +32,7 @@ Answer:",Question: cat walk pass pass pass pass pass pass pass pass pass pass pa
 16,"Question: duck go pond five got lost thirteen stay home nine pond rest
 Answer:",Answer,None of above.,no
 17,"Question: duck go pond five got lost thirteen stay home nine pond rest
-Answer:",answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer,None of above.,no
+Answer:",answer: answer: answer: answer: answer: answer: answer: answer: answer: answer: answer: answer: answer: answer: answer: answer: answer: answer: answer: answer: answer: answer: answer: answer: answer:,None of above.,no
 18,"Question: jame take test question answer question toward end time look onto peopl choic answer question way lucki rememb answer anoth question well surprisingli got test rest question got
 Answer:",,None of above.,no
 19,"Question: ten fish tank two fish drown four fish swim fish die mani fish left tank
@@ -50,11 +50,11 @@ Answer:",,The name of the man who was asking the question was You,no
 25,"Question: anim wing yet fli
 Answer:",Question: Question: Question: Question: Question: Question: Question: Question: Question: Question: Question: Question: Question: Question: Question: Question: Question: Question: Question: Question: Question: Question: Question: Question,A caterpillar.,no
 26,"Question: anim wing fli
-Answer:",Question: anim wing fli,A caterpillar.,no
+Answer:",Question: anim wing fl,A caterpillar.,no
 27,"Question: anim leg jump
-Answer:",Question: Question: Question: Question: Question: Question: Question: Question: Question: Question: Question: Question: Question: Question: Question: Question: Question: Question: Question: Question: Question: Question: Question: Question: Question:,A tadpole.,no
+Answer:",answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer,A tadpole.,no
 28,"Question: logic time kill small town decid get haircut town two barber shop logic glanc one shop saw extrem barber need shave cloth unkempt hair badli cut shop extrem neat barber freshli shave spotlessli dress hair neatli trim logic return first shop haircut
-Answer:",answer answer answer answer question answer answer question question answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer answer,Each barber must have cut the other's hair. The logical picked the barber who had given his rival the better haircut.,no
+Answer:",Answer,Each barber must have cut the other's hair. The logical picked the barber who had given his rival the better haircut.,no
 29,"Question: small town logic free time made decis get haircut two barber town shop ration glanc one store reveal incred expens cloth messi hair poorli cut barber need shave store barber recent hair cut immacul dress logic get haircut first place went
 Answer:",Answer,Each barber must have cut the other's hair. The logical picked the barber who had given his rival the better haircut.,no
 30,"Question: remot villag wise travel decid check local dental implant two dentist villag clinic glanc first clinic see dentist teeth badli plant salon poorli maintain second salon tidi dentist teeth well plant attir spotless smart travel choos dental implant first clinic
@@ -68,7 +68,7 @@ Answer:",Answer,None of above.,no
 34,"Question: imagin room door window anyth get
 Answer:",,Stop imagining.,no
 35,"Question: assum room door window anyth els escap
-Answer:",,Stop imagining.,no
+Answer:",Answer,Stop imagining.,no
 36,"Question: dream jungl tiger approach best thing situat
 Answer:",,Waking up.,no
 37,"Question: buri stone ground grew produc fruit possibl
@@ -94,7 +94,7 @@ Answer:",,There are no stairs in a single story house.,no
 47,"Question: entir home pink includ outsid window top door pink stair color
 Answer:",answers: answers: answers: answers: answers: answers: answers: answers: answers: answers: answers: answers: answers: answers: answers: answers: answers: answers: answers: answers: answers: answers: answers: answers: answers:,There are no stairs in a single story house.,no
 48,"Question: hous built red brick door window roof made red brick color basement
-Answer:",,There is no basement in a one-story house built on a single floor.,no
+Answer:",Question: house built red brick door window window roof roof roof roof roof roof roof roof roof roof roof roof roof roof roof roof roof roof roof roof roof roof roof roof roof roof roof roof roof roof roof roof roof roof roof roof roof roof,There is no basement in a one-story house built on a single floor.,no
 49,"Question: ten pear hang high ten men come pass took pear left nine hang could
 Answer:",,EACH is the name of one of the men.,no
 50,"Question: ten pear hung high ten men pass past take fruit leav nine hang possibl
