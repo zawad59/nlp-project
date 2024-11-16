@@ -21,8 +21,9 @@ print(f"Using device: {device}")
 # Initialize models
 model_name = "gpt2"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
+tokenizer.pad_token = tokenizer.eos_token  # Set the pad token to eos token
 model = AutoModelForCausalLM.from_pretrained(model_name).to(device)
-tokenizer.pad_token = tokenizer.eos_token
+
 
 # Load SentenceTransformer for embeddings
 embedder = SentenceTransformer('all-MiniLM-L6-v2').to(device)
@@ -104,7 +105,6 @@ class CustomTrainer(Trainer):
         return (loss, outputs) if return_outputs else loss
 
 
-# Training arguments with evaluation strategy
 training_args = TrainingArguments(
     output_dir="./gpt2_lora_finetuned_SP",
     num_train_epochs=10,
@@ -117,7 +117,6 @@ training_args = TrainingArguments(
     fp16=torch.cuda.is_available(),
     save_total_limit=1,
     load_best_model_at_end=True,
-    pad_token_id=tokenizer.pad_token_id,
     report_to="none"
 )
 
@@ -158,12 +157,13 @@ def generate_answer(question):
         max_new_tokens=50,
         temperature=0.7,
         do_sample=True,
-        pad_token_id=tokenizer.pad_token_id
+        pad_token_id=tokenizer.pad_token_id  # Use the set pad_token_id
     )
 
     generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
     predicted_answer = generated_text.split("Answer:")[-1].strip()
     return predicted_answer
+
 
 
 def refine_prediction_with_embeddings(generated_answer, choices):
