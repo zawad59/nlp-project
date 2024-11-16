@@ -46,7 +46,6 @@ def preprocess_sp_data(data):
         choices = item['choice_list']
         correct_answer = choices[item['label']]
 
-        # Clean the question text
         sentences = sent_tokenize(question)
         cleaned_sentences = []
         for sentence in sentences:
@@ -82,7 +81,7 @@ def tokenize_function(examples):
 tokenized_train_dataset = train_dataset.map(tokenize_function, batched=True, remove_columns=["text", "choices", "label"])
 tokenized_dev_dataset = dev_dataset.map(tokenize_function, batched=True, remove_columns=["text", "choices", "label"])
 
-# Data collator
+# Data collator for language modeling
 data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 
 # LoRA fine-tuning configuration
@@ -110,13 +109,13 @@ class CustomTrainer(Trainer):
 training_args = TrainingArguments(
     output_dir="./gpt2_lora_finetuned_SP",
     overwrite_output_dir=True,
-    num_train_epochs=10,
+    num_train_epochs=5,
     per_device_train_batch_size=8,
     evaluation_strategy="epoch",
     save_strategy="epoch",
     logging_steps=100,
-    learning_rate=2e-5,
-    weight_decay=0.01,
+    learning_rate=3e-5,
+    weight_decay=0.001,
     fp16=torch.cuda.is_available(),
     save_total_limit=1,
     load_best_model_at_end=True,
@@ -146,6 +145,15 @@ def generate_answer(question, choices):
     generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
     return generated_text.split("Answer:")[-1].strip()
 
+# Function to refine prediction using cosine similarity
+def refine_prediction_with_similarity(generated_answer, choices):
+    choice_embeddings = embedder.encode(choices, convert_to_tensor=True)
+    generated_embedding = embedder.encode(generated_answer, convert_to_tensor=True)
+    cosine_similarities = util.cos_sim(generated_embedding, choice_embeddings)[0]
+    best_index = torch.argmax(cosine_similarities).item()
+    return choices[best_index]
+
+# Evaluate on the test set and save to CSV
 def evaluate_on_test(test_data):
     predictions = []
     correct_predictions = 0
@@ -182,6 +190,5 @@ def save_predictions_to_csv(predictions, filename="prediction_results_SP_gpt2.cs
         writer.writerows(predictions)
     print(f"Predictions saved to {filename}")
 
-# Run evaluation and save results to CSV
 predictions = evaluate_on_test(processed_test_data)
 save_predictions_to_csv(predictions)
