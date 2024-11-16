@@ -3,20 +3,17 @@ Question ID,Actual Question Text,Choices,Predicted Answer,Correct Answer,Predict
 Choices: Snowbank., Investment bank., Central bank., None of above.
 Answer: Snowbank.
 
-","Snowbank., Investment bank., Central bank., None of above.","Snowbank.
-
-
-Choices: Snowbank., Investment bank., Central bank., None of above.",Snowbank.,no
+","Snowbank., Investment bank., Central bank., None of above.",Snowbank.,Snowbank.,yes
 2,"Question: kind bank keep cash hand
 Choices: Snowbank., Investment bank., Central bank., None of above.
 Answer: Snowbank.
 
-","Snowbank., Investment bank., Central bank., None of above.",Snow,Snowbank.,no
+","Snowbank., Investment bank., Central bank., None of above.",Snowbank.,Snowbank.,yes
 3,"Question: kind bank money hand
 Choices: Riverbank., Investment bank., Central bank., None of above.
 Answer: Riverbank.
 
-","Riverbank., Investment bank., Central bank., None of above.",River,Riverbank.,no
+","Riverbank., Investment bank., Central bank., None of above.",Riverbank.,Riverbank.,yes
 4,"Question: type root ca eaten
 Choices: Carrot root., Cabbage root., Square root., None of above.
 Answer: Square root.
@@ -26,167 +23,122 @@ Answer: Square root.
 Choices: Square root., Carrot root., Cabbage root., None of above.
 Answer: Square root.
 
-","Square root., Carrot root., Cabbage root., None of above.","Square root.
-
-
-Choices",Square root.,no
+","Square root., Carrot root., Cabbage root., None of above.",Carrot root.,Square root.,no
 6,"Question: sort root one eat
 Choices: Cube root., Cabbage root., Carrot root., None of above.
 Answer: Cube root.
 
-","Cube root., Cabbage root., Carrot root., None of above.","Cube root.
-
-
-Choices: Cube",Cube root.,no
+","Cube root., Cabbage root., Carrot root., None of above.",Cube root.,Cube root.,yes
 7,"Question: kind mous ca feed chees
 Choices: A computer mouse., A hungry mouse., An old mouse., None of above.
 Answer: A computer mouse.
 
-","A computer mouse., A hungry mouse., An old mouse., None of above.","A computer mouse.
-
-
-Choices: A computer mouse., A hungry mouse., An old mouse., None of above.",A computer mouse.,no
+","A computer mouse., A hungry mouse., An old mouse., None of above.",A computer mouse.,A computer mouse.,yes
 8,"Question: type mous inelig chees feed
 Choices: A computer mouse., A hungry mouse., An old mouse., None of above.
 Answer: A computer mouse.
 
-","A computer mouse., A hungry mouse., An old mouse., None of above.",Mouse.,A computer mouse.,no
+","A computer mouse., A hungry mouse., An old mouse., None of above.",A computer mouse.,A computer mouse.,yes
 9,"Question: kind mous engin like
 Choices: A young mouse., A white mouse., A computer mouse., None of above.
 Answer: A computer mouse.
 
-","A young mouse., A white mouse., A computer mouse., None of above.","A grey mouse., None of above.",A computer mouse.,no
+","A young mouse., A white mouse., A computer mouse., None of above.",A computer mouse.,A computer mouse.,yes
 10,"Question: kind plant ca photosynthes
 Choices: An indoor plant., A house plant, A power plant., None of above.
 Answer: A power plant.
 
-","An indoor plant., A house plant, A power plant., None of above.","A power plant.
-
-
-Choices: An indoor plant., A house plant, A power plant., None of above",A power plant.,no
+","An indoor plant., A house plant, A power plant., None of above.",A power plant.,A power plant.,yes
 11,"Question: plant incap photosynthes
 Choices: A house plant, A power plant., An indoor plant., None of above.
 Answer: A power plant.
 
-","A house plant, A power plant., An indoor plant., None of above.",,A power plant.,no
+","A house plant, A power plant., An indoor plant., None of above.",A power plant.,A power plant.,yes
 12,"Question: plant photosyntheszi produc energi
 Choices: A wetland plant., A nuclear plant., An aquatic plant., None of above.
 Answer: A nuclear plant.
 
-","A wetland plant., A nuclear plant., An aquatic plant., None of above.","A nuclear plant.
-
-
-Choices: A wetland plant., A nuclear plant",A nuclear plant.,no
+","A wetland plant., A nuclear plant., An aquatic plant., None of above.",A nuclear plant.,A nuclear plant.,yes
 13,"Question: kind wood never get chop
 Choices: Softwood., Hollywood., Hardwood., None of above.
 Answer: Hollywood.
 
-","Softwood., Hollywood., Hardwood., None of above.","Hollywood.
-
-
-choices: Softwood., Hollywood.,",Hollywood.,no
+","Softwood., Hollywood., Hardwood., None of above.",Hollywood.,Hollywood.,yes
 14,"Question: sort wood never cut
 Choices: Hollywood., Hardwood., Softwood., None of above.
 Answer: Hollywood.
 
-","Hollywood., Hardwood., Softwood., None of above.","Hollywood.
-
-
-Choices: Hollywood., Hardwood., Soft",Hollywood.,no
+","Hollywood., Hardwood., Softwood., None of above.",Hardwood.,Hollywood.,no
 15,"Question: sort wood never cut
 Choices: Hardwood., Sherwood., Softwood., None of above.
 Answer: Sherwood.
 
-","Hardwood., Sherwood., Softwood., None of above.",Sherwood,Sherwood.,no
+","Hardwood., Sherwood., Softwood., None of above.",Softwood.,Sherwood.,no
 16,"Question: type dish hold food
 Choices: A satellite dish., A fish dish., A side dish., None of above.
 Answer: A satellite dish.
 
-","A satellite dish., A fish dish., A side dish., None of above.",A,A satellite dish.,no
+","A satellite dish., A fish dish., A side dish., None of above.",A satellite dish.,A satellite dish.,yes
 17,"Question: kind dish accommod food
 Choices: A satellite dish., A fish dish., A side dish., None of above.
 Answer: A satellite dish.
 
-","A satellite dish., A fish dish., A side dish., None of above.",A,A satellite dish.,no
+","A satellite dish., A fish dish., A side dish., None of above.",A satellite dish.,A satellite dish.,yes
 18,"Question: sort dish incap hold food
 Choices: Side dish., Petri dish., Fish dish., None of above.
 Answer: Petri dish.
 
-","Side dish., Petri dish., Fish dish., None of above.","Petri dish.
-
-
-Choices: Petri dish.,",Petri dish.,no
+","Side dish., Petri dish., Fish dish., None of above.",Petri dish.,Petri dish.,yes
 19,"Question: kind bottl ca hold liquid
 Choices: A bottle neck., A glass bottle., A water bottle., None of above.
 Answer: A bottle neck.
 
-","A bottle neck., A glass bottle., A water bottle., None of above.","A bottle neck.
-
-
-Choices: A bottle",A bottle neck.,no
+","A bottle neck., A glass bottle., A water bottle., None of above.",A bottle neck.,A bottle neck.,yes
 20,"Question: sort bottl incap hold liquid
 Choices: A glass bottle., A water bottle., A bottle neck., None of above.
 Answer: A bottle neck.
 
-","A glass bottle., A water bottle., A bottle neck., None of above.",A bottle neck,A bottle neck.,no
+","A glass bottle., A water bottle., A bottle neck., None of above.",A bottle neck.,A bottle neck.,yes
 21,"Question: kind bottl smallest
 Choices: Soda bottle., Wine bottle., Baby bottle., None of above.
 Answer: Baby bottle.
 
-","Soda bottle., Wine bottle., Baby bottle., None of above.","Baby bottle.
-
-
-Choices: Baby bottle., Baby bottle., Baby bottle.,",Baby bottle.,no
+","Soda bottle., Wine bottle., Baby bottle., None of above.",Baby bottle.,Baby bottle.,yes
 22,"Question: kind note ca play
 Choices: A music note., A footnote., A high note., None of above.
 Answer: A footnote.
 
-","A music note., A footnote., A high note., None of above.","A footnote.
-
-
-Choices: A music note., A footnote., A high",A footnote.,no
+","A music note., A footnote., A high note., None of above.",A footnote.,A footnote.,yes
 23,"Question: sort note imposs play
 Choices: A high note., A music note., A footnote., None of above.
 Answer: A footnote.
 
-","A high note., A music note., A footnote., None of above.","A footnote.
-
-
-Choices: A high note., A",A footnote.,no
+","A high note., A music note., A footnote., None of above.",A footnote.,A footnote.,yes
 24,"Question: sort note valuabl
 Choices: A music note., A banknote., A high note., None of above.
 Answer: A banknote.
 
-","A music note., A banknote., A high note., None of above.","A banknote. ; A high note., None of above",A banknote.,no
+","A music note., A banknote., A high note., None of above.",A banknote.,A banknote.,yes
 25,"Question: kind watch ca tell time
 Choices: A pocket watch., A wristwatch., A watchdog., None of above.
 Answer: A watchdog.
 
-","A pocket watch., A wristwatch., A watchdog., None of above.","A watchdog.
-
-
-Choices: A pocket watch., A",A watchdog.,no
+","A pocket watch., A wristwatch., A watchdog., None of above.",A watchdog.,A watchdog.,yes
 26,"Question: sort watch unabl tell time
 Choices: A pocket watch., A wristwatch., A watchdog., None of above.
 Answer: A watchdog.
 
-","A pocket watch., A wristwatch., A watchdog., None of above.","A watchdog.
-
-
-Choices: A pocket watch",A watchdog.,no
+","A pocket watch., A wristwatch., A watchdog., None of above.",A watchdog.,A watchdog.,yes
 27,"Question: kind watch work night
 Choices: Stopwatch., Nightwatch., Wristwatch., None of above.
 Answer: Nightwatch.
 
-","Stopwatch., Nightwatch., Wristwatch., None of above.","Nightwatch.
-
-
-Choices: Stopwatch., Nightwatch., Wrist",Nightwatch.,no
+","Stopwatch., Nightwatch., Wristwatch., None of above.",Nightwatch.,Nightwatch.,yes
 28,"Question: type pump inflat anyth
 Choices: Bicycle pump., Pumpkin., Air pump., None of above.
 Answer: Pumpkin.
 
-","Bicycle pump., Pumpkin., Air pump., None of above.",,Pumpkin.,no
+","Bicycle pump., Pumpkin., Air pump., None of above.",Pumpkin.,Pumpkin.,yes
 29,"Question: kind pump incap inflat anyth
 Choices: Bicycle pump., Air pump., Pumpkin., None of above.
 Answer: Pumpkin.
@@ -196,111 +148,64 @@ Answer: Pumpkin.
 Choices: Saucepan., Frying pan., Company., None of above.
 Answer: Company.
 
-","Saucepan., Frying pan., Company., None of above.","Company.
-
-
-Cho",Company.,no
+","Saucepan., Frying pan., Company., None of above.",Company.,Company.,yes
 31,"Question: type ink never leav stain
 Choices: Link., Blue ink., Red ink., None of above.
 Answer: Link.
 
-","Link., Blue ink., Red ink., None of above.","Link., Blue ink.,",Link.,no
+","Link., Blue ink., Red ink., None of above.",Link.,Link.,yes
 32,"Question: kind ink leav stain behind
 Choices: Link., Red ink., Blue ink., None of above.
 Answer: Link.
 
-","Link., Red ink., Blue ink., None of above.","Link.
-
-
-Choices:",Link.,no
+","Link., Red ink., Blue ink., None of above.",Link.,Link.,yes
 33,"Question: type ball ca thrown kick
 Choices: Eyeball., Baseball., Football., None of above.
 Answer: Eyeball.
 
-","Eyeball., Baseball., Football., None of above.","Eyeball.
-
-
-Choices: Eyeball., Baseball., Football., None of above.",Eyeball.,no
+","Eyeball., Baseball., Football., None of above.",Baseball.,Eyeball.,no
 34,"Question: type art hang galleri
 Choices: Contemporary art., Fine art., Tart., None of above.
 Answer: Tart.
 
-","Contemporary art., Fine art., Tart., None of above.","Tart.
-
-
-The Art of Galleri
-
-The Art of Galleri is a collection of essays by women and men who were not otherwise qualified.
-
-Art of Galleri is a collection of essays by women and men who were not otherwise qualified.
-
-Art of Galleri is a collection of essays by women and men who were not otherwise qualified.
-
-Art of Galleri is a collection of essays by women and men who were not otherwise qualified.
-
-Art of Galleri is a collection of essays by women and men who were not otherwise qualified.
-
-Art of Galleri is a collection of essays by women and men who were not otherwise qualified.
-
-Art of Galleri is a collection of essays by women and",Tart.,no
+","Contemporary art., Fine art., Tart., None of above.",Tart.,Tart.,yes
 35,"Question: kind artwork display galleri
 Choices: Fine art., Contemporary art., Tart., None of above.
 Answer: Tart.
 
-","Fine art., Contemporary art., Tart., None of above.","Tart.
-
-
-Choices: Fine art., Contemporary art., Tart., None of above",Tart.,no
+","Fine art., Contemporary art., Tart., None of above.",Tart.,Tart.,yes
 36,"Question: kind man ca walk talk
 Choices: A business man., A snowman., A fireman., None of above.
 Answer: A snowman.
 
-","A business man., A snowman., A fireman., None of above.","A snowman.
-
-
-Choices: A business man., A snowman., A fireman., None of above.",A snowman.,no
+","A business man., A snowman., A fireman., None of above.",A snowman.,A snowman.,yes
 37,"Question: kind bell make sound
 Choices: A doorbell., A cowbell., A dumbbell., None of above.
 Answer: A dumbbell.
 
-","A doorbell., A cowbell., A dumbbell., None of above.","A dumbbell.
-
-
-Choices: A doorbell., A cowbell., A dumbbell., None of above.",A dumbbell.,no
+","A doorbell., A cowbell., A dumbbell., None of above.",A dumbbell.,A dumbbell.,yes
 38,"Question: sort bell ring
 Choices: A dumbbell., A doorbell., A cowbell., None of above.
 Answer: A dumbbell.
 
-","A dumbbell., A doorbell., A cowbell., None of above.","A dumbbell.
-
-
-Choices: A dumbbell., A doorbell., A cowbell., None of above.",A dumbbell.,no
+","A dumbbell., A doorbell., A cowbell., None of above.",A dumbbell.,A dumbbell.,yes
 39,"Question: kind stone ca found quarri
 Choices: Cobblestone., Sandstone., Milestone., None of above.
 Answer: Milestone.
 
-","Cobblestone., Sandstone., Milestone., None of above.","Sandstone.
-
-
-Choices: Sandstone., Sandstone., Sandstone., None of above.",Milestone.,no
+","Cobblestone., Sandstone., Milestone., None of above.",Sandstone.,Milestone.,no
 40,"Question: type ice never melt
 Choices: Dice., Flaked ice., Glacier ice., None of above.
 Answer: Dice.
 
-","Dice., Flaked ice., Glacier ice., None of above.","Dice.
-
-
-Cho",Dice.,no
+","Dice., Flaked ice., Glacier ice., None of above.",Dice.,Dice.,yes
 41,"Question: kind ice melt
 Choices: Glacier ice., Dice., Flaked ice., None of above.
 Answer: Dice.
 
-","Glacier ice., Dice., Flaked ice., None of above.",None of,Dice.,no
+","Glacier ice., Dice., Flaked ice., None of above.",Dice.,Dice.,yes
 42,"Question: kind ice contain water
 Choices: Flaked ice., Dry ice., Glacier ice., None of above.
 Answer: Dry ice.
 
-","Flaked ice., Dry ice., Glacier ice., None of above.","Dry ice.
-
-
-Choices: Flaked ice., Dry ice., Glacier",Dry ice.,no
+","Flaked ice., Dry ice., Glacier ice., None of above.",Flaked ice.,Dry ice.,no
