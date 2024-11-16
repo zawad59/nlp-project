@@ -129,13 +129,25 @@ def load_finetuned_tokenizer():
 model = load_finetuned_model()
 tokenizer = load_finetuned_tokenizer()
 
-# Function to generate answer
+
+# Function to generate answer with adjusted sampling and attention mask
 def generate_answer(question, choices):
     prompt = f"Question: {question}\nChoices: {', '.join(choices)}\nAnswer:"
-    inputs = tokenizer(prompt, return_tensors="pt").to(device)
-    outputs = model.generate(inputs['input_ids'], max_length=200, temperature=0.7, pad_token_id=tokenizer.pad_token_id)
+    inputs = tokenizer(prompt, return_tensors="pt", padding=True, truncation=True).to(device)
+
+    # Generate the output with sampling enabled and attention mask set
+    outputs = model.generate(
+        inputs['input_ids'],
+        attention_mask=inputs['attention_mask'],  # Set the attention mask
+        max_length=200,
+        temperature=0.7,
+        do_sample=True,  # Enable sampling for temperature to have an effect
+        pad_token_id=tokenizer.pad_token_id
+    )
+
     generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
     return generated_text.split("Answer:")[-1].strip()
+
 
 # Function to refine prediction using cosine similarity
 def refine_prediction_with_embeddings(question, choices, generated_answer):
