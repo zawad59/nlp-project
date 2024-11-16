@@ -116,7 +116,7 @@ class CustomTrainer(Trainer):
 training_args = TrainingArguments(
     output_dir="./gpt2_lora_finetuned",
     overwrite_output_dir=True,
-    num_train_epochs=10,
+    num_train_epochs=5,
     per_device_train_batch_size=8,
     evaluation_strategy="epoch",
     save_strategy="epoch",
