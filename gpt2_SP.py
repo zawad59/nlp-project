@@ -1,7 +1,6 @@
 import numpy as np
 import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, TrainingArguments, \
-    DataCollatorForLanguageModeling
+from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, TrainingArguments, DataCollatorForLanguageModeling
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
 from sentence_transformers import SentenceTransformer, util
 import nltk
@@ -11,7 +10,7 @@ from nltk.stem import PorterStemmer
 from datasets import Dataset as HFDataset
 import csv
 
-# Download required NLTK data
+# Download NLTK data
 nltk.download('stopwords')
 nltk.download('punkt')
 
@@ -38,7 +37,7 @@ test_data = np.load('SP_test 1.npy', allow_pickle=True)
 stemmer = PorterStemmer()
 stop_words = set(stopwords.words('english'))
 
-# Preprocess the SP dataset
+# Preprocess SP dataset
 def preprocess_sp_data(data):
     processed_data = []
     for item in data:
@@ -109,7 +108,7 @@ class CustomTrainer(Trainer):
 training_args = TrainingArguments(
     output_dir="./gpt2_lora_finetuned_SP",
     overwrite_output_dir=True,
-    num_train_epochs=5,
+    num_train_epochs=10,
     per_device_train_batch_size=8,
     evaluation_strategy="epoch",
     save_strategy="epoch",
@@ -131,9 +130,12 @@ trainer = CustomTrainer(
     tokenizer=tokenizer
 )
 
+# Fine-tune and save the best model
 print("Starting training...")
 trainer.train()
 trainer.save_model("./gpt2_lora_best_model_SP")
+
+# Load the best model for evaluation
 model = AutoModelForCausalLM.from_pretrained("./gpt2_lora_best_model_SP").to(device)
 
 # Function to generate answers
@@ -145,7 +147,6 @@ def generate_answer(question, choices):
     generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
     return generated_text.split("Answer:")[-1].strip()
 
-# Function to refine prediction using cosine similarity
 def refine_prediction_with_similarity(generated_answer, choices):
     choice_embeddings = embedder.encode(choices, convert_to_tensor=True)
     generated_embedding = embedder.encode(generated_answer, convert_to_tensor=True)
@@ -153,7 +154,7 @@ def refine_prediction_with_similarity(generated_answer, choices):
     best_index = torch.argmax(cosine_similarities).item()
     return choices[best_index]
 
-# Evaluate on the test set and save to CSV
+# Evaluate on the test set
 def evaluate_on_test(test_data):
     predictions = []
     correct_predictions = 0
@@ -188,7 +189,6 @@ def save_predictions_to_csv(predictions, filename="prediction_results_SP_gpt2.cs
                                                   "Predicted Answer", "Correct Answer", "Predicted == Correct"])
         writer.writeheader()
         writer.writerows(predictions)
-    print(f"Predictions saved to {filename}")
 
 predictions = evaluate_on_test(processed_test_data)
 save_predictions_to_csv(predictions)
