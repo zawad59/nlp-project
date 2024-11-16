@@ -93,16 +93,25 @@ lora_config = LoraConfig(
 model = prepare_model_for_kbit_training(model)
 model = get_peft_model(model, lora_config)
 
-# Custom Trainer class to track validation loss
 class CustomTrainer(Trainer):
     def compute_loss(self, model, inputs, return_outputs=False):
+        """
+        Custom loss computation to handle attention masks and labels correctly.
+        """
         labels = inputs.pop("labels")
-        attention_mask = inputs.pop("attention_mask")
+        attention_mask = inputs.get("attention_mask", None)
         outputs = model(**inputs, attention_mask=attention_mask)
+        
+        # Reshape logits and labels to match dimensions for loss computation
         logits = outputs.logits.view(-1, outputs.logits.size(-1))
         labels = labels.view(-1)
-        loss = torch.nn.CrossEntropyLoss()(logits, labels)
+        
+        # Compute the loss using CrossEntropyLoss
+        loss_fn = torch.nn.CrossEntropyLoss()
+        loss = loss_fn(logits, labels)
+        
         return (loss, outputs) if return_outputs else loss
+
 
 
 training_args = TrainingArguments(
