@@ -10,7 +10,7 @@ from nltk.stem import PorterStemmer
 from datasets import Dataset as HFDataset
 import csv
 
-# Download required NLTK data
+# Download NLTK data
 nltk.download('stopwords')
 nltk.download('punkt')
 
@@ -28,21 +28,21 @@ tokenizer.pad_token = tokenizer.eos_token
 embedder = SentenceTransformer('all-MiniLM-L6-v2').to(device)
 
 # Load the SP dataset
-train_data = np.load('SP_train 1.npy', allow_pickle=True)
-dev_data = np.load('SP_dev 1.npy', allow_pickle=True)
-test_data = np.load('SP_test 1.npy', allow_pickle=True)
+train_data = np.load('/mnt/data/SP_train 1.npy', allow_pickle=True)
+dev_data = np.load('/mnt/data/SP_dev 1.npy', allow_pickle=True)
+test_data = np.load('/mnt/data/SP_test 1.npy', allow_pickle=True)
 
 # Initialize NLTK tools
 stemmer = PorterStemmer()
 stop_words = set(stopwords.words('english'))
 
-# Preprocess the data
-def preprocess_gpt2_data(data):
+# Preprocess SP data
+def preprocess_sp_data(data):
     processed_data = []
     for item in data:
         question = item['question']
-        choices = item['choice_list']
-        correct_answer = choices[item['label']]
+        # Choices are embedded within the question itself in SP data
+        correct_answer = item['choice_list'][item['label']]
 
         sentences = sent_tokenize(question)
         cleaned_sentences = []
@@ -53,33 +53,28 @@ def preprocess_gpt2_data(data):
             cleaned_sentences.append(cleaned_sentence)
 
         cleaned_question = ' '.join(cleaned_sentences)
-        training_text = (
-            f"Question: {cleaned_question}\n"
-            f"Choices: {', '.join(choices)}\n"
-            f"Answer: {correct_answer}\n\n"
-        )
-        processed_data.append({'text': training_text, 'choices': choices, 'label': item['label']})
+        training_text = f"Question: {cleaned_question}\nAnswer:"
+        processed_data.append({'text': training_text, 'correct_answer': correct_answer})
     return processed_data
 
 # Preprocess datasets
-processed_train_data = preprocess_gpt2_data(train_data)
-processed_dev_data = preprocess_gpt2_data(dev_data)
-processed_test_data = preprocess_gpt2_data(test_data)
+processed_train_data = preprocess_sp_data(train_data)
+processed_dev_data = preprocess_sp_data(dev_data)
+processed_test_data = preprocess_sp_data(test_data)
 
 # Convert to Hugging Face Dataset
 train_dataset = HFDataset.from_list(processed_train_data)
 dev_dataset = HFDataset.from_list(processed_dev_data)
 test_dataset = HFDataset.from_list(processed_test_data)
 
-# Tokenize and ensure correct labels field
+# Tokenize datasets
 def tokenize_function(examples):
     tokens = tokenizer(examples["text"], padding='max_length', truncation=True, max_length=512)
     tokens["labels"] = tokens["input_ids"].copy()
     return tokens
 
-# Tokenize datasets
-tokenized_train_dataset = train_dataset.map(tokenize_function, batched=True, remove_columns=["text", "choices", "label"])
-tokenized_dev_dataset = dev_dataset.map(tokenize_function, batched=True, remove_columns=["text", "choices", "label"])
+tokenized_train_dataset = train_dataset.map(tokenize_function, batched=True, remove_columns=["text", "correct_answer"])
+tokenized_dev_dataset = dev_dataset.map(tokenize_function, batched=True, remove_columns=["text", "correct_answer"])
 
 # Data collator for language modeling
 data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
@@ -95,34 +90,29 @@ lora_config = LoraConfig(
 model = prepare_model_for_kbit_training(model)
 model = get_peft_model(model, lora_config)
 
-# Custom Trainer class to handle the compute_loss method
+# Custom Trainer class
 class CustomTrainer(Trainer):
-    def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
+    def compute_loss(self, model, inputs, return_outputs=False):
         labels = inputs.pop("labels")
         outputs = model(**inputs)
         logits = outputs.logits.view(-1, outputs.logits.size(-1))
         labels = labels.view(-1)
         loss = torch.nn.CrossEntropyLoss()(logits, labels)
-        return (loss, outputs) if return_outputs else loss
+        return loss
 
 # Training arguments
 training_args = TrainingArguments(
     output_dir="./gpt2_lora_finetuned_SP",
-    overwrite_output_dir=True,
     num_train_epochs=5,
     per_device_train_batch_size=8,
     evaluation_strategy="epoch",
     save_strategy="epoch",
-    logging_steps=100,
     learning_rate=3e-5,
     weight_decay=0.001,
     fp16=torch.cuda.is_available(),
-    save_total_limit=1,
-    load_best_model_at_end=True,
-    report_to="none"
+    load_best_model_at_end=True
 )
 
-# Initialize the custom trainer
 trainer = CustomTrainer(
     model=model,
     args=training_args,
@@ -132,65 +122,53 @@ trainer = CustomTrainer(
     tokenizer=tokenizer
 )
 
-# Fine-tune the model
-print("Starting training...")
 trainer.train()
 trainer.save_model("./gpt2_lora_best_model_SP")
 
-# Load best model for testing
+# Load the fine-tuned model
 model = AutoModelForCausalLM.from_pretrained("./gpt2_lora_best_model_SP").to(device)
 
-# Function to generate answers using the fine-tuned model
-def generate_answer(question, choices):
-    prompt = f"Question: {question}\nChoices: {', '.join(choices)}\nAnswer:"
+def generate_answer(question):
+    prompt = f"Question: {question}\nAnswer:"
     inputs = tokenizer(prompt, return_tensors="pt", padding=True, truncation=True).to(device)
     outputs = model.generate(
         inputs['input_ids'],
-        attention_mask=inputs['attention_mask'],
-        max_new_tokens=50,  # Use max_new_tokens instead of max_length
+        max_new_tokens=50,
         temperature=0.7,
-        do_sample=True,
-        pad_token_id=tokenizer.pad_token_id
+        do_sample=True
     )
     generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
     predicted_answer = generated_text.split("Answer:")[-1].strip()
     return predicted_answer
 
-# Evaluate on the test set and save predictions to CSV
 def evaluate_on_test(test_data):
-    predictions = []
     correct_predictions = 0
+    results = []
     for idx, item in enumerate(test_data):
         question = item['text']
-        choices = item['choices']
-        true_label = item['label']
-        correct_answer = choices[true_label]
+        correct_answer = item['correct_answer']
 
-        predicted_answer = generate_answer(question, choices)
+        predicted_answer = generate_answer(question)
         is_correct = "yes" if predicted_answer == correct_answer else "no"
-        predictions.append({
+        results.append({
             "Question ID": idx + 1,
-            "Actual Question Text": question,
-            "Choices": ', '.join(choices),
+            "Question Text": question,
             "Predicted Answer": predicted_answer,
             "Correct Answer": correct_answer,
-            "Predicted == Correct": is_correct
+            "Correct?": is_correct
         })
         if is_correct == "yes":
             correct_predictions += 1
 
     accuracy = correct_predictions / len(test_data)
     print(f"Test Accuracy: {accuracy:.4f}")
-    return predictions
+    return results
 
-def save_predictions_to_csv(predictions, filename="prediction_results_SP_gpt2.csv"):
-    with open(filename, mode='w', newline='', encoding='utf-8') as file:
-        writer = csv.DictWriter(file, fieldnames=["Question ID", "Actual Question Text", "Choices",
-                                                  "Predicted Answer", "Correct Answer", "Predicted == Correct"])
+def save_predictions_to_csv(results):
+    with open("prediction_results_SP_gpt2.csv", mode='w', newline='') as file:
+        writer = csv.DictWriter(file, fieldnames=["Question ID", "Question Text", "Predicted Answer", "Correct Answer", "Correct?"])
         writer.writeheader()
-        writer.writerows(predictions)
-    print(f"Predictions saved to {filename}")
+        writer.writerows(results)
 
-# Run evaluation and save results to CSV
-predictions = evaluate_on_test(processed_test_data)
-save_predictions_to_csv(predictions)
+results = evaluate_on_test(processed_test_data)
+save_predictions_to_csv(results)
