@@ -50,7 +50,7 @@ Choices:
 2. Four.
 3. Ten.
 4. None of above.
-Answer:",:::::::::::::::::::::::::::::::::::::::::,None of above.,None of above.,yes
+Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,None of above.,yes
 8,"Question: Ten chickens are gathered in a field. How many of them remain on the field if four of them take off flying?
 Choices:
 1. Six.
@@ -92,7 +92,7 @@ Choices:
 2. Because ducks won't polluted water.
 3. Because ducks are tiny to be detected.
 4. None of above.
-Answer:",:::::::::::::::::::::::::::::::::::::::::,None of above.,Because ducks can't read.,no
+Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,Because ducks can't read.,no
 14,"Question: A hiker lands near a lake. He sees a sign that says ""No swimming allowed,"" yet the duck dives into the water anyhow. Why? 
 Choices:
 1. Because ducks are tiny to be detected.
@@ -135,7 +135,7 @@ Choices:
 2. Five.
 3. Twenty.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::,None of above.,None of above.,yes
+Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,None of above.,yes
 20,"Question: A tank contains ten fish. Two fish drown. Four fish are swimming away.Three fish perish. How many fish are there left in the tank?
 Choices:
 1. Seven.
@@ -198,14 +198,14 @@ Choices:
 2. Each barber must have cut the other's hair. The logical picked the barber who had given his rival the better haircut.
 3. The logician went to the first barber because he felt sympathy for him.
 4. None of above.
-Answer:",Answer,None of above.,Each barber must have cut the other's hair. The logical picked the barber who had given his rival the better haircut.,no
+Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,Each barber must have cut the other's hair. The logical picked the barber who had given his rival the better haircut.,no
 29,"Question: In a small town, a logical with some free time made the decision to get a haircut. There were only two barbers in the town, and they each had a shop. The rational glance into one store revealed that it was incredibly expensive. His clothes were messy, his hair was poorly cut, and the barber needed to shave. The other store was very well-kept. The barber had recently had his hair cut and was immaculately dressed. Why did the logical get his haircut at the first place he went?
 Choices:
 1. The logician chose the first barber because he believed the untidy appearance suggested that the barber was so busy.
 2. Each barber must have cut the other's hair. The logical picked the barber who had given his rival the better haircut.
 3. The logician went to the first barber because he felt sympathy for him.
 4. None of above.
-Answer:",Answer,None of above.,Each barber must have cut the other's hair. The logical picked the barber who had given his rival the better haircut.,no
+Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,Each barber must have cut the other's hair. The logical picked the barber who had given his rival the better haircut.,no
 30,"Question: In a remote village, a wise traveler decides to check out local dental implants. There are only two dentists in the village, each with a clinic. Glance at the first clinic and see that the dentist's own teeth are badly planted and his salon is poorly maintained. The second salon is tidy, the dentist's teeth are well planted and his attire is spotless. Why smart travelers choose dental implants in the first clinic?
 Choices:
 1. Each dentist must have planted the other's teath. The traveler picked the dentisit who had given his rival the better implants.
@@ -233,7 +233,7 @@ Choices:
 2. Thirty-five.
 3. Seven.
 4. None of above.
-Answer:",:::::::::::::,None of above.,None of above.,yes
+Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,None of above.,yes
 34,"Question: Imagine you are in a room, with no doors, windows, or anything. How do you get out?
 Choices:
 1. Stop imagining.
@@ -289,9 +289,7 @@ Choices:
 2. It can be zero as some people are too busy to celebrating their birthdays.
 3. They technically only have one birth day in their lifetime.
 4. None of above.
-Answer:","::::::::::::::::::::::
-
-##########################",None of above.,They technically only have one birth day in their lifetime.,no
+Answer:",::::::::::::::::::::::,None of above.,They technically only have one birth day in their lifetime.,no
 42,"Question: From elementary school to collage, how many ""first day of school"" does the average person have in their lifetime?
 Choices:
 1. Average poeple have 4: lementary school, middle school, high school, and college.
