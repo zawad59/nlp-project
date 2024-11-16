@@ -28,9 +28,9 @@ tokenizer.pad_token = tokenizer.eos_token
 embedder = SentenceTransformer('all-MiniLM-L6-v2').to(device)
 
 # Load the SP dataset
-train_data = np.load('SP_train 1.npy', allow_pickle=True)
-dev_data = np.load('SP_dev 1.npy', allow_pickle=True)
-test_data = np.load('SP_test 1.npy', allow_pickle=True)
+train_data = np.load('/mnt/data/SP_train 1.npy', allow_pickle=True)
+dev_data = np.load('/mnt/data/SP_dev 1.npy', allow_pickle=True)
+test_data = np.load('/mnt/data/SP_test 1.npy', allow_pickle=True)
 
 # Initialize NLTK tools
 stemmer = PorterStemmer()
@@ -142,14 +142,7 @@ model = AutoModelForCausalLM.from_pretrained("./gpt2_lora_best_model_SP").to(dev
 
 # Function to generate answers using the fine-tuned model
 def generate_answer(question, choices):
-    """
-    Generate an answer using the fine-tuned model.
-    The prompt is structured to be clear for the model to generate the correct answer.
-    """
-    # Format the prompt to clearly separate the question and the choices
     prompt = f"Question: {question}\nChoices: {', '.join(choices)}\nAnswer:"
-    
-    # Generate response from the model
     inputs = tokenizer(prompt, return_tensors="pt", padding=True, truncation=True).to(device)
     outputs = model.generate(
         inputs['input_ids'],
@@ -157,26 +150,11 @@ def generate_answer(question, choices):
         max_new_tokens=50,  # Use max_new_tokens instead of max_length
         temperature=0.7,
         do_sample=True,
-        num_return_sequences=1,
         pad_token_id=tokenizer.pad_token_id
     )
-
-    # Decode the generated text
     generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
-
-    # Extract the predicted answer by splitting at "Answer:"
-    if "Answer:" in generated_text:
-        predicted_answer = generated_text.split("Answer:")[-1].strip()
-    else:
-        predicted_answer = generated_text.strip()
-
-    # Ensure the predicted answer is one of the given choices
-    predicted_answer = predicted_answer.split('\n')[0].strip()
-    if predicted_answer not in choices:
-        predicted_answer = refine_prediction_with_similarity(predicted_answer, choices)
-    
+    predicted_answer = generated_text.split("Answer:")[-1].strip()
     return predicted_answer
-
 
 # Evaluate on the test set and save predictions to CSV
 def evaluate_on_test(test_data):
