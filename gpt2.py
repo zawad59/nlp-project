@@ -6,11 +6,10 @@ from sentence_transformers import SentenceTransformer, util
 import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import sent_tokenize, word_tokenize
-from nltk.stem import PorterStemmer
 from datasets import Dataset as HFDataset
 import csv
 
-# Download required NLTK data
+# Download NLTK data
 nltk.download('stopwords')
 nltk.download('punkt')
 
@@ -39,10 +38,10 @@ def preprocess_sp_data(data):
     for item in data:
         question = item['question']
         choices = item['choice_list']
-        correct_answer = item['answer']
+        correct_answer = choices[item['label']]
         label = item['label']
-        
-        # Prepare choices text
+
+        # Construct training text
         choices_text = "\n".join([f"{i + 1}. {choice}" for i, choice in enumerate(choices)])
         training_text = f"Question: {question}\nChoices:\n{choices_text}\nAnswer:"
         
@@ -64,18 +63,17 @@ train_dataset = HFDataset.from_list(processed_train_data)
 dev_dataset = HFDataset.from_list(processed_dev_data)
 test_dataset = HFDataset.from_list(processed_test_data)
 
-# Tokenize and ensure correct labels field
+# Tokenize the dataset
 def tokenize_function(examples):
     tokens = tokenizer(examples["text"], padding='max_length', truncation=True, max_length=512)
     tokens["labels"] = tokens["input_ids"].copy()
     return tokens
 
 # Tokenize datasets
-tokenized_train_dataset = train_dataset.map(tokenize_function, batched=True,
-                                            remove_columns=["text", "choices", "correct_answer", "label"])
+tokenized_train_dataset = train_dataset.map(tokenize_function, batched=True, remove_columns=["text", "choices", "correct_answer", "label"])
 tokenized_dev_dataset = dev_dataset.map(tokenize_function, batched=True, remove_columns=["text", "choices", "correct_answer", "label"])
 
-# Data collator for language modeling
+# Data collator
 data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 
 # LoRA fine-tuning configuration
@@ -83,7 +81,7 @@ lora_config = LoraConfig(r=16, lora_alpha=32, lora_dropout=0.1, task_type="CAUSA
 model = prepare_model_for_kbit_training(model)
 model = get_peft_model(model, lora_config)
 
-# Custom Trainer class
+# Custom Trainer
 class CustomTrainer(Trainer):
     def compute_loss(self, model, inputs, return_outputs=False):
         labels = inputs.pop("labels")
@@ -96,10 +94,11 @@ class CustomTrainer(Trainer):
 # Training arguments
 training_args = TrainingArguments(
     output_dir="./gpt2_lora_finetuned_SP",
-    num_train_epochs=5,
+    num_train_epochs=2,
     per_device_train_batch_size=8,
     evaluation_strategy="epoch",
     save_strategy="epoch",
+    logging_steps=100,
     learning_rate=3e-5,
     weight_decay=0.001,
     fp16=torch.cuda.is_available(),
@@ -117,13 +116,14 @@ trainer = CustomTrainer(
     tokenizer=tokenizer
 )
 
+# Fine-tune the model
 print("Starting training...")
 trainer.train()
 trainer.save_model("./gpt2_lora_best_model_SP")
 
 model = AutoModelForCausalLM.from_pretrained("./gpt2_lora_best_model_SP").to(device)
 
-# Generate answers using the fine-tuned model
+# Generate answers
 def generate_answer(question, choices):
     choices_text = "\n".join([f"{i + 1}. {choice}" for i, choice in enumerate(choices)])
     prompt = f"Question: {question}\nChoices:\n{choices_text}\nAnswer:"
@@ -132,22 +132,16 @@ def generate_answer(question, choices):
     outputs = model.generate(
         inputs['input_ids'],
         attention_mask=inputs['attention_mask'],
-        max_new_tokens=30,
+        max_new_tokens=50,
         temperature=0.7,
         do_sample=True,
-        num_return_sequences=1,
         pad_token_id=tokenizer.pad_token_id
     )
 
     generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    return generated_text.split("Answer:")[-1].strip()
-
-def refine_prediction_with_similarity(generated_answer, choices):
-    choice_embeddings = embedder.encode(choices, convert_to_tensor=True)
-    generated_embedding = embedder.encode(generated_answer, convert_to_tensor=True)
-    cosine_similarities = util.cos_sim(generated_embedding, choice_embeddings)[0]
-    best_index = torch.argmax(cosine_similarities).item()
-    return choices[best_index]
+    if "Answer:" in generated_text:
+        return generated_text.split("Answer:")[-1].strip()
+    return generated_text.strip()
 
 def evaluate_on_test(test_data):
     predictions = []
@@ -161,7 +155,7 @@ def evaluate_on_test(test_data):
         generated_answer = generate_answer(question, choices)
         refined_answer = refine_prediction_with_similarity(generated_answer, choices)
         is_correct = "yes" if refined_answer == correct_answer else "no"
-        
+
         predictions.append({
             "Question ID": idx + 1,
             "Actual Question Text": question,
@@ -170,7 +164,6 @@ def evaluate_on_test(test_data):
             "Correct Answer": correct_answer,
             "Predicted == Correct": is_correct
         })
-        
         if is_correct == "yes":
             correct_predictions += 1
 
@@ -178,13 +171,4 @@ def evaluate_on_test(test_data):
     print(f"Test Accuracy: {accuracy:.4f}")
     return predictions
 
-def save_predictions_to_csv(predictions, filename="prediction_results_SP_gpt2.csv"):
-    with open(filename, mode='w', newline='', encoding='utf-8') as file:
-        writer = csv.DictWriter(file, fieldnames=["Question ID", "Actual Question Text", "Choices",
-                                                  "Predicted Answer", "Correct Answer", "Predicted == Correct"])
-        writer.writeheader()
-        writer.writerows(predictions)
-    print(f"Predictions saved to {filename}")
-
 predictions = evaluate_on_test(processed_test_data)
-save_predictions_to_csv(predictions)
