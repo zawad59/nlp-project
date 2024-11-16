@@ -28,9 +28,9 @@ tokenizer.pad_token = tokenizer.eos_token
 embedder = SentenceTransformer('all-MiniLM-L6-v2').to(device)
 
 # Load the SP dataset
-train_data = np.load('/mnt/data/SP_train 1.npy', allow_pickle=True)
-dev_data = np.load('/mnt/data/SP_dev 1.npy', allow_pickle=True)
-test_data = np.load('/mnt/data/SP_test 1.npy', allow_pickle=True)
+train_data = np.load('SP_train 1.npy', allow_pickle=True)
+dev_data = np.load('SP_dev 1.npy', allow_pickle=True)
+test_data = np.load('SP_test 1.npy', allow_pickle=True)
 
 # Initialize NLTK tools
 stemmer = PorterStemmer()
