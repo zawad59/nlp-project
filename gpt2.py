@@ -27,9 +27,9 @@ tokenizer.pad_token = tokenizer.eos_token
 embedder = SentenceTransformer('all-MiniLM-L6-v2').to(device)
 
 # Load datasets
-train_data = np.load('/mnt/data/WP_train 1.npy', allow_pickle=True)
-dev_data = np.load('/mnt/data/WP_dev 1.npy', allow_pickle=True)
-test_data = np.load('/mnt/data/WP_test 1.npy', allow_pickle=True)
+train_data = np.load('WP_train 1.npy', allow_pickle=True)
+dev_data = np.load('WP_dev 1.npy', allow_pickle=True)
+test_data = np.load('WP_test 1.npy', allow_pickle=True)
 
 # Initialize NLTK tools
 stemmer = PorterStemmer()
