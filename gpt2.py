@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, TrainingArguments, DataCollatorForLanguageModeling
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
@@ -28,13 +27,9 @@ tokenizer.pad_token = tokenizer.eos_token
 embedder = SentenceTransformer('all-MiniLM-L6-v2').to(device)
 
 # Load datasets
-train_file_path = 'WP_train 1.npy'
-dev_file_path = 'WP_dev 1.npy'
-test_file_path = 'WP_test 1.npy'
-
-train_data = np.load(train_file_path, allow_pickle=True)
-dev_data = np.load(dev_file_path, allow_pickle=True)
-test_data = np.load(test_file_path, allow_pickle=True)
+train_data = np.load('WP_train 1.npy', allow_pickle=True)
+dev_data = np.load('WP_dev 1.npy', allow_pickle=True)
+test_data = np.load('WP_test 1.npy', allow_pickle=True)
 
 # Initialize NLTK tools
 stemmer = PorterStemmer()
@@ -75,18 +70,17 @@ train_dataset = HFDataset.from_list(processed_train_data)
 dev_dataset = HFDataset.from_list(processed_dev_data)
 test_dataset = HFDataset.from_list(processed_test_data)
 
-# Correct tokenization function to use 'labels'
+# Tokenize and ensure correct labels field
 def tokenize_function(examples):
     tokens = tokenizer(examples["text"], padding='max_length', truncation=True, max_length=512)
-    tokens["labels"] = tokens["input_ids"].copy()  # Explicitly set 'labels'
+    tokens["labels"] = tokens["input_ids"].copy()
     return tokens
 
-# Apply tokenization
 tokenized_train_dataset = train_dataset.map(tokenize_function, batched=True, remove_columns=["text"])
 tokenized_dev_dataset = dev_dataset.map(tokenize_function, batched=True, remove_columns=["text"])
 
-# Debug print to confirm data structure
-print("Sample tokenized input:", tokenized_train_dataset[0])
+# Debug: Print a sample to verify fields
+print("Sample tokenized data:", tokenized_train_dataset[0])
 
 # Data collator for language modeling
 data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
@@ -119,8 +113,16 @@ training_args = TrainingArguments(
     report_to="none"
 )
 
-# Initialize Trainer with explicit data format check
-trainer = Trainer(
+# Custom Trainer to handle labels correctly
+class CustomTrainer(Trainer):
+    def compute_loss(self, model, inputs, return_outputs=False):
+        # Ensure labels are passed correctly
+        labels = inputs.pop("labels")
+        outputs = model(**inputs)
+        loss = torch.nn.functional.cross_entropy(outputs.logits.view(-1, outputs.logits.size(-1)), labels.view(-1))
+        return (loss, outputs) if return_outputs else loss
+
+trainer = CustomTrainer(
     model=model,
     args=training_args,
     train_dataset=tokenized_train_dataset,
@@ -134,7 +136,7 @@ print("Starting training...")
 trainer.train()
 trainer.save_model("./gpt2_lora_best_model")
 
-# Load the best model for evaluation
+# Load the best model for testing
 model = AutoModelForCausalLM.from_pretrained("./gpt2_lora_best_model").to(device)
 
 # Evaluate on the test set
@@ -157,5 +159,5 @@ def evaluate_on_test(test_data):
     accuracy = correct_predictions / len(test_data)
     print(f"Test Accuracy: {accuracy:.4f}")
 
-# Run evaluation
+# Run evaluation on test set
 evaluate_on_test(processed_test_data)
