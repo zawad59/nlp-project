@@ -28,9 +28,9 @@ tokenizer.pad_token = tokenizer.eos_token
 embedder = SentenceTransformer('all-MiniLM-L6-v2').to(device)
 
 # Load the SP dataset
-train_data = np.load('SP_train 1.npy', allow_pickle=True)
-dev_data = np.load('SP_dev 1.npy', allow_pickle=True)
-test_data = np.load('SP_test 1.npy', allow_pickle=True)
+train_data = np.load('/mnt/data/SP_train 1.npy', allow_pickle=True)
+dev_data = np.load('/mnt/data/SP_dev 1.npy', allow_pickle=True)
+test_data = np.load('/mnt/data/SP_test 1.npy', allow_pickle=True)
 
 # Preprocess the SP data
 def preprocess_sp_data(data):
@@ -96,7 +96,6 @@ class CustomTrainer(Trainer):
         loss = torch.nn.CrossEntropyLoss()(logits, labels)
         return (loss, outputs) if return_outputs else loss
 
-# Training arguments
 training_args = TrainingArguments(
     output_dir="./gpt2_lora_finetuned_SP",
     num_train_epochs=5,
@@ -122,13 +121,22 @@ trainer.train()
 trainer.save_model("./gpt2_lora_best_model_SP")
 model = AutoModelForCausalLM.from_pretrained("./gpt2_lora_best_model_SP").to(device)
 
-def generate_answer(question, choices):
-    prompt = f"{question}\nChoices:\n" + "\n".join([f"{i + 1}. {choice}" for i, choice in enumerate(choices)]) + "\nAnswer:"
-    inputs = tokenizer(prompt, return_tensors="pt", padding=True, truncation=True).to(device)
+def generate_answer(question):
+    inputs = tokenizer(question, return_tensors="pt", padding=True, truncation=True).to(device)
     outputs = model.generate(inputs['input_ids'], max_new_tokens=50, temperature=0.7, do_sample=True)
     generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
     predicted_answer = generated_text.split("Answer:")[-1].strip()
     return predicted_answer
+
+def refine_prediction_with_embeddings(generated_answer, choices):
+    """
+    Use cosine similarity to refine the generated answer.
+    """
+    choice_embeddings = embedder.encode(choices, convert_to_tensor=True)
+    generated_embedding = embedder.encode(generated_answer, convert_to_tensor=True)
+    cosine_similarities = util.cos_sim(generated_embedding, choice_embeddings)[0]
+    best_index = torch.argmax(cosine_similarities).item()
+    return choices[best_index]
 
 def evaluate_on_test(test_data):
     correct_predictions = 0
@@ -137,14 +145,19 @@ def evaluate_on_test(test_data):
         question = item['text']
         choices = item['choices']
         correct_answer = item['correct_answer']
-        
-        predicted_answer = generate_answer(question, choices)
-        is_correct = "yes" if predicted_answer == correct_answer else "no"
-        
+
+        # Generate initial answer
+        generated_answer = generate_answer(question)
+
+        # Refine prediction using cosine similarity
+        refined_answer = refine_prediction_with_embeddings(generated_answer, choices)
+
+        is_correct = "yes" if refined_answer == correct_answer else "no"
         results.append({
             "Question ID": idx + 1,
             "Question Text": question,
-            "Predicted Answer": predicted_answer,
+            "Generated Answer": generated_answer,
+            "Refined Answer": refined_answer,
             "Correct Answer": correct_answer,
             "Correct?": is_correct
         })
@@ -158,7 +171,7 @@ def evaluate_on_test(test_data):
 
 def save_predictions_to_csv(results, filename="prediction_results_SP_gpt2.csv"):
     with open(filename, mode='w', newline='', encoding='utf-8') as file:
-        writer = csv.DictWriter(file, fieldnames=["Question ID", "Question Text", "Predicted Answer", "Correct Answer", "Correct?"])
+        writer = csv.DictWriter(file, fieldnames=["Question ID", "Question Text", "Generated Answer", "Refined Answer", "Correct Answer", "Correct?"])
         writer.writeheader()
         writer.writerows(results)
     print(f"Predictions saved to {filename}")
