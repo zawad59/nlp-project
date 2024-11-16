@@ -1,6 +1,7 @@
 import numpy as np
 import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, TrainingArguments, DataCollatorForLanguageModeling
+from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, TrainingArguments, \
+    DataCollatorForLanguageModeling
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
 from sentence_transformers import SentenceTransformer, util
 import nltk
@@ -18,9 +19,15 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
 
 # Initialize models
+
 model_name = "gpt2"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
-tokenizer.pad_token = tokenizer.eos_token
+tokenizer.pad_token = tokenizer.eos_token  # Set the pad token to be the same as the eos token
+
+# Load the GPT-2 model
+model = AutoModelForCausalLM.from_pretrained(model_name).to(device)
+
+# Ensure that the model's pad_token_id is set correctly
 model.config.pad_token_id = tokenizer.pad_token_id
 
 
@@ -32,6 +39,7 @@ train_data = np.load('SP_train 1.npy', allow_pickle=True)
 dev_data = np.load('SP_dev 1.npy', allow_pickle=True)
 test_data = np.load('SP_test 1.npy', allow_pickle=True)
 
+
 # Preprocess the SP data
 def preprocess_sp_data(data):
     processed_data = []
@@ -40,10 +48,10 @@ def preprocess_sp_data(data):
         correct_answer = item['answer']
         choices = item['choice_list']
         label = item['label']
-        
+
         choices_text = "\n".join([f"{i + 1}. {choice}" for i, choice in enumerate(choices)])
         training_text = f"Question: {question}\nChoices:\n{choices_text}\nAnswer:"
-        
+
         processed_data.append({
             'text': training_text,
             'choices': choices,
@@ -51,6 +59,7 @@ def preprocess_sp_data(data):
             'label': label
         })
     return processed_data
+
 
 # Preprocess datasets
 processed_train_data = preprocess_sp_data(train_data)
@@ -62,6 +71,7 @@ train_dataset = HFDataset.from_list(processed_train_data)
 dev_dataset = HFDataset.from_list(processed_dev_data)
 test_dataset = HFDataset.from_list(processed_test_data)
 
+
 # Tokenize datasets
 def tokenize_function(examples):
     tokens = tokenizer(
@@ -71,8 +81,11 @@ def tokenize_function(examples):
     tokens["attention_mask"] = tokens["attention_mask"]
     return tokens
 
-tokenized_train_dataset = train_dataset.map(tokenize_function, batched=True, remove_columns=["text", "choices", "correct_answer", "label"])
-tokenized_dev_dataset = dev_dataset.map(tokenize_function, batched=True, remove_columns=["text", "choices", "correct_answer", "label"])
+
+tokenized_train_dataset = train_dataset.map(tokenize_function, batched=True,
+                                            remove_columns=["text", "choices", "correct_answer", "label"])
+tokenized_dev_dataset = dev_dataset.map(tokenize_function, batched=True,
+                                        remove_columns=["text", "choices", "correct_answer", "label"])
 
 # Data collator for language modeling
 data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
@@ -88,6 +101,7 @@ lora_config = LoraConfig(
 model = prepare_model_for_kbit_training(model)
 model = get_peft_model(model, lora_config)
 
+
 # Custom Trainer class
 class CustomTrainer(Trainer):
     def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
@@ -98,6 +112,7 @@ class CustomTrainer(Trainer):
         loss_fn = torch.nn.CrossEntropyLoss()
         loss = loss_fn(logits, labels)
         return (loss, outputs) if return_outputs else loss
+
 
 # Training arguments
 training_args = TrainingArguments(
@@ -132,6 +147,7 @@ trainer.save_model("./gpt2_lora_best_model_SP")
 
 # Load the best model for evaluation
 model = AutoModelForCausalLM.from_pretrained("./gpt2_lora_best_model_SP").to(device)
+
 
 def generate_answer(question):
     """
@@ -168,24 +184,25 @@ def refine_prediction_with_embeddings(generated_answer, choices):
     """
     choice_embeddings = embedder.encode(choices, convert_to_tensor=True)
     generated_embedding = embedder.encode(generated_answer, convert_to_tensor=True)
-    
+
     # Calculate cosine similarities
     cosine_similarities = util.cos_sim(generated_embedding, choice_embeddings)[0]
-    
+
     # Print debug information for analysis
     print("\nGenerated Answer:", generated_answer)
     print("Cosine Similarities:", cosine_similarities.tolist())
     print("Choices:", choices)
-    
+
     best_index = torch.argmax(cosine_similarities).item()
-    
+
     # Check if "None of the above" has a lower similarity threshold
     if choices[best_index].lower() == "none of above" and cosine_similarities[best_index] < 0.6:
         # If "None of the above" is chosen but has low similarity, select the next best option
         second_best_index = torch.topk(cosine_similarities, 2)[1][1].item()
         best_index = second_best_index
-    
+
     return choices[best_index]
+
 
 def evaluate_on_test(test_data):
     """
@@ -200,15 +217,15 @@ def evaluate_on_test(test_data):
 
         # Generate initial answer
         generated_answer = generate_answer(question)
-        
+
         # Debugging: Check what the model is generating
         print(f"\nQuestion: {question}")
         print(f"Generated Answer: {generated_answer}")
-        
+
         # Refine prediction using cosine similarity
         refined_answer = refine_prediction_with_embeddings(generated_answer, choices)
         print(f"Refined Answer: {refined_answer}")
-        
+
         is_correct = "yes" if refined_answer == correct_answer else "no"
 
         results.append({
@@ -219,7 +236,7 @@ def evaluate_on_test(test_data):
             "Correct Answer": correct_answer,
             "Correct?": is_correct
         })
-        
+
         if is_correct == "yes":
             correct_predictions += 1
 
@@ -233,10 +250,12 @@ def save_predictions_to_csv(results, filename="prediction_results_SP_gpt2_fixed.
     Save the prediction results to a CSV file.
     """
     with open(filename, mode='w', newline='', encoding='utf-8') as file:
-        writer = csv.DictWriter(file, fieldnames=["Question ID", "Question Text", "Generated Answer", "Refined Answer", "Correct Answer", "Correct?"])
+        writer = csv.DictWriter(file, fieldnames=["Question ID", "Question Text", "Generated Answer", "Refined Answer",
+                                                  "Correct Answer", "Correct?"])
         writer.writeheader()
         writer.writerows(results)
     print(f"Predictions saved to {filename}")
+
 
 # Run evaluation and save predictions
 results = evaluate_on_test(processed_test_data)
