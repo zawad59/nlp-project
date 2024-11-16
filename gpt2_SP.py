@@ -96,24 +96,23 @@ model = get_peft_model(model, lora_config)
 class CustomTrainer(Trainer):
     def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
         """
-        Custom loss computation that gracefully handles extra keyword arguments.
+        Custom loss computation that handles inputs properly.
         """
-        # Extract labels and attention_mask from inputs
         labels = inputs.pop("labels")
-        attention_mask = inputs.get("attention_mask", None)
-
-        # Forward pass through the model
-        outputs = model(**inputs, attention_mask=attention_mask)
-
+        
+        # Forward pass through the model with only inputs (it already includes attention_mask)
+        outputs = model(**inputs)
+        
         # Reshape logits and labels for loss calculation
         logits = outputs.logits.view(-1, outputs.logits.size(-1))
         labels = labels.view(-1)
-
+        
         # Compute cross-entropy loss
         loss_fn = torch.nn.CrossEntropyLoss()
         loss = loss_fn(logits, labels)
-
+        
         return (loss, outputs) if return_outputs else loss
+
 
 
 
