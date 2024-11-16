@@ -38,6 +38,7 @@ stemmer = PorterStemmer()
 stop_words = set(stopwords.words('english'))
 
 # Preprocess the SP dataset
+# Updated Preprocess Function to Preserve Original Question
 def preprocess_sp_data(data):
     processed_data = []
     for item in data:
@@ -45,15 +46,10 @@ def preprocess_sp_data(data):
         choices = item['choice_list']
         correct_answer = choices[item['label']]
 
-        sentences = sent_tokenize(question)
-        cleaned_sentences = []
-        for sentence in sentences:
-            words = word_tokenize(sentence.lower())
-            filtered_words = [stemmer.stem(word) for word in words if word.isalpha() and word not in stop_words]
-            cleaned_sentence = ' '.join(filtered_words)
-            cleaned_sentences.append(cleaned_sentence)
+        # Keep the original question structure, only lowercase and tokenize
+        cleaned_question = question.lower()
 
-        cleaned_question = ' '.join(cleaned_sentences)
+        # Create the training text for GPT-2
         training_text = (
             f"Question: {cleaned_question}\n"
             f"Choices:\n" + "\n".join([f"{i + 1}. {choice}" for i, choice in enumerate(choices)]) + "\nAnswer:"
@@ -61,10 +57,11 @@ def preprocess_sp_data(data):
         processed_data.append({'text': training_text, 'choices': choices, 'label': item['label']})
     return processed_data
 
-# Preprocess datasets
+# Re-run the preprocessing step
 processed_train_data = preprocess_sp_data(train_data)
 processed_dev_data = preprocess_sp_data(dev_data)
 processed_test_data = preprocess_sp_data(test_data)
+
 
 # Convert to Hugging Face Dataset
 train_dataset = HFDataset.from_list(processed_train_data)
