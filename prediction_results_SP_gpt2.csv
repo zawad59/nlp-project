@@ -1,383 +1,387 @@
-Question ID,Question Text,Generated Answer,Refined Answer,Correct Answer,Correct?
-1,"Question: How could a man go outside in the pouring rain without protection, and not have a hair on his head get wet?
+Question ID,Actual Question Text,Choices,Predicted Answer,Correct Answer,Predicted == Correct
+1,"Question: could man go outsid pour rain without protect hair head get wet
 Choices:
 1. 
 The man was lucky enough to avoid all the rain.
 2. He is bald.
 3. The man is an athlete that can avoid rain in high speed.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,He is bald.,no
-2,"Question: How could a guy go outdoors in the torrential rain without getting a single hair on his head wet?
+Answer:","
+The man was lucky enough to avoid all the rain., He is bald., The man is an athlete that can avoid rain in high speed., None of above.","
+The man was lucky enough to avoid all the rain.",He is bald.,no
+2,"Question: could guy go outdoor torrenti rain without get singl hair head wet
 Choices:
 1. He is bald.
 2. 
 The man was lucky enough to avoid all the rain.
 3. The man is an athlete that can avoid rain in high speed.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,He is bald.,no
-3,"Question: How can you enter a exam session and have the answers sooner than everybody else in the room?
+Answer:","He is bald., 
+The man was lucky enough to avoid all the rain., The man is an athlete that can avoid rain in high speed., None of above.","
+The man was lucky enough to avoid all the rain.",He is bald.,no
+3,"Question: enter exam session answer sooner everybodi els room
 Choices:
 1. You have to be a teacher.
 2. You have to prepate for the whole year.
 3. You have to ask teacher for the asnwer.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,You have to be a teacher.,no
-4,"Question: If a monkey, a squirrel, and a bird are racing to the top of a coconut tree, who will get the banana first?
+Answer:","You have to be a teacher., You have to prepate for the whole year., You have to ask teacher for the asnwer., None of above.",You have to be a teacher.,You have to be a teacher.,yes
+4,"Question: monkey squirrel bird race top coconut tree get banana first
 Choices:
 1. The squirrel.
 2. The monkey.
 3. The bird.
 4. None of above.
-Answer:",::::::::::::::::::,None of above.,None of above.,yes
-5,"Question: Who will grab the banana first if a monkey, a squirrel, and a bird race to the top of a coconut tree?
+Answer:","The squirrel., The monkey., The bird., None of above.",The squirrel.,None of above.,no
+5,"Question: grab banana first monkey squirrel bird race top coconut tree
 Choices:
 1. The bird.
 2. The squirrel.
 3. The monkey.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,None of above.,yes
-6,"Question: A rooster and a bull were expecting their first child, but since they were having a competition, they wanted to precipitate the process. Which one of them gave birth first?
+Answer:","The bird., The squirrel., The monkey., None of above.",The squirrel.,None of above.,no
+6,"Question: rooster bull expect first child sinc competit want precipit process one gave birth first
 Choices:
 1. The rooster.
 2. The bull.
 3. 
 Both, they happen to finish at the same time.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,None of above.,yes
-7,"Question: A group of ten ostriches are in a field. If four of them take off flying, how many are left in the field?
+Answer:","The rooster., The bull., 
+Both, they happen to finish at the same time., None of above.",None of above.,None of above.,yes
+7,"Question: group ten ostrich field four take fli mani left field
 Choices:
 1. Six.
 2. Four.
 3. Ten.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,None of above.,yes
-8,"Question: Ten chickens are gathered in a field. How many of them remain on the field if four of them take off flying?
+Answer:","Six., Four., Ten., None of above.",Six.,None of above.,no
+8,"Question: ten chicken gather field mani remain field four take fli
 Choices:
 1. Six.
 2. Four.
 3. Ten.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::,None of above.,None of above.,yes
-9,"Question: If we have two bulls, and each cow can produce two gallons of milk every day. How much milk do we have after 2 days?
+Answer:","Six., Four., Ten., None of above.",Six.,None of above.,no
+9,"Question: two bull cow produc two gallon milk everi day much milk day
 Choices:
 1. Eight.
 2. Four.
 3. Sixteen.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,None of above.,yes
-10,"Question: Two people were playing chess and both won. How did this happen?
+Answer:","Eight., Four., Sixteen., None of above.",Sixteen.,None of above.,no
+10,"Question: two peopl play chess happen
 Choices:
 1. They were playing against other opponents.
 2. The both lose, in fact, which is also both won.
 3. The referee is new and doesn't know the chess rules.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,They were playing against other opponents.,no
-11,"Question: Both persons who were playing chess won. What caused this to happen?
+Answer:","They were playing against other opponents., The both lose, in fact, which is also both won., The referee is new and doesn't know the chess rules., None of above.",The referee is new and doesn't know the chess rules.,They were playing against other opponents.,no
+11,"Question: person play chess caus happen
 Choices:
 1. They were playing against other opponents.
 2. The both lose, in fact, which is also both won.
 3. The referee is new and doesn't know the chess rules.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,They were playing against other opponents.,no
-12,"Question: Two chefs were making food, at some points both poured a salt and pepper into their food, however the food wasn't too spicy afterall when customers were eating it. How's that possible?
+Answer:","They were playing against other opponents., The both lose, in fact, which is also both won., The referee is new and doesn't know the chess rules., None of above.",The referee is new and doesn't know the chess rules.,They were playing against other opponents.,no
+12,"Question: two chef make food point pour salt pepper food howev food spici afteral custom eat possibl
 Choices:
 1. The salt and pepper are  expired.
 2. Two chefs were making two different foods and they didn't add the spices twice to the same food.
 3. All customers were polite and didn't tell them in public.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,Two chefs were making two different foods and they didn't add the spices twice to the same food.,no
-13,"Question:  A hiker arrives near a lake. He sees a sign where it is written ""No swimming allowed."", but the duck jumps into the water. Why? 
+Answer:","The salt and pepper are  expired., Two chefs were making two different foods and they didn't add the spices twice to the same food., All customers were polite and didn't tell them in public., None of above.",Two chefs were making two different foods and they didn't add the spices twice to the same food.,Two chefs were making two different foods and they didn't add the spices twice to the same food.,yes
+13,"Question: hiker arriv near lake see sign written swim allow duck jump water 
 Choices:
 1. Because ducks can't read.
 2. Because ducks won't polluted water.
 3. Because ducks are tiny to be detected.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,Because ducks can't read.,no
-14,"Question: A hiker lands near a lake. He sees a sign that says ""No swimming allowed,"" yet the duck dives into the water anyhow. Why? 
+Answer:","Because ducks can't read., Because ducks won't polluted water., Because ducks are tiny to be detected., None of above.",None of above.,Because ducks can't read.,no
+14,"Question: hiker land near lake see sign say swim allow yet duck dive water anyhow 
 Choices:
 1. Because ducks are tiny to be detected.
 2. Because ducks can't read.
 3. Because ducks won't polluted water.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,Because ducks can't read.,no
-15,"Question: A cat was walking pass a security guard when the guard told him not to enter the area since it was restricted. However, the cat passed the security guard without any sense of obedience.Why?
+Answer:","Because ducks are tiny to be detected., Because ducks can't read., Because ducks won't polluted water., None of above.",None of above.,Because ducks can't read.,no
+15,"Question: cat walk pass secur guard guard told enter area sinc restrict howev cat pass secur guard without sens
 Choices:
 1. The cat thought it won't bring danger
 2. Since cats can't understand humans' language
 3. The cat thought it was hard to detect itself.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,Since cats can't understand humans' language,no
-16,"Question:  Twenty-seven ducks are going to the pond. Five of them got lost, thirteen of them are staying home, and nine of them are at the pond. Where are the rest of them? 
+Answer:","The cat thought it won't bring danger, Since cats can't understand humans' language, The cat thought it was hard to detect itself., None of above.",None of above.,Since cats can't understand humans' language,no
+16,"Question: duck go pond five got lost thirteen stay home nine pond rest
 Choices:
 1. Home.
 2. The way to the pond.
 3. Pond.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,None of above.,yes
-17,"Question:  Twenty-seven ducks are going to the pond. Five of them got lost, thirteen of them are staying home, and nine of them are at the pond. Where are the rest of them? 
+Answer:","Home., The way to the pond., Pond., None of above.",The way to the pond.,None of above.,no
+17,"Question: duck go pond five got lost thirteen stay home nine pond rest
 Choices:
 1. The way to the pond.
 2. Home.
 3. Pond.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,None of above.,yes
-18,"Question: James was taking a test with 31 questions. He answered to 17 questions. Towards the end of the time, he looked onto other people's choices and answered 7 questions that way. He was so lucky that he remembered how to answer another 7 questions as well. Surprisingly, he got 100% in the test. What did he do with the rest of the questions that he got 100?
+Answer:","The way to the pond., Home., Pond., None of above.",The way to the pond.,None of above.,no
+18,"Question: jame take test question answer question toward end time look onto peopl choic answer question way lucki rememb answer anoth question well surprisingli got test rest question got
 Choices:
 1. It is so difficult that he cheated with others.
 2. He didn't know the answer and just guessed them randomly.
 3. He owned a nice relation with the teacher and just asked his teacher.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,None of above.,yes
-19,"Question: Ten fish are in a tank. Two fish drown. Four fish swim away.Three fish die.
-How many fish are left in the tank?
+Answer:","It is so difficult that he cheated with others., He didn't know the answer and just guessed them randomly., He owned a nice relation with the teacher and just asked his teacher., None of above.",It is so difficult that he cheated with others.,None of above.,no
+19,"Question: ten fish tank two fish drown four fish swim fish die mani fish left tank
 Choices:
 1. Seven.
 2. Five.
 3. Twenty.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,None of above.,yes
-20,"Question: A tank contains ten fish. Two fish drown. Four fish are swimming away.Three fish perish. How many fish are there left in the tank?
+Answer:","Seven., Five., Twenty., None of above.",Twenty.,None of above.,no
+20,"Question: tank contain ten fish two fish drown four fish swim fish perish mani fish left tank
 Choices:
 1. Seven.
 2. Twenty.
 3. Five.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,None of above.,yes
-21,"Question: A chopper had ten pigeons inside and threw all of them out to die. However, there were some tall trees that could've survived them. How many survived?
+Answer:","Seven., Twenty., Five., None of above.",Twenty.,None of above.,no
+21,"Question: chopper ten pigeon insid threw die howev tall tree could surviv mani surviv
 Choices:
 1. Eight.
 2. Five.
 3. Three.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,None of above.,yes
-22,"Question:  A woman went to Virginia to get a job. She promised her mother she would come back and visit sometime. Then, in the middle of winter, her mother shouted, ""April is here!"". How is this possible? 
+Answer:","Eight., Five., Three., None of above.",Five.,None of above.,no
+22,"Question: woman went virginia get job promis mother would come back visit sometim middl winter mother shout april possibl
 Choices:
 1. The woman's name is April.
 2. Her mother stayed in the home for the whole winter.
 3. The weather in Virginia is pretty special.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,The woman's name is April.,no
-23,"Question: A woman travelled to Virginia to look for work. She promised her mother that she would return someday. Her mother then exclaimed, ""April is here!"" in the dead of winter. What makes this possible? 
+Answer:","The woman's name is April., Her mother stayed in the home for the whole winter., The weather in Virginia is pretty special., None of above.",None of above.,The woman's name is April.,no
+23,"Question: woman travel virginia look work promis mother would return someday mother exclaim april dead winter make possibl
 Choices:
 1. Her mother stayed in the home for the whole winter.
 2. The weather in Virginia is pretty special.
 3. The woman's name is April.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,The woman's name is April.,no
-24,"Question: A man was asking somebody where is you?, the man then pointed out to the person asking the question. How's that possible?
+Answer:","Her mother stayed in the home for the whole winter., The weather in Virginia is pretty special., The woman's name is April., None of above.",None of above.,The woman's name is April.,no
+24,"Question: man ask somebodi man point person ask question possibl
 Choices:
 1. The man pointed to some people at random.
 2. The name of the man who was asking the question was You
 3. The man was angry for his impolite question.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,The name of the man who was asking the question was You,no
-25,"Question: What animal has no wings, but yet will fly?
+Answer:","The man pointed to some people at random., The name of the man who was asking the question was You, The man was angry for his impolite question., None of above.",The man was angry for his impolite question.,The name of the man who was asking the question was You,no
+25,"Question: anim wing yet fli
 Choices:
 1. An elephant.
 2. A caterpillar.
 3. An eagle.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,A caterpillar.,no
-26,"Question: What animal does not have wings but can fly?
+Answer:","An elephant., A caterpillar., An eagle., None of above.",A caterpillar.,A caterpillar.,yes
+26,"Question: anim wing fli
 Choices:
 1. An elephant.
 2. An eagle.
 3. A caterpillar.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,A caterpillar.,no
-27,"Question: What animal does not have legs but can jump?
+Answer:","An elephant., An eagle., A caterpillar., None of above.",An elephant.,A caterpillar.,no
+27,"Question: anim leg jump
 Choices:
 1. A fish.
 2. A tadpole.
 3. A rabbit.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,A tadpole.,no
-28,"Question: A logical with some time to kill in a small town decided to get a haircut. The town had only two barber, each with his own shop. The logical glance into one shop and saw that it was extremely until. The barber needed a shave, his clothes were unkempt, and his hair was badly cut. The other shop was extremely neat. The barber was freshly shaved and spotlessly dressed, his hair neatly trimmed. Why did the logical return to the first shop for his haircut?
+Answer:","A fish., A tadpole., A rabbit., None of above.",A tadpole.,A tadpole.,yes
+28,"Question: logic time kill small town decid get haircut town two barber shop logic glanc one shop saw extrem barber need shave cloth unkempt hair badli cut shop extrem neat barber freshli shave spotlessli dress hair neatli trim logic return first shop haircut
 Choices:
 1. The logician chose the first barber because he believed the untidy appearance suggested that the barber was so busy.
 2. Each barber must have cut the other's hair. The logical picked the barber who had given his rival the better haircut.
 3. The logician went to the first barber because he felt sympathy for him.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,Each barber must have cut the other's hair. The logical picked the barber who had given his rival the better haircut.,no
-29,"Question: In a small town, a logical with some free time made the decision to get a haircut. There were only two barbers in the town, and they each had a shop. The rational glance into one store revealed that it was incredibly expensive. His clothes were messy, his hair was poorly cut, and the barber needed to shave. The other store was very well-kept. The barber had recently had his hair cut and was immaculately dressed. Why did the logical get his haircut at the first place he went?
+Answer:","The logician chose the first barber because he believed the untidy appearance suggested that the barber was so busy., Each barber must have cut the other's hair. The logical picked the barber who had given his rival the better haircut., The logician went to the first barber because he felt sympathy for him., None of above.",The logician chose the first barber because he believed the untidy appearance suggested that the barber was so busy.,Each barber must have cut the other's hair. The logical picked the barber who had given his rival the better haircut.,no
+29,"Question: small town logic free time made decis get haircut two barber town shop ration glanc one store reveal incred expens cloth messi hair poorli cut barber need shave store barber recent hair cut immacul dress logic get haircut first place went
 Choices:
 1. The logician chose the first barber because he believed the untidy appearance suggested that the barber was so busy.
 2. Each barber must have cut the other's hair. The logical picked the barber who had given his rival the better haircut.
 3. The logician went to the first barber because he felt sympathy for him.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,Each barber must have cut the other's hair. The logical picked the barber who had given his rival the better haircut.,no
-30,"Question: In a remote village, a wise traveler decides to check out local dental implants. There are only two dentists in the village, each with a clinic. Glance at the first clinic and see that the dentist's own teeth are badly planted and his salon is poorly maintained. The second salon is tidy, the dentist's teeth are well planted and his attire is spotless. Why smart travelers choose dental implants in the first clinic?
+Answer:","The logician chose the first barber because he believed the untidy appearance suggested that the barber was so busy., Each barber must have cut the other's hair. The logical picked the barber who had given his rival the better haircut., The logician went to the first barber because he felt sympathy for him., None of above.",The logician chose the first barber because he believed the untidy appearance suggested that the barber was so busy.,Each barber must have cut the other's hair. The logical picked the barber who had given his rival the better haircut.,no
+30,"Question: remot villag wise travel decid check local dental implant two dentist villag clinic glanc first clinic see dentist teeth badli plant salon poorli maintain second salon tidi dentist teeth well plant attir spotless smart travel choos dental implant first clinic
 Choices:
 1. Each dentist must have planted the other's teath. The traveler picked the dentisit who had given his rival the better implants.
 2. The traveler chose the first dentist because he believed the untidy appearance suggested that the dentist was so busy.
 3. The traveler went to the first dentist because he felt sympathy for him.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,Each dentist must have planted the other's teath. The traveler picked the dentisit who had given his rival the better implants.,no
-31,"Question: A plane crashed between the border of Canada and America. Where do you bury the survivors?
+Answer:","Each dentist must have planted the other's teath. The traveler picked the dentisit who had given his rival the better implants., The traveler chose the first dentist because he believed the untidy appearance suggested that the dentist was so busy., The traveler went to the first dentist because he felt sympathy for him., None of above.",Each dentist must have planted the other's teath. The traveler picked the dentisit who had given his rival the better implants.,Each dentist must have planted the other's teath. The traveler picked the dentisit who had given his rival the better implants.,yes
+31,"Question: plane crash border canada america buri survivor
 Choices:
 1. America.
 2. Canada.
 3. In the middle of America and Canada.
 4. None of above.
-Answer:",:::::::::::::::::::::::::::::::::,None of above.,None of above.,yes
-32,"Question: A jet crashed near the border between Canada and America. Where do the surviving go to be buried?
+Answer:","America., Canada., In the middle of America and Canada., None of above.",Canada.,None of above.,no
+32,"Question: jet crash near border canada america surviv go buri
 Choices:
 1. Canada.
 2. In the middle of America and Canada.
 3. America.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,None of above.,yes
-33,"Question: We have 5 roosters and each one gives 1 egg per day. How many eggs do we have after a week?
+Answer:","Canada., In the middle of America and Canada., America., None of above.",In the middle of America and Canada.,None of above.,no
+33,"Question: rooster one give egg per day mani egg week
 Choices:
 1. Five.
 2. Thirty-five.
 3. Seven.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,None of above.,yes
-34,"Question: Imagine you are in a room, with no doors, windows, or anything. How do you get out?
+Answer:","Five., Thirty-five., Seven., None of above.",Thirty-five.,None of above.,no
+34,"Question: imagin room door window anyth get
 Choices:
 1. Stop imagining.
 2. Jump out of the roof.
 3. Break the Wall.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,Stop imagining.,no
-35,"Question: Assume you're in a room with no doors, windows, or anything else. How do you escape?
+Answer:","Stop imagining., Jump out of the roof., Break the Wall., None of above.",Stop imagining.,Stop imagining.,yes
+35,"Question: assum room door window anyth els escap
 Choices:
 1. Stop imagining.
 2. Jump out of the roof.
 3. Break the Wall.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,Stop imagining.,no
-36,"Question: You're dreaming that you're in a jungle in which a tiger is approaching you. What's the best thing to do in that situation?
+Answer:","Stop imagining., Jump out of the roof., Break the Wall., None of above.",Stop imagining.,Stop imagining.,yes
+36,"Question: dream jungl tiger approach best thing situat
 Choices:
 1. Fight with the tiger.
 2. Jump over it.
 3. Waking up.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,Waking up.,no
-37,"Question: I buried a stone in the ground, and it grew and produced fruit. How is this possible?
+Answer:","Fight with the tiger., Jump over it., Waking up., None of above.",Fight with the tiger.,Waking up.,no
+37,"Question: buri stone ground grew produc fruit possibl
 Choices:
 1. The stone was actually a seed, not an ordinary stone. The seed of a cherry is called a stone.
 2. The stone that was buried in the ground symbolizes an idea or a concept. By burying the idea and nurturing it with care and effort, it grew and blossomed into a fruitful outcome or achievement.
 3. You buried a stone in the ground, and as time passed, a tree grew above it. The fruit produced by the tree is unrelated to the stone itself.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,"The stone was actually a seed, not an ordinary stone. The seed of a cherry is called a stone.",no
-38,"Question: I planted a stone, and it sprouted leaves and fruit. How is that even possible?
+Answer:","The stone was actually a seed, not an ordinary stone. The seed of a cherry is called a stone., The stone that was buried in the ground symbolizes an idea or a concept. By burying the idea and nurturing it with care and effort, it grew and blossomed into a fruitful outcome or achievement., You buried a stone in the ground, and as time passed, a tree grew above it. The fruit produced by the tree is unrelated to the stone itself., None of above.","The stone was actually a seed, not an ordinary stone. The seed of a cherry is called a stone.","The stone was actually a seed, not an ordinary stone. The seed of a cherry is called a stone.",yes
+38,"Question: plant stone sprout leav fruit even possibl
 Choices:
 1. The stone was actually a seed, not an ordinary stone. The seed of a cherry is called a stone.
 2. You buried a stone in the ground, and as time passed, a tree grew above it. The fruit produced by the tree is unrelated to the stone itself.
 3. The stone that was buried in the ground symbolizes an idea or a concept. By burying the idea and nurturing it with care and effort, it grew and blossomed into a fruitful outcome or achievement.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,"The stone was actually a seed, not an ordinary stone. The seed of a cherry is called a stone.",no
-39,"Question: Two farmers got into a heated argument and started fighting. A farmer was so enraged that he threw a handful of stones at the other farmer. The stones hit the farmer exactly, but the other farmer received no harm at all.  Why?
+Answer:","The stone was actually a seed, not an ordinary stone. The seed of a cherry is called a stone., You buried a stone in the ground, and as time passed, a tree grew above it. The fruit produced by the tree is unrelated to the stone itself., The stone that was buried in the ground symbolizes an idea or a concept. By burying the idea and nurturing it with care and effort, it grew and blossomed into a fruitful outcome or achievement., None of above.","The stone was actually a seed, not an ordinary stone. The seed of a cherry is called a stone.","The stone was actually a seed, not an ordinary stone. The seed of a cherry is called a stone.",yes
+39,"Question: two farmer got heat argument start fight farmer enrag threw hand stone farmer stone hit farmer exactli farmer receiv harm 
 Choices:
 1. The stones was actually seeds, not ordinary stones. The seed of a cherry is called a stone.
 2. The other farmer was wearing protective clothing or had some form of shield that prevented the stones from causing harm.
 3. The stones were small or lacked enough force to cause any significant injury.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,"The stones was actually seeds, not ordinary stones. The seed of a cherry is called a stone.",no
-40,"Question: How many birth days does the average person have?
+Answer:","The stones was actually seeds, not ordinary stones. The seed of a cherry is called a stone., The other farmer was wearing protective clothing or had some form of shield that prevented the stones from causing harm., The stones were small or lacked enough force to cause any significant injury., None of above.","The stones was actually seeds, not ordinary stones. The seed of a cherry is called a stone.","The stones was actually seeds, not ordinary stones. The seed of a cherry is called a stone.",yes
+40,"Question: mani birth day averag person
 Choices:
 1. People may celebrate their birthdays annually, so it depends on their life span.
 2. They technically only have one birth day in their lifetime.
 3. It can be zero as some people are too busy to celebrating their birthdays.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,They technically only have one birth day in their lifetime.,no
-41,"Question: How many birth days do most people have on average?
+Answer:","People may celebrate their birthdays annually, so it depends on their life span., They technically only have one birth day in their lifetime., It can be zero as some people are too busy to celebrating their birthdays., None of above.","People may celebrate their birthdays annually, so it depends on their life span.",They technically only have one birth day in their lifetime.,no
+41,"Question: mani birth day peopl averag
 Choices:
 1. People may celebrate their birthdays annually, so it depends on their life span.
 2. It can be zero as some people are too busy to celebrating their birthdays.
 3. They technically only have one birth day in their lifetime.
 4. None of above.
-Answer:",::::::::::::::::::::::,None of above.,They technically only have one birth day in their lifetime.,no
-42,"Question: From elementary school to collage, how many ""first day of school"" does the average person have in their lifetime?
+Answer:","People may celebrate their birthdays annually, so it depends on their life span., It can be zero as some people are too busy to celebrating their birthdays., They technically only have one birth day in their lifetime., None of above.","People may celebrate their birthdays annually, so it depends on their life span.",They technically only have one birth day in their lifetime.,no
+42,"Question: elementari school collag mani first day school averag person lifetim
 Choices:
 1. Average poeple have 4: lementary school, middle school, high school, and college.
 2. They technically only have one first day of school in their lifetime. That's the very first day they started attending school as a child.
 3. Average people have ""first day of school"" in each semester, so it will be more than 10!
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,They technically only have one first day of school in their lifetime. That's the very first day they started attending school as a child.,no
-43,"Question: An electric train is going south at 98 mph. The wind is blowing northeast. Which direction is the smoke blowing?
+Answer:","Average poeple have 4: lementary school, middle school, high school, and college., They technically only have one first day of school in their lifetime. That's the very first day they started attending school as a child., Average people have ""first day of school"" in each semester, so it will be more than 10!, None of above.",They technically only have one first day of school in their lifetime. That's the very first day they started attending school as a child.,They technically only have one first day of school in their lifetime. That's the very first day they started attending school as a child.,yes
+43,"Question: electr train go south mph wind blow northeast direct smoke blow
 Choices:
 1.  Wind is blowing northeast and is more powerful than the train's speed, it would overpower the train's forward motion. It would likely cause the smoke to blow in northeast.
 2. The train is traveling at a higher speed, which has a significant impact on the direction of the smoke. In this case, smoke is blowing to the opposite direction, north.
 3. There is no smoke. it's an electric train!
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,There is no smoke. it's an electric train!,no
-44,"Question: At 98 mph, an electric train is traveling south. There is a northeast wind. Where is the smoke coming from?
+Answer:"," Wind is blowing northeast and is more powerful than the train's speed, it would overpower the train's forward motion. It would likely cause the smoke to blow in northeast., The train is traveling at a higher speed, which has a significant impact on the direction of the smoke. In this case, smoke is blowing to the opposite direction, north., There is no smoke. it's an electric train!, None of above."," Wind is blowing northeast and is more powerful than the train's speed, it would overpower the train's forward motion. It would likely cause the smoke to blow in northeast.",There is no smoke. it's an electric train!,no
+44,"Question: mph electr train travel south northeast wind smoke come
 Choices:
 1. There is no smoke. it's an electric train!
 2.  Wind is blowing northeast and is more powerful than the train's speed, it would overpower the train's forward motion. It would likely cause the smoke to blow in northeast.
 3. The train is traveling at a higher speed, which has a significant impact on the direction of the smoke. In this case, smoke is blowing to the opposite direction, north.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,There is no smoke. it's an electric train!,no
-45,"Question: A submarine is moving west at a speed of 30 knots. There is a strong current moving east. Where are the trail of bubbles coming from?
+Answer:","There is no smoke. it's an electric train!,  Wind is blowing northeast and is more powerful than the train's speed, it would overpower the train's forward motion. It would likely cause the smoke to blow in northeast., The train is traveling at a higher speed, which has a significant impact on the direction of the smoke. In this case, smoke is blowing to the opposite direction, north., None of above."," Wind is blowing northeast and is more powerful than the train's speed, it would overpower the train's forward motion. It would likely cause the smoke to blow in northeast.",There is no smoke. it's an electric train!,no
+45,"Question: submarin move west speed knot strong current move east trail bubbl come
 Choices:
 1. The current is moving east, the bubbles would be carried by the current towards the west.
 2. The submarine is moving west, the bubbles would be carried in the direction opposite to the current.
 3. There are no bubbles. Modern submarines are designed to move through water without leaving a trail of bubbles.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,There are no bubbles. Modern submarines are designed to move through water without leaving a trail of bubbles.,no
-46,"Question: There is a pink single-story house and everything in it is pink. The doors are pink, the windows are pink and the top is pink. What color are the stairs?
+Answer:","The current is moving east, the bubbles would be carried by the current towards the west., The submarine is moving west, the bubbles would be carried in the direction opposite to the current., There are no bubbles. Modern submarines are designed to move through water without leaving a trail of bubbles., None of above.","The submarine is moving west, the bubbles would be carried in the direction opposite to the current.",There are no bubbles. Modern submarines are designed to move through water without leaving a trail of bubbles.,no
+46,"Question: pink hous everyth pink door pink window pink top pink color stair
 Choices:
 1. There are no stairs in a single story house.
 2. It should be pink as the whole house is in pink.
 3. The stairs is uncolored as people always step on that.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,There are no stairs in a single story house.,no
-47,"Question: The entire single-story home is pink, including the outside. The windows, the top, and the doors are all pink. What are the stair's colors?
+Answer:","There are no stairs in a single story house., It should be pink as the whole house is in pink., The stairs is uncolored as people always step on that., None of above.",The stairs is uncolored as people always step on that.,There are no stairs in a single story house.,no
+47,"Question: entir home pink includ outsid window top door pink stair color
 Choices:
 1. The stairs is uncolored as people always step on that.
 2. It should be pink as the whole house is in pink.
 3. There are no stairs in a single story house.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,There are no stairs in a single story house.,no
-48,"Question: A one-story house is built from red bricks. The doors, windows, and roof are all made of red bricks. What color is the basement?
+Answer:","The stairs is uncolored as people always step on that., It should be pink as the whole house is in pink., There are no stairs in a single story house., None of above.",The stairs is uncolored as people always step on that.,There are no stairs in a single story house.,no
+48,"Question: hous built red brick door window roof made red brick color basement
 Choices:
 1. There is no basement in a one-story house built on a single floor.
 2. It should be red as the whole house is in red.
 3. The basement is uncolored as the basement is only used for storing stuffs.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,There is no basement in a one-story house built on a single floor.,no
-49,"Question: Ten pears hanging high, Ten men come passing by, Each took a pear and left nine hanging there. How could that be?
+Answer:","There is no basement in a one-story house built on a single floor., It should be red as the whole house is in red., The basement is uncolored as the basement is only used for storing stuffs., None of above.",The basement is uncolored as the basement is only used for storing stuffs.,There is no basement in a one-story house built on a single floor.,no
+49,"Question: ten pear hang high ten men come pass took pear left nine hang could
 Choices:
 1. EACH is the name of one of the men.
 2. Other men can't reach the pear.
 3. Other men didn't see the pear.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,EACH is the name of one of the men.,no
-50,"Question: Ten pears hung high, ten men passed past, Each taking a fruit and leaving nine hanging there. How is that possible?
+Answer:","EACH is the name of one of the men., Other men can't reach the pear., Other men didn't see the pear., None of above.",None of above.,EACH is the name of one of the men.,no
+50,"Question: ten pear hung high ten men pass past take fruit leav nine hang possibl
 Choices:
 1. Other men can't reach the pear.
 2. Other men didn't see the pear.
 3. EACH is the name of one of the men.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,EACH is the name of one of the men.,no
-51,"Question: There were twenty boys with different names in the classroom, All went up to the blackboard and wrote names on the board, however, there was only one name on the board, how's that possible?
+Answer:","Other men can't reach the pear., Other men didn't see the pear., EACH is the name of one of the men., None of above.",None of above.,EACH is the name of one of the men.,no
+51,"Question: twenti boy differ name classroom went blackboard wrote name board howev one name board possibl
 Choices:
 1. Other boys don't have names.
 2. All is the name of one of the boys.
 3. Other boys don't know how to write.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,All is the name of one of the boys.,no
-52,"Question: The more you take, the more you leave behind
+Answer:","Other boys don't have names., All is the name of one of the boys., Other boys don't know how to write., None of above.",None of above.,All is the name of one of the boys.,no
+52,"Question: take leav behind
 Choices:
 1. Love.
 2. Footsteps.
 3. Money.
 4. None of above.
-Answer:",::::::::::::::::::::::::::,None of above.,Footsteps.,no
-53,"Question: The more you take, the more you abandon.
+Answer:","Love., Footsteps., Money., None of above.",Footsteps.,Footsteps.,yes
+53,"Question: take abandon
 Choices:
 1. Love.
 2. Footsteps.
 3. Money.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,Footsteps.,no
-54,"Question: You are running so fast but you're not getting closer. Where are you?
+Answer:","Love., Footsteps., Money., None of above.",Footsteps.,Footsteps.,yes
+54,"Question: run fast get closer 
 Choices:
 1. Country road.
 2. Treadmill.
 3. High way.
 4. None of above.
-Answer:",::::::::::::::::::::::::::::::::::::::::::::::::::,None of above.,Treadmill.,no
+Answer:","Country road., Treadmill., High way., None of above.",Treadmill.,Treadmill.,yes
