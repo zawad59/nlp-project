@@ -32,28 +32,25 @@ train_data = np.load('SP_train 1.npy', allow_pickle=True)
 dev_data = np.load('SP_dev 1.npy', allow_pickle=True)
 test_data = np.load('SP_test 1.npy', allow_pickle=True)
 
-# Initialize NLTK tools
-stemmer = PorterStemmer()
-stop_words = set(stopwords.words('english'))
-
-# Preprocess SP data
+# Preprocess the SP data
 def preprocess_sp_data(data):
     processed_data = []
     for item in data:
         question = item['question']
-        correct_answer = item['choice_list'][item['label']]
-        cleaned_sentences = []
-
-        sentences = sent_tokenize(question)
-        for sentence in sentences:
-            words = word_tokenize(sentence.lower())
-            filtered_words = [stemmer.stem(word) for word in words if word.isalpha() and word not in stop_words]
-            cleaned_sentence = ' '.join(filtered_words)
-            cleaned_sentences.append(cleaned_sentence)
-
-        cleaned_question = ' '.join(cleaned_sentences)
-        training_text = f"Question: {cleaned_question}\nAnswer:"
-        processed_data.append({'text': training_text, 'correct_answer': correct_answer})
+        correct_answer = item['answer']
+        choices = item['choice_list']
+        label = item['label']
+        
+        # Format the question text to include the choices
+        choices_text = "\n".join([f"{i + 1}. {choice}" for i, choice in enumerate(choices)])
+        training_text = f"Question: {question}\nChoices:\n{choices_text}\nAnswer:"
+        
+        processed_data.append({
+            'text': training_text,
+            'choices': choices,
+            'correct_answer': correct_answer,
+            'label': label
+        })
     return processed_data
 
 # Preprocess datasets
@@ -72,8 +69,8 @@ def tokenize_function(examples):
     tokens["labels"] = tokens["input_ids"].copy()
     return tokens
 
-tokenized_train_dataset = train_dataset.map(tokenize_function, batched=True, remove_columns=["text", "correct_answer"])
-tokenized_dev_dataset = dev_dataset.map(tokenize_function, batched=True, remove_columns=["text", "correct_answer"])
+tokenized_train_dataset = train_dataset.map(tokenize_function, batched=True, remove_columns=["text", "choices", "correct_answer", "label"])
+tokenized_dev_dataset = dev_dataset.map(tokenize_function, batched=True, remove_columns=["text", "choices", "correct_answer", "label"])
 
 # Data collator for language modeling
 data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
@@ -89,12 +86,9 @@ lora_config = LoraConfig(
 model = prepare_model_for_kbit_training(model)
 model = get_peft_model(model, lora_config)
 
-# Custom Trainer class to handle the compute_loss method
+# Custom Trainer class
 class CustomTrainer(Trainer):
     def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
-        """
-        Override the compute_loss method to handle unexpected arguments.
-        """
         labels = inputs.pop("labels")
         outputs = model(**inputs)
         logits = outputs.logits.view(-1, outputs.logits.size(-1))
@@ -112,11 +106,9 @@ training_args = TrainingArguments(
     learning_rate=3e-5,
     weight_decay=0.001,
     fp16=torch.cuda.is_available(),
-    load_best_model_at_end=True,
-    report_to="none"
+    load_best_model_at_end=True
 )
 
-# Initialize the custom trainer
 trainer = CustomTrainer(
     model=model,
     args=training_args,
@@ -126,75 +118,43 @@ trainer = CustomTrainer(
     tokenizer=tokenizer
 )
 
-# Fine-tune the model
-print("Starting training...")
 trainer.train()
 trainer.save_model("./gpt2_lora_best_model_SP")
-
-# Load the fine-tuned model
 model = AutoModelForCausalLM.from_pretrained("./gpt2_lora_best_model_SP").to(device)
 
-# Function to generate answers using the fine-tuned model
-def generate_answer(question):
-    """
-    Generate an answer using the fine-tuned model.
-    The question already contains the choices embedded in SP data.
-    """
-    # Format the prompt with the question only
-    prompt = f"Question: {question}\nAnswer:"
-    
-    # Tokenize and generate response
+def generate_answer(question, choices):
+    prompt = f"{question}\nChoices:\n" + "\n".join([f"{i + 1}. {choice}" for i, choice in enumerate(choices)]) + "\nAnswer:"
     inputs = tokenizer(prompt, return_tensors="pt", padding=True, truncation=True).to(device)
-    outputs = model.generate(
-        inputs['input_ids'],
-        max_new_tokens=50,
-        temperature=0.7,
-        do_sample=True,
-        pad_token_id=tokenizer.pad_token_id
-    )
-
-    # Decode the generated text
+    outputs = model.generate(inputs['input_ids'], max_new_tokens=50, temperature=0.7, do_sample=True)
     generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    
-    # Extract the predicted answer
-    if "Answer:" in generated_text:
-        predicted_answer = generated_text.split("Answer:")[-1].strip()
-    else:
-        predicted_answer = generated_text.strip()
-
-    # Clean up the predicted answer by removing any choices or extra text
-    predicted_answer = predicted_answer.split('\n')[0].strip()
-
-    # Handle edge cases where the model generates extra text
-    if len(predicted_answer.split()) > 5:  # Assuming answers are typically short
-        predicted_answer = predicted_answer.split('.')[0].strip()  # Keep the first sentence
-
+    predicted_answer = generated_text.split("Answer:")[-1].strip()
     return predicted_answer
 
-
-# Evaluate on the test set and save predictions to CSV
 def evaluate_on_test(test_data):
-    predictions = []
     correct_predictions = 0
+    results = []
     for idx, item in enumerate(test_data):
         question = item['text']
+        choices = item['choices']
         correct_answer = item['correct_answer']
-
-        predicted_answer = generate_answer(question)
+        
+        predicted_answer = generate_answer(question, choices)
         is_correct = "yes" if predicted_answer == correct_answer else "no"
-        predictions.append({
+        
+        results.append({
             "Question ID": idx + 1,
             "Question Text": question,
             "Predicted Answer": predicted_answer,
             "Correct Answer": correct_answer,
             "Correct?": is_correct
         })
+        
         if is_correct == "yes":
             correct_predictions += 1
 
     accuracy = correct_predictions / len(test_data)
     print(f"Test Accuracy: {accuracy:.4f}")
-    return predictions
+    return results
 
 def save_predictions_to_csv(results, filename="prediction_results_SP_gpt2.csv"):
     with open(filename, mode='w', newline='', encoding='utf-8') as file:
@@ -203,6 +163,5 @@ def save_predictions_to_csv(results, filename="prediction_results_SP_gpt2.csv"):
         writer.writerows(results)
     print(f"Predictions saved to {filename}")
 
-# Run evaluation and save results to CSV
 results = evaluate_on_test(processed_test_data)
 save_predictions_to_csv(results)
