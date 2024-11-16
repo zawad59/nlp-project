@@ -75,13 +75,18 @@ test_dataset = HFDataset.from_list(test_data)
 
 # Tokenize the dataset
 def tokenize_function(examples):
-    return tokenizer(examples["text"], padding='max_length', truncation=True, max_length=512)
+    # Tokenize the text and assign the input_ids to the labels key
+    tokens = tokenizer(examples["text"], padding='max_length', truncation=True, max_length=512)
+    tokens["labels"] = tokens["input_ids"].copy()  # Set labels as input_ids
+    return tokens
+
 
 tokenized_train_dataset = train_dataset.map(tokenize_function, batched=True, remove_columns=["text"])
 tokenized_val_dataset = val_dataset.map(tokenize_function, batched=True, remove_columns=["text"])
 tokenized_test_dataset = test_dataset.map(tokenize_function, batched=True, remove_columns=["text"])
 
 data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
+
 
 # LoRA fine-tuning configuration
 lora_config = LoraConfig(
@@ -118,8 +123,10 @@ trainer = Trainer(
     args=training_args,
     train_dataset=tokenized_train_dataset,
     eval_dataset=tokenized_val_dataset,
-    data_collator=data_collator
+    data_collator=data_collator,
+    tokenizer=tokenizer
 )
+
 
 # Fine-tune the model
 print("Starting LoRA fine-tuning...")
