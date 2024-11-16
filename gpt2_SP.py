@@ -103,13 +103,21 @@ model = get_peft_model(model, lora_config)
 
 # Custom Trainer class to handle the compute_loss method
 class CustomTrainer(Trainer):
-    def compute_loss(self, model, inputs, return_outputs=False):
+    def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
+        """
+        Custom loss computation method that handles additional keyword arguments.
+        """
         labels = inputs.pop("labels")
         outputs = model(**inputs)
+        
+        # Compute logits
         logits = outputs.logits.view(-1, outputs.logits.size(-1))
         labels = labels.view(-1)
+        
+        # Compute loss using CrossEntropyLoss
         loss = torch.nn.CrossEntropyLoss()(logits, labels)
         return (loss, outputs) if return_outputs else loss
+
 
 
 # Training arguments
