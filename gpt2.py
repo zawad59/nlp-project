@@ -10,7 +10,7 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.stem import PorterStemmer
 from datasets import Dataset as HFDataset
 
-# Download NLTK data
+# Download required NLTK data
 nltk.download('stopwords')
 nltk.download('punkt')
 
@@ -75,10 +75,10 @@ train_dataset = HFDataset.from_list(processed_train_data)
 dev_dataset = HFDataset.from_list(processed_dev_data)
 test_dataset = HFDataset.from_list(processed_test_data)
 
-# Tokenize the dataset
+# Correct tokenization function to use 'labels'
 def tokenize_function(examples):
     tokens = tokenizer(examples["text"], padding='max_length', truncation=True, max_length=512)
-    tokens["labels"] = tokens["input_ids"].copy()
+    tokens["labels"] = tokens["input_ids"].copy()  # Set 'labels' instead of 'label'
     return tokens
 
 # Apply tokenization
@@ -117,45 +117,8 @@ training_args = TrainingArguments(
     report_to="none"
 )
 
-# Function to generate answers
-def generate_answer(question, choices):
-    prompt = f"Question: {question}\nChoices: {', '.join(choices)}\nAnswer:"
-    inputs = tokenizer(prompt, return_tensors="pt", padding=True, truncation=True).to(device)
-    outputs = model.generate(
-        inputs['input_ids'],
-        attention_mask=inputs['attention_mask'],
-        max_length=200,
-        temperature=0.7,
-        do_sample=True,
-        pad_token_id=tokenizer.pad_token_id
-    )
-    generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    return generated_text.split("Answer:")[-1].strip()
-
-# Function to evaluate on dev dataset during training
-def evaluate_on_dev(dev_data):
-    correct_predictions = 0
-    for item in dev_data:
-        question = item['text']
-        choices = item['choices']
-        true_label = item['label']
-        generated_answer = generate_answer(question, choices)
-        if generated_answer in choices:
-            predicted_label = choices.index(generated_answer)
-        else:
-            predicted_label = -1
-        if predicted_label == true_label:
-            correct_predictions += 1
-    return correct_predictions / len(dev_data)
-
-# Trainer with custom evaluation
-class CustomTrainer(Trainer):
-    def evaluate(self, eval_dataset=None):
-        accuracy = evaluate_on_dev(processed_dev_data)
-        print(f"Validation Accuracy: {accuracy:.4f}")
-        return {"accuracy": accuracy}
-
-trainer = CustomTrainer(
+# Initialize Trainer
+trainer = Trainer(
     model=model,
     args=training_args,
     train_dataset=tokenized_train_dataset,
@@ -171,7 +134,22 @@ trainer.save_model("./gpt2_lora_best_model")
 # Load best model for testing
 model = AutoModelForCausalLM.from_pretrained("./gpt2_lora_best_model").to(device)
 
-# Evaluate on test set using cosine similarity
+# Function to generate answers using the fine-tuned model
+def generate_answer(question, choices):
+    prompt = f"Question: {question}\nChoices: {', '.join(choices)}\nAnswer:"
+    inputs = tokenizer(prompt, return_tensors="pt", padding=True, truncation=True).to(device)
+    outputs = model.generate(
+        inputs['input_ids'],
+        attention_mask=inputs['attention_mask'],
+        max_length=200,
+        temperature=0.7,
+        do_sample=True,
+        pad_token_id=tokenizer.pad_token_id
+    )
+    generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    return generated_text.split("Answer:")[-1].strip()
+
+# Evaluate on test set
 def evaluate_on_test(test_data):
     correct_predictions = 0
     for item in test_data:
@@ -179,12 +157,15 @@ def evaluate_on_test(test_data):
         choices = item['choices']
         true_label = item['label']
         generated_answer = generate_answer(question, choices)
+
         choice_embeddings = embedder.encode(choices, convert_to_tensor=True)
         generated_embedding = embedder.encode(generated_answer, convert_to_tensor=True)
         cosine_similarities = util.cos_sim(generated_embedding, choice_embeddings)[0]
         best_index = torch.argmax(cosine_similarities).item()
+
         if best_index == true_label:
             correct_predictions += 1
+
     accuracy = correct_predictions / len(test_data)
     print(f"Test Accuracy: {accuracy:.4f}")
 
