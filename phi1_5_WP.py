@@ -1,6 +1,7 @@
 import numpy as np
 import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, TrainingArguments, DataCollatorForLanguageModeling
+from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, TrainingArguments, \
+    DataCollatorForLanguageModeling
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
 from sentence_transformers import SentenceTransformer, util
 import nltk
@@ -34,6 +35,7 @@ train_data = np.load('WP_train 1.npy', allow_pickle=True)
 dev_data = np.load('WP_dev 1.npy', allow_pickle=True)
 test_data = np.load('WP_test 1.npy', allow_pickle=True)
 
+
 # Preprocess the data
 def preprocess_phi_data(data):
     processed_data = []
@@ -42,13 +44,14 @@ def preprocess_phi_data(data):
         choices = item['choice_list']
         correct_answer = choices[item['label']]
         cleaned_question = question.lower()  # Keep original context
-        
+
         training_text = (
-            f"Question: {cleaned_question}\n"
-            f"Choices:\n" + "\n".join([f"{i + 1}. {choice}" for i, choice in enumerate(choices)]) + "\nAnswer:"
+                f"Question: {cleaned_question}\n"
+                f"Choices:\n" + "\n".join([f"{i + 1}. {choice}" for i, choice in enumerate(choices)]) + "\nAnswer:"
         )
         processed_data.append({'text': training_text, 'choices': choices, 'label': item['label']})
     return processed_data
+
 
 # Preprocess datasets
 processed_train_data = preprocess_phi_data(train_data)
@@ -60,13 +63,16 @@ train_dataset = HFDataset.from_list(processed_train_data)
 dev_dataset = HFDataset.from_list(processed_dev_data)
 test_dataset = HFDataset.from_list(processed_test_data)
 
+
 # Tokenize datasets
 def tokenize_function(examples):
     tokens = tokenizer(examples["text"], padding='max_length', truncation=True, max_length=512)
     tokens["labels"] = tokens["input_ids"].copy()
     return tokens
 
-tokenized_train_dataset = train_dataset.map(tokenize_function, batched=True, remove_columns=["text", "choices", "label"])
+
+tokenized_train_dataset = train_dataset.map(tokenize_function, batched=True,
+                                            remove_columns=["text", "choices", "label"])
 tokenized_dev_dataset = dev_dataset.map(tokenize_function, batched=True, remove_columns=["text", "choices", "label"])
 
 # Data collator for language modeling
@@ -83,6 +89,7 @@ lora_config = LoraConfig(
 model = prepare_model_for_kbit_training(model)
 model = get_peft_model(model, lora_config)
 
+
 # Custom Trainer
 class CustomTrainer(Trainer):
     def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
@@ -93,15 +100,16 @@ class CustomTrainer(Trainer):
         loss = torch.nn.CrossEntropyLoss()(logits, labels)
         return (loss, outputs) if return_outputs else loss
 
+
 # Training arguments
 training_args = TrainingArguments(
     output_dir="./phi1_5_finetuned",
-    num_train_epochs=4,
+    num_train_epochs=10,
     per_device_train_batch_size=8,
     evaluation_strategy="epoch",
     save_strategy="epoch",
     learning_rate=2e-5,
-    weight_decay=0.001,
+    weight_decay=0.01,
     fp16=torch.cuda.is_available(),
     save_total_limit=1,
     load_best_model_at_end=True,
@@ -124,6 +132,7 @@ trainer.train()
 trainer.save_model("./phi1_5_best_model")
 model = AutoModelForCausalLM.from_pretrained("./phi1_5_best_model").to(device)
 
+
 # Generate answers
 def generate_answer(question, choices):
     choices_text = "\n".join([f"{i + 1}. {choice}" for i, choice in enumerate(choices)])
@@ -133,12 +142,14 @@ def generate_answer(question, choices):
     generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
     return generated_text.split("Answer:")[-1].strip()
 
+
 def refine_prediction_with_similarity(generated_answer, choices):
     choice_embeddings = embedder.encode(choices, convert_to_tensor=True)
     generated_embedding = embedder.encode(generated_answer, convert_to_tensor=True)
     cosine_similarities = util.cos_sim(generated_embedding, choice_embeddings)[0]
     best_index = torch.argmax(cosine_similarities).item()
     return choices[best_index]
+
 
 def evaluate_on_test(test_data):
     predictions = []
@@ -175,6 +186,7 @@ def evaluate_on_test(test_data):
     print(f"Final Test Accuracy: {accuracy:.4f}")
     return predictions, accuracy
 
+
 def save_predictions_to_csv(predictions, filename="phi1_5_predictions.csv"):
     """
     Save the predictions to a CSV file.
@@ -185,6 +197,7 @@ def save_predictions_to_csv(predictions, filename="phi1_5_predictions.csv"):
         writer.writeheader()
         writer.writerows(predictions)
     print(f"Predictions saved to {filename}")
+
 
 # Run evaluation and save results
 predictions, accuracy = evaluate_on_test(processed_test_data)
