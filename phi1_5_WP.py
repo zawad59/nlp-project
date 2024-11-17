@@ -104,12 +104,12 @@ class CustomTrainer(Trainer):
 # Training arguments
 training_args = TrainingArguments(
     output_dir="./phi1_5_finetuned",
-    num_train_epochs=10,
+    num_train_epochs=4,
     per_device_train_batch_size=8,
     evaluation_strategy="epoch",
     save_strategy="epoch",
-    learning_rate=2e-5,
-    weight_decay=0.01,
+    learning_rate=3e-5,
+    weight_decay=0.001,
     fp16=torch.cuda.is_available(),
     save_total_limit=1,
     load_best_model_at_end=True,
