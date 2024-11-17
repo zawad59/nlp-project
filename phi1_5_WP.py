@@ -149,11 +149,10 @@ trainer = CustomTrainer(
 print("Starting training...")
 trainer.train()
 trainer.save_model("./phi1_5_best_model")
-tokenizer.save_pretrained("phi1_5_best_model")
-model.config.save_pretrained("phi1_5_best_model")
+
 
 # Load best model
-model = AutoModelForCausalLM.from_pretrained("phi1_5_best_model").to(device)
+model = AutoModelForCausalLM.from_pretrained("./phi1_5_best_model").to(device)
 
 # Generate answers
 def generate_answer(question, choices):
