@@ -80,10 +80,12 @@ data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 
 # LoRA fine-tuning configuration
 lora_config = LoraConfig(
-    r=16,
-    lora_alpha=32,
-    lora_dropout=0.1,
-    task_type="CAUSAL_LM"
+ r=16,
+ lora_alpha=32,
+ target_modules=["q", "v"],
+ lora_dropout=0.05,
+ bias="none",
+ task_type=TaskType.SEQ_2_SEQ_LM
 )
 
 model = prepare_model_for_kbit_training(model)
