@@ -85,7 +85,7 @@ lora_config = LoraConfig(
  target_modules=["q", "v"],
  lora_dropout=0.05,
  bias="none",
- task_type=TaskType.SEQ_2_SEQ_LM
+ task_type="CAUSAL_LM"
 )
 
 model = prepare_model_for_kbit_training(model)
