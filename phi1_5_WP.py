@@ -72,15 +72,33 @@ tokenized_dev_dataset = dev_dataset.map(tokenize_function, batched=True, remove_
 # Data collator for language modeling
 data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 
-# LoRA fine-tuning configuration
+# Adjusted LoRA fine-tuning configuration
 lora_config = LoraConfig(
     r=16,
     lora_alpha=32,
-    target_modules=["layers.*.self_attn.q_proj", "layers.*.self_attn.v_proj"],
+    target_modules=[
+        "layers.0.self_attn.q_proj",
+        "layers.0.self_attn.v_proj",
+        "layers.1.self_attn.q_proj",
+        "layers.1.self_attn.v_proj",
+        "layers.2.self_attn.q_proj",
+        "layers.2.self_attn.v_proj",
+        "layers.3.self_attn.q_proj",
+        "layers.3.self_attn.v_proj",
+        "layers.4.self_attn.q_proj",
+        "layers.4.self_attn.v_proj",
+        "layers.5.self_attn.q_proj",
+        "layers.5.self_attn.v_proj"
+    ],
     lora_dropout=0.1,
     bias="none",
     task_type="CAUSAL_LM"
 )
+
+# Prepare model for LoRA training
+model = prepare_model_for_kbit_training(model)
+model = get_peft_model(model, lora_config)
+print("LoRA model prepared successfully.")
 
 model = prepare_model_for_kbit_training(model)
 model = get_peft_model(model, lora_config)
