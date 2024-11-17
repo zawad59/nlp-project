@@ -1,741 +1,295 @@
 Question ID,Question,Choices,Predicted Answer,Correct Answer,Correct
-1,"Question: What type of bank doesn't hold money?
+1,"Question: what type of bank doesn't hold money?
 Choices:
 1. Snowbank.
 2. Investment bank.
 3. Central bank.
 4. None of above.
-Answer:","Snowbank., Investment bank., Central bank., None of above.","A:
-
-You can use the following code:
-import re
-
-text = """"""
-1. Snowbank.
-2. Investment bank.
-3. Central bank.
-4. None of above.
-""""""",Snowbank.,no
-2,"Question: What kind of bank doesn't keep cash on hand?
+Answer:","Snowbank., Investment bank., Central bank., None of above.",Snowbank.,Snowbank.,yes
+2,"Question: what kind of bank doesn't keep cash on hand?
 Choices:
 1. Snowbank.
 2. Investment bank.
 3. Central bank.
 4. None of above.
-Answer:","Snowbank., Investment bank., Central bank., None of above.","A:
-
-You can use the following code:
-import re
-
-text = """"""
-1. Snowbank.
-2. Investment bank.
-3. Central bank.
-4. None of above.
-""""""",Snowbank.,no
-3,"Question: What kind of bank doesn't have money on hand?
+Answer:","Snowbank., Investment bank., Central bank., None of above.",Snowbank.,Snowbank.,yes
+3,"Question: what kind of bank doesn't have money on hand?
 Choices:
 1. Riverbank.
 2. Investment bank.
 3. Central bank.
 4. None of above.
-Answer:","Riverbank., Investment bank., Central bank., None of above.","A:
-
-You can use the following code:
-import re
-
-text = """"""
-Riverbank.
-Riverbank.
-Riverbank.
-Riverbank.
-Riverbank.
-Riverbank.
-Riverbank.",Riverbank.,no
-4,"Question: What type of root can't be eaten?
+Answer:","Riverbank., Investment bank., Central bank., None of above.",Riverbank.,Riverbank.,yes
+4,"Question: what type of root can't be eaten?
 Choices:
 1. Carrot root.
 2. Cabbage root.
 3. Square root.
 4. None of above.
-Answer:","Carrot root., Cabbage root., Square root., None of above.","A:
-
-You can use the following code:
-import re
-
-text = """"""
-1. Carrot root.
-2. Cabbage root.
-3. Square root.
-4. None of above.
-""""""",Square root.,no
-5,"Question: What kind of root cannot be consumed?
+Answer:","Carrot root., Cabbage root., Square root., None of above.",Carrot root.,Square root.,no
+5,"Question: what kind of root cannot be consumed?
 Choices:
 1. Square root.
 2. Carrot root.
 3. Cabbage root.
 4. None of above.
-Answer:","Square root., Carrot root., Cabbage root., None of above.","A:
-
-You can use the following code:
-import re
-
-text = """"""
-Square root.
-Carrot root.
-Cabbage root.
-None of above.
-""""""
-
-re.sub(r'",Square root.,no
-6,"Question: What sort of root should one not eat?
+Answer:","Square root., Carrot root., Cabbage root., None of above.",Carrot root.,Square root.,no
+6,"Question: what sort of root should one not eat?
 Choices:
 1. Cube root.
 2. Cabbage root.
 3. Carrot root.
 4. None of above.
-Answer:","Cube root., Cabbage root., Carrot root., None of above.","A:
-
-You can use the following code:
-import java.util.Scanner;
-
-public class CubeRoot {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner",Cube root.,no
-7,"Question: What kind of mouse can't you feed cheese to?
+Answer:","Cube root., Cabbage root., Carrot root., None of above.",Cube root.,Cube root.,yes
+7,"Question: what kind of mouse can't you feed cheese to?
 Choices:
 1. A computer mouse.
 2. A hungry mouse.
 3. An old mouse.
 4. None of above.
-Answer:","A computer mouse., A hungry mouse., An old mouse., None of above.","A:
-
-You can use the following code:
-import java.util.Scanner;
-
-public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(",A computer mouse.,no
-8,"Question: What type of mouse are ineligible for cheese feeding?
+Answer:","A computer mouse., A hungry mouse., An old mouse., None of above.",A computer mouse.,A computer mouse.,yes
+8,"Question: what type of mouse are ineligible for cheese feeding?
 Choices:
 1. A computer mouse.
 2. A hungry mouse.
 3. An old mouse.
 4. None of above.
-Answer:","A computer mouse., A hungry mouse., An old mouse., None of above.","A:
-
-You can use the following code:
-import re
-
-text = """"""
-
-A:
-
-A:
-
-A:
-
-A:
-
-A:
-
-A:
-
-A:",A computer mouse.,no
-9,"Question: The kind of mouse engineers like most？
+Answer:","A computer mouse., A hungry mouse., An old mouse., None of above.",A hungry mouse.,A computer mouse.,no
+9,"Question: the kind of mouse engineers like most？
 Choices:
 1. A young mouse.
 2. A white mouse.
 3. A computer mouse.
 4. None of above.
-Answer:","A young mouse., A white mouse., A computer mouse., None of above.","A:
-
-You can use the following code:
-import re
-
-text = """"""
-1. A young mouse.
-2. A white mouse.
-3. A computer mouse.
-4. None of above.",A computer mouse.,no
-10,"Question: What kind of plant can't photosynthesize?
+Answer:","A young mouse., A white mouse., A computer mouse., None of above.",A young mouse.,A computer mouse.,no
+10,"Question: what kind of plant can't photosynthesize?
 Choices:
 1. An indoor plant.
 2. A house plant
 3. A power plant.
 4. None of above.
-Answer:","An indoor plant., A house plant, A power plant., None of above.","A:
-
-You can use the following code:
-import java.util.Scanner;
-
-public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(",A power plant.,no
-11,"Question: Which plants are incapable of photosynthesizing?
+Answer:","An indoor plant., A house plant, A power plant., None of above.",A house plant,A power plant.,no
+11,"Question: which plants are incapable of photosynthesizing?
 Choices:
 1. A house plant
 2. A power plant.
 3. An indoor plant.
 4. None of above.
-Answer:","A house plant, A power plant., An indoor plant., None of above.","A house plant
-
-A power plant
-
-An indoor plant
-
-None of above
-
-A
-
-A
-
-A
-
-A
-
-A
-
-A
-
-A
-
-A
-
-A
-
-A",A power plant.,no
-12,"Question: What plants can not photosyntheszie but can produce energy.
+Answer:","A house plant, A power plant., An indoor plant., None of above.",An indoor plant.,A power plant.,no
+12,"Question: what plants can not photosyntheszie but can produce energy.
 Choices:
 1. A wetland plant.
 2. A nuclear plant.
 3. An aquatic plant.
 4. None of above.
-Answer:","A wetland plant., A nuclear plant., An aquatic plant., None of above.","A wetland plant.
-
-A nuclear plant.
-
-A aquatic plant.
-
-None of above.
-
-A.
-
-A.
-
-A.
-
-A.
-
-A.
-
-A.",A nuclear plant.,no
-13,"Question: What kind of wood never gets chopped?
+Answer:","A wetland plant., A nuclear plant., An aquatic plant., None of above.",A wetland plant.,A nuclear plant.,no
+13,"Question: what kind of wood never gets chopped?
 Choices:
 1. Softwood.
 2. Hollywood.
 3. Hardwood.
 4. None of above.
-Answer:","Softwood., Hollywood., Hardwood., None of above.","A:
-
-You can use the following code:
-import re
-
-text = ""Softwood is softwood softwood softwood softwood softwood softwood softwood softwood softwood softwood softwood softwood softwood",Hollywood.,no
-14,"Question: What sort of wood is never cut?
+Answer:","Softwood., Hollywood., Hardwood., None of above.",Softwood.,Hollywood.,no
+14,"Question: what sort of wood is never cut?
 Choices:
 1. Hollywood.
 2. Hardwood.
 3. Softwood.
 4. None of above.
-Answer:","Hollywood., Hardwood., Softwood., None of above.","A:
-
-You can use the following code:
-import java.util.Scanner;
-
-public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(",Hollywood.,no
-15,"Question: What sort of wood is never cut?
+Answer:","Hollywood., Hardwood., Softwood., None of above.",Hardwood.,Hollywood.,no
+15,"Question: what sort of wood is never cut?
 Choices:
 1. Hardwood.
 2. Sherwood.
 3. Softwood.
 4. None of above.
-Answer:","Hardwood., Sherwood., Softwood., None of above.","A:
-
-You can use the following code:
-import java.util.Scanner;
-
-public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(",Sherwood.,no
-16,"Question: What type of dish doesn't hold food?
+Answer:","Hardwood., Sherwood., Softwood., None of above.",Hardwood.,Sherwood.,no
+16,"Question: what type of dish doesn't hold food?
 Choices:
 1. A satellite dish.
 2. A fish dish.
 3. A side dish.
 4. None of above.
-Answer:","A satellite dish., A fish dish., A side dish., None of above.","A:
-
-You can use the following code:
-import re
-
-text = """"""
-1. A satellite dish.
-2. A fish dish.
-3. A side dish.
-4. None of above.",A satellite dish.,no
-17,"Question: What kind of dish cannot accommodate food?
+Answer:","A satellite dish., A fish dish., A side dish., None of above.",A satellite dish.,A satellite dish.,yes
+17,"Question: what kind of dish cannot accommodate food?
 Choices:
 1. A satellite dish.
 2. A fish dish.
 3. A side dish.
 4. None of above.
-Answer:","A satellite dish., A fish dish., A side dish., None of above.","A:
-
-You can use the following code:
-import re
-
-text = """"""
-
-1. A satellite dish.
-2. A fish dish.
-3. A side dish.
-4. None of above.",A satellite dish.,no
-18,"Question: What sort of dish is incapable of holding food?
+Answer:","A satellite dish., A fish dish., A side dish., None of above.",A satellite dish.,A satellite dish.,yes
+18,"Question: what sort of dish is incapable of holding food?
 Choices:
 1. Side dish.
 2. Petri dish.
 3. Fish dish.
 4. None of above.
-Answer:","Side dish., Petri dish., Fish dish., None of above.","A:
-
-You can use the following code:
-import re
-
-text = """"""
-1. Side dish.
-2. Petri dish.
-3. Fish dish.
-4. None of above.
-""""""",Petri dish.,no
-19,"Question: What kind of bottle can't hold a liquid?
+Answer:","Side dish., Petri dish., Fish dish., None of above.",Fish dish.,Petri dish.,no
+19,"Question: what kind of bottle can't hold a liquid?
 Choices:
 1. A bottle neck.
 2. A glass bottle.
 3. A water bottle.
 4. None of above.
-Answer:","A bottle neck., A glass bottle., A water bottle., None of above.","A:
-
-You can use the following code:
-import java.util.Scanner;
-
-public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(",A bottle neck.,no
-20,"Question: What sort of bottle is incapable of holding a liquid?
+Answer:","A bottle neck., A glass bottle., A water bottle., None of above.",A bottle neck.,A bottle neck.,yes
+20,"Question: what sort of bottle is incapable of holding a liquid?
 Choices:
 1. A glass bottle.
 2. A water bottle.
 3. A bottle neck.
 4. None of above.
-Answer:","A glass bottle., A water bottle., A bottle neck., None of above.","A:
-
-You can use the following code:
-import java.util.Scanner;
-
-public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(",A bottle neck.,no
-21,"Question: What kind of bottle is smallest.
+Answer:","A glass bottle., A water bottle., A bottle neck., None of above.",A glass bottle.,A bottle neck.,no
+21,"Question: what kind of bottle is smallest.
 Choices:
 1. Soda bottle.
 2. Wine bottle.
 3. Baby bottle.
 4. None of above.
-Answer:","Soda bottle., Wine bottle., Baby bottle., None of above.","A:
-
-You can use the following code:
-import re
-
-text = """"""
-1. Soda bottle.
-2. Wine bottle.
-3. Baby bottle.
-4. None of above.
-""""""",Baby bottle.,no
-22,"Question: What kind of note can't be played?
+Answer:","Soda bottle., Wine bottle., Baby bottle., None of above.",Wine bottle.,Baby bottle.,no
+22,"Question: what kind of note can't be played?
 Choices:
 1. A music note.
 2. A footnote.
 3. A high note.
 4. None of above.
-Answer:","A music note., A footnote., A high note., None of above.","A:
-
-You can use the following code:
-import re
-
-text = """"""
-1. A music note.
-2. A footnote.
-3. A high note.
-4. None of above.
-""""""",A footnote.,no
-23,"Question: What sort of note is impossible to play?
+Answer:","A music note., A footnote., A high note., None of above.",A music note.,A footnote.,no
+23,"Question: what sort of note is impossible to play?
 Choices:
 1. A high note.
 2. A music note.
 3. A footnote.
 4. None of above.
-Answer:","A high note., A music note., A footnote., None of above.","A:
-
-You can use the following code:
-import re
-
-text = """"""
-
-A:
-
-A:
-
-A:
-
-A:
-
-A:
-
-A:
-
-A:",A footnote.,no
-24,"Question: What sort of note is valuable?
+Answer:","A high note., A music note., A footnote., None of above.",A music note.,A footnote.,no
+24,"Question: what sort of note is valuable?
 Choices:
 1. A music note.
 2. A banknote.
 3. A high note.
 4. None of above.
-Answer:","A music note., A banknote., A high note., None of above.","A:
-
-You can use the following code:
-import re
-
-text = """"""
-1. A music note.
-2. A banknote.
-3. A high note.
-4. None of above.",A banknote.,no
-25,"Question: What kind of watch can't tell time?
+Answer:","A music note., A banknote., A high note., None of above.",A banknote.,A banknote.,yes
+25,"Question: what kind of watch can't tell time?
 Choices:
 1. A pocket watch.
 2. A wristwatch.
 3. A watchdog.
 4. None of above.
-Answer:","A pocket watch., A wristwatch., A watchdog., None of above.","A:
-
-You can use the following code:
-import re
-
-text = """"""
-1. A pocket watch.
-2. A wristwatch.
-3. A watchdog.
-4. None of above.
-""""""",A watchdog.,no
-26,"Question: What sort of watch is unable to tell the time?
+Answer:","A pocket watch., A wristwatch., A watchdog., None of above.",A wristwatch.,A watchdog.,no
+26,"Question: what sort of watch is unable to tell the time?
 Choices:
 1. A pocket watch.
 2. A wristwatch.
 3. A watchdog.
 4. None of above.
-Answer:","A pocket watch., A wristwatch., A watchdog., None of above.","A:
-
-You can use the following code:
-import re
-
-text = """"""
-1. A pocket watch.
-2. A wristwatch.
-3. A watchdog.
-4. None of above.
-""""""",A watchdog.,no
-27,"Question: What kind of watch only works at night?
+Answer:","A pocket watch., A wristwatch., A watchdog., None of above.",A wristwatch.,A watchdog.,no
+27,"Question: what kind of watch only works at night?
 Choices:
 1. Stopwatch.
 2. Nightwatch.
 3. Wristwatch.
 4. None of above.
-Answer:","Stopwatch., Nightwatch., Wristwatch., None of above.","A:
-
-You can use the following code:
-import re
-
-text = """"""
-1. Stopwatch.
-2. Nightwatch.
-3. Wristwatch.
-4. None of above.
-""""""",Nightwatch.,no
-28,"Question: What type of pump doesn't inflate anything?
+Answer:","Stopwatch., Nightwatch., Wristwatch., None of above.",Wristwatch.,Nightwatch.,no
+28,"Question: what type of pump doesn't inflate anything?
 Choices:
 1. Bicycle pump.
 2. Pumpkin.
 3. Air pump.
 4. None of above.
-Answer:","Bicycle pump., Pumpkin., Air pump., None of above.","A:
-
-You can use the following code:
-import re
-
-text = """"""
-1. Bicycle pump.
-2. Pumpkin.
-3. Air pump.
-4. None of above.
-""""""
-
-for",Pumpkin.,no
-29,"Question: What kind of pump is incapable of inflating anything?
+Answer:","Bicycle pump., Pumpkin., Air pump., None of above.",Bicycle pump.,Pumpkin.,no
+29,"Question: what kind of pump is incapable of inflating anything?
 Choices:
 1. Bicycle pump.
 2. Air pump.
 3. Pumpkin.
 4. None of above.
-Answer:","Bicycle pump., Air pump., Pumpkin., None of above.","A:
-
-You can use the following code:
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-int main()
-{
-    char str",Pumpkin.,no
-30,"Question: What type of pan doesn't help with cooking?
+Answer:","Bicycle pump., Air pump., Pumpkin., None of above.",Bicycle pump.,Pumpkin.,no
+30,"Question: what type of pan doesn't help with cooking?
 Choices:
 1. Saucepan.
 2. Frying pan.
 3. Company.
 4. None of above.
-Answer:","Saucepan., Frying pan., Company., None of above.","A:
-
-You can use the following code:
-import re
-
-text = """"""
-1. Saucepan.
-2. Frying pan.
-3. Company.
-4. None of above.
-""""""",Company.,no
-31,"Question: What type of ink never leaves a stain?
+Answer:","Saucepan., Frying pan., Company., None of above.",Saucepan.,Company.,no
+31,"Question: what type of ink never leaves a stain?
 Choices:
 1. Link.
 2. Blue ink.
 3. Red ink.
 4. None of above.
-Answer:","Link., Blue ink., Red ink., None of above.","A:
-
-You can use the following code:
-import re
-
-text = """"""
-
-1. Link.
-2. Blue ink.
-3. Red ink.
-4. None of above.
-
-""""""",Link.,no
-32,"Question: What kind of ink doesn't leave stains behind?
+Answer:","Link., Blue ink., Red ink., None of above.",Red ink.,Link.,no
+32,"Question: what kind of ink doesn't leave stains behind?
 Choices:
 1. Link.
 2. Red ink.
 3. Blue ink.
 4. None of above.
-Answer:","Link., Red ink., Blue ink., None of above.","A:
-
-You can use the following code:
-import re
-
-text = """"""
-
-1. Link.
-2. Red ink.
-3. Blue ink.
-4. None of above.
-
-""""""",Link.,no
-33,"Question: What type of ball can't be thrown or kicked?
+Answer:","Link., Red ink., Blue ink., None of above.",Red ink.,Link.,no
+33,"Question: what type of ball can't be thrown or kicked?
 Choices:
 1. Eyeball.
 2. Baseball.
 3. Football.
 4. None of above.
-Answer:","Eyeball., Baseball., Football., None of above.","A:
-
-You can use the following code:
-import re
-
-text = """"""
-1. Eyeball.
-2. Baseball.
-3. Football.
-4. None of above.
-""""""
-
-print",Eyeball.,no
-34,"Question: What type of art doesn't hang in a gallery?
+Answer:","Eyeball., Baseball., Football., None of above.",Baseball.,Eyeball.,no
+34,"Question: what type of art doesn't hang in a gallery?
 Choices:
 1. Contemporary art.
 2. Fine art.
 3. Tart.
 4. None of above.
-Answer:","Contemporary art., Fine art., Tart., None of above.","A:
-
-You can use the following code:
-import re
-
-text = ""1. Contemporary art. 2. Fine art. 3. Tart. 4. None of above""
-
-regex = re.compile",Tart.,no
-35,"Question: What kind of artwork isn't displayed in galleries?
+Answer:","Contemporary art., Fine art., Tart., None of above.",Contemporary art.,Tart.,no
+35,"Question: what kind of artwork isn't displayed in galleries?
 Choices:
 1. Fine art.
 2. Contemporary art.
 3. Tart.
 4. None of above.
-Answer:","Fine art., Contemporary art., Tart., None of above.","A:
-
-You can use the following code:
-import java.util.Scanner;
-
-public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(",Tart.,no
-36,"Question: What kind of man can't walk or talk?
+Answer:","Fine art., Contemporary art., Tart., None of above.",Contemporary art.,Tart.,no
+36,"Question: what kind of man can't walk or talk?
 Choices:
 1. A business man.
 2. A snowman.
 3. A fireman.
 4. None of above.
-Answer:","A business man., A snowman., A fireman., None of above.","A:
-
-You can use the following code:
-import java.util.Scanner;
-
-public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(",A snowman.,no
-37,"Question: What kind of bell doesn't make a sound?
+Answer:","A business man., A snowman., A fireman., None of above.",A snowman.,A snowman.,yes
+37,"Question: what kind of bell doesn't make a sound?
 Choices:
 1. A doorbell.
 2. A cowbell.
 3. A dumbbell.
 4. None of above.
-Answer:","A doorbell., A cowbell., A dumbbell., None of above.","A:
-
-You can use the following code:
-import re
-
-text = """"""
-
-A doorbell.
-
-A cowbell.
-
-A dumbbell.
-
-None of above.
-
-""""""",A dumbbell.,no
-38,"Question: Which sort of bell doesn't ring?
+Answer:","A doorbell., A cowbell., A dumbbell., None of above.",A doorbell.,A dumbbell.,no
+38,"Question: which sort of bell doesn't ring?
 Choices:
 1. A dumbbell.
 2. A doorbell.
 3. A cowbell.
 4. None of above.
-Answer:","A dumbbell., A doorbell., A cowbell., None of above.","A:
-
-You can use the following code:
-import re
-
-text = """"""
-
-A dumbbell.
-
-A doorbell.
-
-A cowbell.
-
-None of above.
-
-""""""",A dumbbell.,no
-39,"Question:  What kind of ""stone"" can't be found in a quarry?
+Answer:","A dumbbell., A doorbell., A cowbell., None of above.",A dumbbell.,A dumbbell.,yes
+39,"Question:  what kind of ""stone"" can't be found in a quarry?
 Choices:
 1. Cobblestone.
 2. Sandstone.
 3. Milestone.
 4. None of above.
-Answer:","Cobblestone., Sandstone., Milestone., None of above.","A:
-
-You can use the following code:
-import re
-
-text = """"""
-Cobblestone.
-Sandstone.
-Milestone.
-None of above.
-""""""
-
-pattern = re.compile",Milestone.,no
-40,"Question: What type of ice never melts?
+Answer:","Cobblestone., Sandstone., Milestone., None of above.",None of above.,Milestone.,no
+40,"Question: what type of ice never melts?
 Choices:
 1. Dice.
 2. Flaked ice.
 3. Glacier ice.
 4. None of above.
-Answer:","Dice., Flaked ice., Glacier ice., None of above.","A:
-
-You can use the following code:
-import random
-
-def dice():
-    return random.randint(1,6)
-
-def dice_dice():
-    return dice() + dice()",Dice.,no
-41,"Question: What kind of ice doesn't melt?
+Answer:","Dice., Flaked ice., Glacier ice., None of above.",Dice.,Dice.,yes
+41,"Question: what kind of ice doesn't melt?
 Choices:
 1. Glacier ice.
 2. Dice.
 3. Flaked ice.
 4. None of above.
-Answer:","Glacier ice., Dice., Flaked ice., None of above.","A:
-
-You can use the following code:
-import re
-
-text = """"""
-1. Glacier ice.
-2. Dice.
-3. Flaked ice.
-4. None of above.
-""""""",Dice.,no
-42,"Question: What kind of ice doesn't contain water?
+Answer:","Glacier ice., Dice., Flaked ice., None of above.",Glacier ice.,Dice.,no
+42,"Question: what kind of ice doesn't contain water?
 Choices:
 1. Flaked ice.
 2. Dry ice.
 3. Glacier ice.
 4. None of above.
-Answer:","Flaked ice., Dry ice., Glacier ice., None of above.","A:
-
-You can use the following code:
-import re
-
-text = """"""
-
-1. Flaked ice.
-2. Dry ice.
-3. Glacier ice.
-4. None of above.",Dry ice.,no
+Answer:","Flaked ice., Dry ice., Glacier ice., None of above.",Flaked ice.,Dry ice.,no
