@@ -23,6 +23,11 @@ model_name = "microsoft/phi-1_5"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.float16).to(device)
 
+# Inspect all module names in the model
+for name, module in model.named_modules():
+    print(name)
+
+
 # Ensure pad token is set
 tokenizer.pad_token = tokenizer.eos_token
 model.config.pad_token_id = tokenizer.pad_token_id
