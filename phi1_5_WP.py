@@ -98,7 +98,7 @@ lora_config = LoraConfig(
 # Prepare model for LoRA training
 model = prepare_model_for_kbit_training(model)
 model = get_peft_model(model, lora_config)
-print("LoRA model prepared successfully.")
+model.load_adapter("./phi1_5_best_model")
 
 model = prepare_model_for_kbit_training(model)
 model = get_peft_model(model, lora_config)
