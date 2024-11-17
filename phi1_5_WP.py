@@ -23,11 +23,6 @@ model_name = "microsoft/phi-1_5"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.float16).to(device)
 
-# Inspect all module names in the model
-for name, module in model.named_modules():
-    print(name)
-
-
 # Ensure pad token is set
 tokenizer.pad_token = tokenizer.eos_token
 model.config.pad_token_id = tokenizer.pad_token_id
@@ -83,16 +78,26 @@ tokenized_dev_dataset = dev_dataset.map(tokenize_function, batched=True, remove_
 # Data collator for language modeling
 data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 
-# LoRA fine-tuning configuration
+# Updated LoRA configuration for the microsoft/phi-1_5 model
 lora_config = LoraConfig(
     r=16,
     lora_alpha=32,
-    target_modules=["attn.q_proj", "attn.v_proj"],  # Adjust these based on your model's structure
-    lora_dropout=0.05,
+    target_modules=[
+        "self_attn.q_proj",
+        "self_attn.k_proj",
+        "self_attn.v_proj",
+        "self_attn.dense",
+        "mlp.fc1",
+        "mlp.fc2"
+    ],
+    lora_dropout=0.1,
     bias="none",
     task_type="CAUSAL_LM"
 )
 
+# Prepare the model for k-bit training
+model = prepare_model_for_kbit_training(model)
+model = get_peft_model(model, lora_config)
 
 model = prepare_model_for_kbit_training(model)
 model = get_peft_model(model, lora_config)
